@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 50; //At least 50 squares of operating room.
+  final int minArea = 2500; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -46,30 +46,61 @@ public final class Map{
   private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode){
     if(treeNode == null) treeNode = new BinaryNode(null, generatorMap[0].length, generatorMap.length,0,0); //create parent
     //CHECK SIZE APPROPRIATE
+    //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
+    if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
+      
+    }
     if(treeNode.getTotalArea() < minArea){
+      //Carve out area. Reassign values for x, y, widthArea, heightArea. For now, just make 5 pixels smaller. Keep same Pos.
+      treeNode.widthArea -=20;
+      treeNode.heightArea-=20;
+      generatorMap = insertRoom(generatorMap, treeNode);
       return generatorMap;
     }else{
-      float randomValue = random(0,50);
+      int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
-        int split = (int) random(treeNode.x, treeNode.x+treeNode.widthArea);
-       treeNode.left = new BinaryNode(treeNode, ((split-1)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
+       int split = (int) random(treeNode.x+20, treeNode.x+treeNode.widthArea-20);
+       int remainder = split%20;
+       if(remainder <= 10) split-=remainder;
+       if(remainder > 10) split+=remainder;
+       treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
        allocateSpaces(generatorMap, treeNode.left);
        treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
        allocateSpaces(generatorMap, treeNode.right);
-       return generatorMap;
        //50 --> 0,24 and 25,50
       }else{
-        int split = (int) random(treeNode.y, treeNode.y+treeNode.heightArea);
-        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-1-treeNode.y),treeNode.x, treeNode.y);
+        int split = (int) random(treeNode.y+20, treeNode.y+treeNode.heightArea-20);
+        int remainder = split%20;
+        if(remainder <= 10) split-=remainder;
+        if(remainder > 10) split+=remainder;
+        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y);
         allocateSpaces(generatorMap, treeNode.left);
         treeNode.right = new BinaryNode(treeNode, treeNode.widthArea, (treeNode.heightArea+treeNode.y-split), treeNode.x, split);
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
-      
+      }
+      return generatorMap;
+    }
+  }
+  
+  private boolean[][] insertRoom(boolean[][] room, BinaryNode node){
+    int factoredX = (int) node.x/20;
+    int factoredY = (int) node.y/20;
+    int factoredWidth = (int) node.widthArea/20;
+    int factoredHeight = (int) node.heightArea/20;
+    for(int i = factoredX; i < factoredWidth+factoredX; i++){
+      for(int j =factoredY; j < factoredHeight+factoredY; j++){
+        room[j][i] = true;
       }
     }
-    return generatorMap;
+    return room;
   }
+  
+  private boolean[][] addCorridors(boolean[][] room, BinaryNode node){
+    
+  }
+    
+  
   /*
    - Split up the map in chosen difficulty. Lower difficulty means smaller spaces 
    - spit
