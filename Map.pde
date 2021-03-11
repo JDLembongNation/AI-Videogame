@@ -95,9 +95,32 @@ public final class Map{
     }
     return room;
   }
-  
+  //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
   private boolean[][] addCorridors(boolean[][] room, BinaryNode node){
-    
+    int factoredLeftX = (int) node.left.x/20;
+    int factoredLeftY = (int) node.left.y/20;
+    int factoredLeftWidth = (int) node.left.widthArea/20;
+    int factoredLeftHeight = (int) node.left.heightArea/20;
+    int factoredRightX = (int) node.left.x/20;
+    int factoredRightY = (int) node.left.y/20;
+    int factoredRightWidth = (int) node.left.widthArea/20;
+    int factoredRightHeight = (int) node.left.heightArea/20;
+    if(factoredLeftX < factoredRightX){ //Vertical Cut. 
+      int leftEdge = factoredLeftX + factoredLeftWidth;
+      //grab from any height. in range y to y+height
+      int toFill = factoredRightX-leftEdge;
+      for(int i =0; i < toFill; i++){
+      
+      }
+    }else{ //Horizontal Cut.
+      int leftEdge = factoredLeftY + factoredLeftHeight;
+      //grab from any width.in range x to x+width
+      int toFill = factoredRightY - leftEdge;
+      for(int i =0; i < toFill; i++){
+      
+      }
+    }
+    return room;
   }
     
   
