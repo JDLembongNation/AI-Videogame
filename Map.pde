@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 200000; //At least 50 squares of operating room.
+  final int minArea = 250000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -21,14 +21,18 @@ public final class Map{
     //Using the BSP Partitioning System. 
     treeValue = 0;
     tree = null; //Restart Tree;
+    BinaryNode ptr = tree;
     boolean[][] generateMap = new boolean[map.length][map[0].length]; //default is false
-    generateMap = allocateSpaces(generateMap, tree);
+    generateMap = allocateSpaces(generateMap,  ptr);
     for(int i = 0; i < generateMap.length; i++){
       for(int j = 0; j < generateMap[0].length; j++){
         map[i][j].isWalkable = generateMap[i][j];
       }
     }
     //Now generate Position of player and enemy.
+    generateEnemies();
+    //generateCharacterStartingPosition(tree);
+    generateItems();
   }
   
   private class BinaryNode{
@@ -81,10 +85,13 @@ public final class Map{
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
       }
+      if(treeNode.parent == null){
+        generateCharacterStartingPosition(treeNode);
+      }
       if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
       return addCorridors(generatorMap, treeNode);
       }
-      return generatorMap;
+       return generatorMap;
     }
   }
   
@@ -163,7 +170,24 @@ public final class Map{
   private void generateItems(){
   }
   
-  private void generateCharacterStartingPosition(){
+  private void generateCharacterStartingPosition(BinaryNode tree){
+    //go to bottom of tree focusing left and place spot randomly rnadomly. 
+    //go to bottom of tree focusing right and place spot randomly.a
+    System.out.println("PEY");
+    BinaryNode treeptr = tree;
+    while(treeptr.left!=null) treeptr = treeptr.left;
+    BinaryNode startDimensions = treeptr;
+    int chosenX = (int) random(startDimensions.x/20, (startDimensions.x+startDimensions.widthArea)/20);
+    int chosenY = (int) random(startDimensions.y/20, (startDimensions.y+startDimensions.heightArea)/20);
+    map[chosenX][chosenY].isStartingPosition = true;
+    
+    treeptr = tree;
+        while(treeptr.right!=null) treeptr = treeptr.right;
+    BinaryNode endDimensions = treeptr;
+    chosenX = (int) random(endDimensions.x/20, (endDimensions.x+endDimensions.widthArea)/20);
+    chosenY = (int) random(endDimensions.y/20, (endDimensions.y+endDimensions.heightArea)/20);
+    map[chosenX][chosenY].isEndPosition = true;
+
   }
   
 }

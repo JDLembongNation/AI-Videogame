@@ -40,7 +40,7 @@ void battleGUI(){
     if(key == 'c'){
       inBattle=false;
       player.position = player.startingPosition.copy();
-      System.out.println("STarting position x and y" + player.startingPosition.x + "  " + player.startingPosition.y);
+      System.out.println("Starting position x and y" + player.startingPosition.x + "  " + player.startingPosition.y);
     }
   }
 }
@@ -52,6 +52,15 @@ void drawMap(){
       if(!currentMap[i][j].isWalkable){
         fill(20);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+      }
+      if(currentMap[i][j].isStartingPosition){
+        fill(50,50,190);
+        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+
+    }
+      if(currentMap[i][j].isEndPosition){
+         fill(180,50,190);
+         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
       }
     }
   }
