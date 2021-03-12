@@ -23,12 +23,14 @@ public final class Map{
     tree = null; //Restart Tree;
     BinaryNode ptr = tree;
     boolean[][] generateMap = new boolean[map.length][map[0].length]; //default is false
+    resetTerrain();
     generateMap = allocateSpaces(generateMap,  ptr);
     for(int i = 0; i < generateMap.length; i++){
       for(int j = 0; j < generateMap[0].length; j++){
         map[i][j].isWalkable = generateMap[i][j];
       }
     }
+    
     //Now generate Position of player and enemy.
     generateEnemies();
     //generateCharacterStartingPosition(tree);
@@ -67,7 +69,7 @@ public final class Map{
       int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
 
-       int split = (int) random(treeNode.x+40, treeNode.x+treeNode.widthArea-40);
+       int split = (int) random(treeNode.x+60, treeNode.x+treeNode.widthArea-60);
        int remainder = split%20;
        split-=remainder;
        treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
@@ -76,7 +78,7 @@ public final class Map{
        allocateSpaces(generatorMap, treeNode.right);
        //50 --> 0,24 and 25,50
       }else{
-        int split = (int) random(treeNode.y+20, treeNode.y+treeNode.heightArea-20);
+        int split = (int) random(treeNode.y+60, treeNode.y+treeNode.heightArea-60);
         int remainder = split%20;
         split-=remainder;
         treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y); 
@@ -139,11 +141,13 @@ public final class Map{
       //pick random left to right. 
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
-      int chosenPath = (int) random(lowerBoundY, upperBoundY);
+      int chosenPath = (int) random(lowerBoundY, upperBoundY-3);
       System.out.println("Drawing Horizontal Path from y = " + chosenPath);
+      for(int j = 0; j < 3;j++){
       for(int i =leftEdge; i < leftEdge+toFill; i++){
         System.out.println("On position x = " + chosenPath + " y = " + i);
-        room[i][chosenPath] = true;
+        room[i][chosenPath+j] = true;
+      }
       }
     }else{ //Horizontal Cut.
       int leftEdge = factoredLeftY + factoredLeftHeight;
@@ -151,12 +155,14 @@ public final class Map{
       int toFill = factoredRightY - leftEdge;
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
-      int chosenPath = (int) random(lowerBoundX, upperBoundX);
+      int chosenPath = (int) random(lowerBoundX, upperBoundX-3);
       System.out.println("Drawing Vertical Path from x = " + chosenPath);
       System.out.println("Starting Point is leftY = " + factoredLeftY + "; LeftHeight = " + factoredLeftHeight  + "; rightY = " + factoredRightY); //LEFT HEIGHT IS TOO BIG BY FACTOR 1. 
+      for(int j = 0; j < 3; j++){
       for(int i =leftEdge; i < leftEdge+toFill; i++){
-        room[chosenPath][i] = true;
+        room[chosenPath+j][i] = true;
         System.out.println("On position x = " + chosenPath + " y = " + i);
+      }
       }
       System.out.println("\n \n \n");
     }
@@ -187,6 +193,16 @@ public final class Map{
     chosenX = (int) random(endDimensions.x/20, (endDimensions.x+endDimensions.widthArea)/20);
     chosenY = (int) random(endDimensions.y/20, (endDimensions.y+endDimensions.heightArea)/20);
     map[chosenX][chosenY].isEndPosition = true;
+
+  }
+  
+  private void resetTerrain(){
+    for(int i = 0; i < map.length; i++){
+      for(int j = 0; j < map[0].length; j++){
+        map[i][j].isStartingPosition = false;
+        map[i][j].isEndPosition = false;
+      }
+    }
 
   }
   

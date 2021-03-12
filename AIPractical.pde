@@ -5,6 +5,7 @@ final String INTRO_TEXT = "Let the Battle Commence!";
 
 
 boolean inBattle = false;
+PVector end;
 boolean[] keys = {false, false, false, false};
 Enemy enemy;
 Map map;
@@ -56,11 +57,12 @@ void drawMap(){
       if(currentMap[i][j].isStartingPosition){
         fill(50,50,190);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-
+        player.startingPosition = new PVector(i*20, j*20);
     }
       if(currentMap[i][j].isEndPosition){
          fill(180,50,190);
          rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+         end = new PVector(i*20,j*20); 
       }
     }
   }
@@ -84,10 +86,28 @@ void drawCharacters(){
 }
 
 void collisionCheck(){
-  if(player.position.mag() - enemy.position.mag() < 30){
+  if(player.position.mag() - enemy.position.mag() < 20){
     System.out.println("Initiate Battle!");
     inBattle = true;
   }
+  if(abs(player.position.mag() - end.mag()) < 20) { //EXTREMELY DODGY FIX SOON PLEASE.
+    map.generateNewCave();
+    drawMap();
+    player.position = player.startingPosition.copy();
+  }
+  if(player.position.x < 15) player.position.x=15;
+  if(player.position.x > width-15) player.position.x = width-15;
+  if(player.position.y > height-15) player.position.y = height-15;
+  if(player.position.y < 15) player.position.y = 15;
+}
+
+
+boolean isHittingBlock(){
+  //grab player current position. Get block closest to point. Find blocks next to player. If touching block, then reject movement.
+  float currentX = player.position.x;
+  float currentY = player.position.y;
+  
+  return false;
 }
 
 void drawItems(){
@@ -95,12 +115,12 @@ void drawItems(){
 }
 
 void move(){
-  if(keys[0] && keys[2]) player.integrate(0.8,0.02);
-  if(keys[0] && keys[3]) player.integrate(0.8,-0.02);
-  if(keys[1] && keys[2])player.integrate(-0.8,0.02);
-  if(keys[1] && keys[3])player.integrate(-0.8,-0.02);
-  if(keys[0]) player.integrate(1,0);
-  if(keys[1]) player.integrate(-1,0);
+  if(keys[0] && keys[2]) player.integrate(3,0.02);
+  if(keys[0] && keys[3]) player.integrate(3,-0.02);
+  if(keys[1] && keys[2])player.integrate(-3,0.02);
+  if(keys[1] && keys[3])player.integrate(-3,-0.02);
+  if(keys[0]) player.integrate(4,0);
+  if(keys[1]) player.integrate(-4,0);
   if(keys[2]) player.integrate(0,0.08);
   if(keys[3]) player.integrate(0,-0.08);
 
