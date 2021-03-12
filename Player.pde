@@ -13,8 +13,10 @@ public final class Player {
   PVector position;
   PVector velocity;
   float orientation;
+  PVector startingPosition;
   
   public Player(int x, int y, float orientation) {
+    this.startingPosition = new PVector(x,y);
     this.position = new PVector(x,y);
     this.orientation = orientation;
     velocity = new PVector(0,0);

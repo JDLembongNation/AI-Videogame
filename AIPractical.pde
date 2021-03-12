@@ -1,7 +1,10 @@
 final int PLAY_WIDTH = 1000;
 final int PLAY_HEIGHT = 1000;
 final int NODE_SIZE = 20;
+final String INTRO_TEXT = "Let the Battle Commence!";
 
+
+boolean inBattle = false;
 boolean[] keys = {false, false, false, false};
 Enemy enemy;
 Map map;
@@ -15,11 +18,31 @@ void setup() {
 }
 
 void draw() {
+  if(inBattle) battleGUI();
+  else caveGUI();
+}
+
+void caveGUI(){
    background(255);
    drawMap();
    drawCharacters();
    drawItems();
    move();
+   collisionCheck();
+}
+
+void battleGUI(){
+  background(0);
+  fill(255);
+  textSize(30);
+  text(INTRO_TEXT, 300, 300);
+  if(keyPressed){
+    if(key == 'c'){
+      inBattle=false;
+      player.position = player.startingPosition.copy();
+      System.out.println("STarting position x and y" + player.startingPosition.x + "  " + player.startingPosition.y);
+    }
+  }
 }
 
 void drawMap(){
@@ -41,14 +64,21 @@ void drawCharacters(){
   int newye = (int)(player.position.y + 10 * sin(player.orientation));
   fill(0);
   ellipse(newxe, newye, 10, 10);  
+
   //ENEMY
   fill(20,180,20);
   ellipse(enemy.position.x, enemy.position.y, 30,30);
   int enemyX = (int)(enemy.position.x + 10 * cos(enemy.orientation));
   int enemyY = (int)(enemy.position.y + 10 * sin(enemy.orientation));
   fill(0);
-  ellipse(enemyX, enemyY, 10, 10);  
-   
+  ellipse(enemyX, enemyY, 10, 10);   
+}
+
+void collisionCheck(){
+  if(player.position.mag() - enemy.position.mag() < 30){
+    System.out.println("Initiate Battle!");
+    inBattle = true;
+  }
 }
 
 void drawItems(){
