@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 600000; //At least 50 squares of operating room.
+  final int minArea = 200000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -62,7 +62,7 @@ public final class Map{
       int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
 
-       int split = (int) random(treeNode.x+20, treeNode.x+treeNode.widthArea-20);
+       int split = (int) random(treeNode.x+40, treeNode.x+treeNode.widthArea-40);
        int remainder = split%20;
        split-=remainder;
        treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
@@ -101,6 +101,16 @@ public final class Map{
   }
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
   private boolean[][] addCorridors(boolean[][] room, BinaryNode node){
+    //Reduce scale IF there are children. 
+    if(node.left.right!=null && node.left.left!=null) {
+      node.left.widthArea -=20;
+      node.left.heightArea -=20;
+    }
+    if(node.right.right!=null && node.right.left!=null){
+      node.right.widthArea -=20;
+      node.right.heightArea -=20;
+    }
+    
     int factoredLeftX = (int) node.left.x/20;
     int factoredLeftY = (int) node.left.y/20;
     int factoredLeftWidth = (int) node.left.widthArea/20;
@@ -139,19 +149,17 @@ public final class Map{
       for(int i =leftEdge; i < leftEdge+toFill; i++){
         room[chosenPath][i] = true;
         System.out.println("On position x = " + chosenPath + " y = " + i);
-
       }
       System.out.println("\n \n \n");
     }
     return room;
   }
-    
   
   /*
-   - Split up the map in chosen difficulty. Lower difficulty means smaller spaces 
-   - spit
-   -recurse
-   -stitch up pathways back up. When reaching a parent node. 
+   - Current Problem is that the decreasing in room size does not technically happen for the larger parents. EG. A has child to B and C
+    - I have shrunk B and C so that they are smaller by 20pixels on the width and the height domain. This is becuase they are the leaf nodes. B and C are the leaf nodes. 
+    - However, A is not adapted to this change. A still believes that B and C are the original size as we have not told A that they have changed size. A needs to dynamically adapt and change the floor size 
+    - This can be done with recursive descent. Where If A is believed to have children, then they will accommodate their size accordingly. 
   */
   
 }
