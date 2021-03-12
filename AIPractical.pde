@@ -7,6 +7,7 @@ final String INTRO_TEXT = "Let the Battle Commence!";
 boolean inBattle = false;
 PVector end;
 boolean[] keys = {false, false, false, false};
+GroundNode[][] currentMap;
 Enemy enemy;
 Map map;
 Player player;
@@ -47,7 +48,7 @@ void battleGUI(){
 }
 
 void drawMap(){
-  GroundNode[][] currentMap = map.getMap();
+  currentMap = map.getMap();
   for(int i = 0; i < currentMap.length; i++){
     for(int j = 0; j < currentMap[i].length; j++){
       if(!currentMap[i][j].isWalkable){
@@ -95,10 +96,47 @@ void collisionCheck(){
     drawMap();
     player.position = player.startingPosition.copy();
   }
+  // == FOR EDGE OF SCREEN == 
   if(player.position.x < 15) player.position.x=15;
   if(player.position.x > width-15) player.position.x = width-15;
   if(player.position.y > height-15) player.position.y = height-15;
   if(player.position.y < 15) player.position.y = 15;
+  // == FOR WALL ==
+  int positionX = (int) player.position.x;
+  int positionY = (int) player.position.y;
+  if(positionX%20 < 10){ 
+    positionX -= positionX%20;  
+  }else{
+    positionX += (20-positionX%20);
+  }
+  if(positionY%20 < 10){ 
+    positionY -=positionY%20;
+  }else{
+   positionY +=(20-positionY%20);
+  } 
+  int i = positionX/20;
+  int j = positionY/20;
+  if(i-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
+      if(!(currentMap[i-2][j].isWalkable)){
+        if(player.position.x < ((i-2)*20) + 35) player.position.x =((i-2)*20) + 35;
+      }
+  }
+   if(j-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
+      if(!(currentMap[i][j-2].isWalkable)){
+        if(player.position.y < ((j-2)*20) + 35) player.position.y = ((j-2)*20) + 35;
+      }
+    }
+  
+      if(j+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
+      if(!(currentMap[i][j+1].isWalkable)){
+        if(player.position.y > ((j+1)*20) -15) player.position.y = ((j+1)*20) -15;
+      }
+    }
+        if(i+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
+      if(!(currentMap[i+1][j].isWalkable)){
+        if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
+      }
+    }
 }
 
 
@@ -115,12 +153,12 @@ void drawItems(){
 }
 
 void move(){
-  if(keys[0] && keys[2]) player.integrate(3,0.02);
-  if(keys[0] && keys[3]) player.integrate(3,-0.02);
-  if(keys[1] && keys[2])player.integrate(-3,0.02);
-  if(keys[1] && keys[3])player.integrate(-3,-0.02);
-  if(keys[0]) player.integrate(4,0);
-  if(keys[1]) player.integrate(-4,0);
+  if(keys[0] && keys[2]) player.integrate(2,0.02);
+  if(keys[0] && keys[3]) player.integrate(2,-0.02);
+  if(keys[1] && keys[2])player.integrate(-2,0.02);
+  if(keys[1] && keys[3])player.integrate(-2,-0.02);
+  if(keys[0]) player.integrate(2,0);
+  if(keys[1]) player.integrate(-2,0);
   if(keys[2]) player.integrate(0,0.08);
   if(keys[3]) player.integrate(0,-0.08);
 
