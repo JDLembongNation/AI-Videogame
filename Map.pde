@@ -28,6 +28,7 @@ public final class Map{
         map[i][j].isWalkable = generateMap[i][j];
       }
     }
+    //Now generate Position of player and enemy.
   }
   
   private class BinaryNode{
@@ -155,11 +156,14 @@ public final class Map{
     return room;
   }
   
-  /*
-   - Current Problem is that the decreasing in room size does not technically happen for the larger parents. EG. A has child to B and C
-    - I have shrunk B and C so that they are smaller by 20pixels on the width and the height domain. This is becuase they are the leaf nodes. B and C are the leaf nodes. 
-    - However, A is not adapted to this change. A still believes that B and C are the original size as we have not told A that they have changed size. A needs to dynamically adapt and change the floor size 
-    - This can be done with recursive descent. Where If A is believed to have children, then they will accommodate their size accordingly. 
-  */
+  private void generateEnemies(){
+    
+  }
+  
+  private void generateItems(){
+  }
+  
+  private void generateCharacterStartingPosition(){
+  }
   
 }
