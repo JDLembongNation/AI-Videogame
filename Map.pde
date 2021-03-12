@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 300000; //At least 50 squares of operating room.
+  final int minArea = 600000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -61,24 +61,20 @@ public final class Map{
     }else{
       int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
-        System.out.println("Vertical Cut");
 
        int split = (int) random(treeNode.x+20, treeNode.x+treeNode.widthArea-20);
        int remainder = split%20;
-       if(remainder <= 10) split-=remainder;
-       if(remainder > 10) split+=remainder;
+       split-=remainder;
        treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
        allocateSpaces(generatorMap, treeNode.left);
        treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
        allocateSpaces(generatorMap, treeNode.right);
        //50 --> 0,24 and 25,50
       }else{
-        System.out.println("Horizontal Cut");
         int split = (int) random(treeNode.y+20, treeNode.y+treeNode.heightArea-20);
         int remainder = split%20;
-        if(remainder <= 10) split-=remainder;
-        if(remainder > 10) split+=remainder;
-        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y);
+        split-=remainder;
+        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y); 
         allocateSpaces(generatorMap, treeNode.left);
         treeNode.right = new BinaryNode(treeNode, treeNode.widthArea, (treeNode.heightArea+treeNode.y-split), treeNode.x, split);
         allocateSpaces(generatorMap, treeNode.right);
@@ -126,8 +122,9 @@ public final class Map{
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
       int chosenPath = (int) random(lowerBoundY, upperBoundY);
-      System.out.println(chosenPath + "ALlocated Vertical Line");
+      System.out.println("Drawing Horizontal Path from y = " + chosenPath);
       for(int i =leftEdge; i < leftEdge+toFill; i++){
+        System.out.println("On position x = " + chosenPath + " y = " + i);
         room[i][chosenPath] = true;
       }
     }else{ //Horizontal Cut.
@@ -137,11 +134,14 @@ public final class Map{
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
       int chosenPath = (int) random(lowerBoundX, upperBoundX);
-      System.out.println(chosenPath + "ALlocated Horizontal Line");
-
+      System.out.println("Drawing Vertical Path from x = " + chosenPath);
+      System.out.println("Starting Point is leftY = " + factoredLeftY + "; LeftHeight = " + factoredLeftHeight  + "; rightY = " + factoredRightY); //LEFT HEIGHT IS TOO BIG BY FACTOR 1. 
       for(int i =leftEdge; i < leftEdge+toFill; i++){
         room[chosenPath][i] = true;
+        System.out.println("On position x = " + chosenPath + " y = " + i);
+
       }
+      System.out.println("\n \n \n");
     }
     return room;
   }
