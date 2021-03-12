@@ -3,6 +3,7 @@ final int PLAY_HEIGHT = 1000;
 final int NODE_SIZE = 20;
 
 boolean[] keys = {false, false, false, false};
+Enemy enemy;
 Map map;
 Player player;
 void setup() {
@@ -10,6 +11,7 @@ void setup() {
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
   map.generateNewCave();
   player = new Player(100,100,0);
+  enemy = new Enemy(new PVector(50,50));
 }
 
 void draw() {
@@ -33,16 +35,24 @@ void drawMap(){
 }
 
 void drawCharacters(){
-   fill(180,20,20);
-   ellipse(player.position.x, player.position.y, 30,30);
+  fill(180,20,20);
+  ellipse(player.position.x, player.position.y, 30,30);
   int newxe = (int)(player.position.x + 10 * cos(player.orientation));
   int newye = (int)(player.position.y + 10 * sin(player.orientation));
   fill(0);
   ellipse(newxe, newye, 10, 10);  
+  //ENEMY
+  fill(20,180,20);
+  ellipse(enemy.position.x, enemy.position.y, 30,30);
+  int enemyX = (int)(enemy.position.x + 10 * cos(enemy.orientation));
+  int enemyY = (int)(enemy.position.y + 10 * sin(enemy.orientation));
+  fill(0);
+  ellipse(enemyX, enemyY, 10, 10);  
    
 }
 
 void drawItems(){
+  
 }
 
 void move(){
