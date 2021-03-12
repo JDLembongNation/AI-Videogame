@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 60000; //At least 50 squares of operating room.
+  final int minArea = 300000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -49,14 +49,10 @@ public final class Map{
   }
   
   private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode){
-    if(treeNode == null) treeNode = new BinaryNode(null, 500, 500,500,0); //create parent
+    if(treeNode == null) treeNode = new BinaryNode(null, 1000, 1000,0,0); //create parent
     //CHECK SIZE APPROPRIATE
     //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
-    if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
-      return addCorridors(generatorMap, treeNode);
-    }
     if(treeNode.getTotalArea() < minArea){
-      System.out.println(treeNode.getTotalArea());
       //Carve out area. Reassign values for x, y, widthArea, heightArea. For now, just make 5 pixels smaller. Keep same Pos.
       treeNode.widthArea -=20;
       treeNode.heightArea-=20;
@@ -65,6 +61,8 @@ public final class Map{
     }else{
       int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
+        System.out.println("Vertical Cut");
+
        int split = (int) random(treeNode.x+20, treeNode.x+treeNode.widthArea-20);
        int remainder = split%20;
        if(remainder <= 10) split-=remainder;
@@ -75,6 +73,7 @@ public final class Map{
        allocateSpaces(generatorMap, treeNode.right);
        //50 --> 0,24 and 25,50
       }else{
+        System.out.println("Horizontal Cut");
         int split = (int) random(treeNode.y+20, treeNode.y+treeNode.heightArea-20);
         int remainder = split%20;
         if(remainder <= 10) split-=remainder;
@@ -84,6 +83,9 @@ public final class Map{
         treeNode.right = new BinaryNode(treeNode, treeNode.widthArea, (treeNode.heightArea+treeNode.y-split), treeNode.x, split);
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
+      }
+      if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
+      return addCorridors(generatorMap, treeNode);
       }
       return generatorMap;
     }
@@ -96,7 +98,7 @@ public final class Map{
     int factoredHeight = (int) node.heightArea/20;
     for(int i = factoredX; i < factoredWidth+factoredX; i++){
       for(int j =factoredY; j < factoredHeight+factoredY; j++){
-        room[j][i] = true;
+        room[i][j] = true;
       }
     }
     return room;
@@ -107,10 +109,10 @@ public final class Map{
     int factoredLeftY = (int) node.left.y/20;
     int factoredLeftWidth = (int) node.left.widthArea/20;
     int factoredLeftHeight = (int) node.left.heightArea/20;
-    int factoredRightX = (int) node.left.x/20;
-    int factoredRightY = (int) node.left.y/20;
-    int factoredRightWidth = (int) node.left.widthArea/20;
-    int factoredRightHeight = (int) node.left.heightArea/20;
+    int factoredRightX = (int) node.right.x/20;
+    int factoredRightY = (int) node.right.y/20;
+    int factoredRightWidth = (int) node.right.widthArea/20;
+    int factoredRightHeight = (int) node.right.heightArea/20;
     int factoredLeftHeightTotal = (factoredLeftY+factoredLeftHeight);
     int factoredRightHeightTotal = (factoredRightY+factoredRightHeight);
     int factoredLeftWidthTotal = (factoredLeftX + factoredLeftWidth);
@@ -124,8 +126,9 @@ public final class Map{
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
       int chosenPath = (int) random(lowerBoundY, upperBoundY);
-      for(int i =0; i < toFill; i++){
-        room[chosenPath][i] = true;
+      System.out.println(chosenPath + "ALlocated Vertical Line");
+      for(int i =leftEdge; i < leftEdge+toFill; i++){
+        room[i][chosenPath] = true;
       }
     }else{ //Horizontal Cut.
       int leftEdge = factoredLeftY + factoredLeftHeight;
@@ -134,8 +137,10 @@ public final class Map{
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
       int chosenPath = (int) random(lowerBoundX, upperBoundX);
-      for(int i =0; i < toFill; i++){
-        room[i][chosenPath] = true;
+      System.out.println(chosenPath + "ALlocated Horizontal Line");
+
+      for(int i =leftEdge; i < leftEdge+toFill; i++){
+        room[chosenPath][i] = true;
       }
     }
     return room;
