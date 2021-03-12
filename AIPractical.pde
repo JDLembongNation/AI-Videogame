@@ -3,7 +3,6 @@ final int PLAY_HEIGHT = 1000;
 final int NODE_SIZE = 20;
 final String INTRO_TEXT = "Let the Battle Commence!";
 
-
 boolean inBattle = false;
 PVector end;
 boolean[] keys = {false, false, false, false};
@@ -137,15 +136,6 @@ void collisionCheck(){
         if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
       }
     }
-}
-
-
-boolean isHittingBlock(){
-  //grab player current position. Get block closest to point. Find blocks next to player. If touching block, then reject movement.
-  float currentX = player.position.x;
-  float currentY = player.position.y;
-  
-  return false;
 }
 
 void drawItems(){

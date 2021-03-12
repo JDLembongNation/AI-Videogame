@@ -22,4 +22,8 @@ public final class Enemy{
       //Dont bother
     }
   }
+  
+  public Ability nextMove(Player player){
+    return new Ability();
+  }
 }
