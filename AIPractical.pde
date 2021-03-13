@@ -2,6 +2,8 @@ final int PLAY_WIDTH = 1000;
 final int PLAY_HEIGHT = 1000;
 final int NODE_SIZE = 20;
 final String INTRO_TEXT = "Let the Battle Commence!";
+final int NO_ITEMS = 2;
+final int NO_WEAPONS = 5;
 
 PImage[] images;
 boolean inBattle = false;
@@ -9,7 +11,10 @@ PVector end;
 boolean[] keys = {false, false, false, false, false};
 ArrayList<Ability> abilityList;
 GroundNode[][] currentMap;
-ArrayList<Item> items;
+ArrayList<Item> itemDictionary; //Shows every kind of item available to use.
+ArrayList<Item> items; //shows the items available on the map.
+ArrayList<Weapon> weaponDictionary;
+ArrayList<Weapon> weapons;
 ArrayList<Enemy> enemies;
 int currentEnemy;
 int level;
@@ -118,6 +123,7 @@ void collisionCheck(){
     map.generateNewCave();
     level++;
     enemies = map.generateEnemies(level);
+    items = map.generateItems(itemDictionary);
     drawMap();
     player.position = player.startingPosition.copy();
   }
@@ -165,7 +171,9 @@ void collisionCheck(){
 }
 
 void drawItems(){
-  
+  for(Item it : items){
+    image(it.caveView, it.position.x, it.position.y);
+  }
 }
 
 void move(){
@@ -210,21 +218,36 @@ void keyReleased()
 
 void readInContent(){
   images[0] = loadImage("./Content/Inventory.png");
-  images[1] = loadImage("./Content/inventory-icons/dirk.png");
+  images[1] = loadImage("./Content/inventory-icons/stat-potion.png");
   images[2] = loadImage("./Content/inventory-icons/health-potion.png");
   images[3] = loadImage("./Content/inventory-icons/spells.png");
   images[4] = loadImage("./Content/inventory-icons/armor.png");
-  images[5] = loadImage("./Content/inventory-icons/mana.png");
+  images[5] = loadImage("./Content/inventory-icons/dirk.png"); //increases stat point in a certain category.
   images[6] = loadImage("./Content/inventory-icons/bow.png");
   images[7] = loadImage("./Content/inventory-icons/spear.png");
-  images[8] = loadImage("./Content/cave-icons/dirk.png");
+  images[8] = loadImage("./Content/cave-icons/stat-potion.png");
   images[9] = loadImage("./Content/cave-icons/health-potion.png");
   images[10] = loadImage("./Content/cave-icons/spells.png");
   images[11] = loadImage("./Content/cave-icons/armor.png");
-  images[12] = loadImage("./Content/cave-icons/mana.png");
+  images[12] = loadImage("./Content/cave-icons/dirk.png");
   images[13] = loadImage("./Content/cave-icons/bow.png");
   images[14] = loadImage("./Content/cave-icons/spear.png");
-
+  HashMap<String, Integer> imageInventoryRef = new HashMap<String,Integer>();
+  imageInventoryRef.put("stat-potion",1);
+  imageInventoryRef.put("health-potion",2);
+  imageInventoryRef.put("spells",3);
+  imageInventoryRef.put("armor",4);
+  imageInventoryRef.put("dirk", 5);
+  imageInventoryRef.put("bow", 6);
+  imageInventoryRef.put("spear",7);
+  HashMap<String, Integer> imageCaveRef = new HashMap<String,Integer>();
+  imageCaveRef.put("stat-potion",8);
+  imageCaveRef.put("health-potion",9);
+  imageCaveRef.put("spells",10);
+  imageCaveRef.put("armor",11);
+  imageCaveRef.put("dirk", 12);
+  imageCaveRef.put("bow", 13);
+  imageCaveRef.put("spear",14);
   inventory = new InventoryScreen(images[0]);
   JSONObject data = loadJSONObject("./Content/content.json");
   JSONArray abilityData = data.getJSONArray("Abilities");
@@ -234,5 +257,23 @@ void readInContent(){
     ab.getFloat("damage"), ab.getBoolean("isPhysical"), ab.getFloat("accuracy"), ab.getBoolean("neverMiss"),
     ab.getBoolean("isFlee"), ab.getInt("levelObtained")));
   }
+  
+  itemDictionary = new ArrayList<Item>();
+  JSONArray itemData = data.getJSONArray("Items");
+  for(int i = 0; i < itemData.size(); i++){
+    JSONObject it = itemData.getJSONObject(i);
+    itemDictionary.add(new Item(it.getBoolean("isConsumable"), it.getBoolean("isTreasure"), it.getBoolean("isTreasure"),
+      it.getString("name"), it.getString("description"), it.getInt("value"), images[imageCaveRef.get(it.getString("iconName"))],
+      images[imageInventoryRef.get(it.getString("iconName"))]));
+  }
+  weaponDictionary = new ArrayList<Weapon>();
+  JSONArray weaponData = data.getJSONArray("Weapons");
+  //(String name, String description, boolean isPhysical, float damage, float recoil)
+  for(int i = 0; i < weaponData.size(); i++){
+    JSONObject wp = weaponData.getJSONObject(i);
+    weaponDictionary.add(new Weapon(wp.getString("name"), wp.getString("description"), wp.getBoolean("isPhysical"), wp.getFloat("damage"),
+    wp.getFloat("recoil"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
+  }
+  items = map.generateItems(itemDictionary);
   
 }

@@ -33,7 +33,7 @@ public final class Map{
     
     //Now generate Position of player and enemy.
     //generateCharacterStartingPosition(tree);
-    generateItems();
+    //generateItems();
   }
   
   private class BinaryNode{
@@ -177,21 +177,26 @@ public final class Map{
     return enemies;
   }
   
-  private ArrayList<Item> generateItems(){
-    ArrayList<Item> items = new ArrayList<>();
+  private ArrayList<Item> generateItems(ArrayList<Item> itemDictionary){
+    ArrayList<Item> items = new ArrayList<Item>();
     BinaryNode treePtr = tree;
-    placeItems(items, treePtr);
-   
+    placeItems(items, treePtr, itemDictionary);
     return items;
   }
   
-  private void placeItems(ArrayList<Item> items, BinaryNode treePtr){
+  private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary){
     if(treePtr.left == null && treePtr.right == null){
       //Reached a room. 
+      int chosenX = treePtr.x + (int) random(15,treePtr.widthArea-15);
+      int chosenY = treePtr.y + (int) random(15,treePtr.heightArea-15);
+      int chosenItem = (int) random(0, itemDictionary.size());
+      Item it = itemDictionary.get(chosenItem);
+      it.position = new PVector(chosenX, chosenY);
+      items.add(it);
       return;
     }
-    if(treePtr.left!=null) placeItems(items, treePtr.left);
-    if(treePtr.right!=null) placeItems(items, treePtr.right);
+    if(treePtr.left!=null) placeItems(items, treePtr.left, itemDictionary);
+    if(treePtr.right!=null) placeItems(items, treePtr.right, itemDictionary);
   }
   
   private void generateCharacterStartingPosition(BinaryNode tree){

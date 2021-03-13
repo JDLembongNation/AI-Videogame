@@ -5,16 +5,22 @@ public final class Item{
   private String name;
   private String description;
   private int value;
-  
+  PImage caveView; 
+  PImage inventoryView;
+  PVector position;
   public Item(){
   
   }
   
-  public Item(boolean isConsumable, boolean isTreasure, boolean isPhyiscal, String name, String description, int value){
+  public Item(boolean isConsumable, boolean isTreasure, boolean isPhyiscal, String name, String description, int value, PImage caveView, PImage inventoryView){
     this.isConsumable = isConsumable;
     this.isTreasure = isTreasure;
     this.name = name;
     this.description = description;
     this.value = value;
+    this.caveView = caveView;
+    this.inventoryView = inventoryView;
   } 
+  
+  
 }

@@ -48,17 +48,61 @@
             "isTreasure":false,
             "name":"Health Potion",
             "decription":"A mystical potion that rejuvenates your health points.",
-            "value":50
+            "value":50,
+            "iconName":"health-potion"
+        },
+        {
+            "isStatChanger":false,
+            "isConsumable":true,
+            "isTreasure":false,
+            "name":"Stat Potion",
+            "decription":"A mystical potion that adds a point to a random stat.",
+            "value":1,
+            "iconName":"stat-potion"
+        },
+        {
+            "isStatChanger":false,
+            "isConsumable":true,
+            "isTreasure":false,
+            "name":"Armor",
+            "decription":"Incredible high precision crafting by Rick Sanchez himself.",
+            "value":1,
+            "iconName":"stat-potion"
         }
-
+        
     ],
     "Weapons":[
         {
             "name": "Dirk",
-            "description": "A common knife used for dungeon exploration. It looks heavily used.",
+            "description": "A common sword used for dungeon exploration. It looks heavily used.",
             "isPhysical":true,
             "damage":50,
-            "recoil":0
+            "recoil":0,
+            "iconName":"dirk"
+        },
+        {
+            "name": "Bow",
+            "description": "A bow used for long ranged attaks. Wait. There are no arrows.. Wait what?..",
+            "isPhysical":true,
+            "damage":50,
+            "recoil":0,
+            "iconName":"bow"
+        },
+        {
+            "name": "Spear",
+            "description": "A Stick with a razor sharp edge. It's not that hard to make right?",
+            "isPhysical":true,
+            "damage":50,
+            "recoil":0,
+            "iconName":"spear"
+        },
+        {
+            "name": "Spellbook",
+            "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
+            "isPhysical":true,
+            "damage":50,
+            "recoil":0,
+            "iconName":"spells"
         }
     ]
 }
