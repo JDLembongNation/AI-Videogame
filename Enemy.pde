@@ -1,11 +1,11 @@
 public final class Enemy{
-  private int difficulty;
-  private boolean isChase;
-  private int health;
-  private int attackPower;
-  private int spellPower;
-  private int speed;
-  private int dodgePower;
+   int difficulty;
+   boolean isChase;
+   int health;
+   int attackPower;
+   int spellPower;
+   int speed;
+   int dodgeRate;
   PVector position;
   PVector initialPosition;
   float orientation;
