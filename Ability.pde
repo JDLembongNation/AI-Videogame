@@ -19,5 +19,9 @@ public final class Ability{
     this.description = description;
     this.damage = damage;
     this.isPhysical = isPhysical;
+    this.accuracy = accuracy;
+    this.neverMiss = neverMiss;
+    this.isFlee  = isFlee;
+    this.levelObtained = levelObtained;
   }
 }

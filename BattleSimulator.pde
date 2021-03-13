@@ -2,6 +2,7 @@ final String PLAYER_TURN = "It's your turn!";
 public final class BattleSimulator{
   private boolean isPlayerOneTurn;
   boolean isFleeSuccess;
+  
   public BattleSimulator(Player player, Enemy enemy){ //Can have capacity for multi-enemy.
     while(!isFleeSuccess){ //Add conditions for enemy dead or player dead. 
       executeGameTurn(player, enemy);   
@@ -11,13 +12,13 @@ public final class BattleSimulator{
   public void executeGameTurn(Player player,Enemy enemy){
     isPlayerOneTurn = player.speed > enemy.speed;
     if(isPlayerOneTurn){
-      playerTurn();
+      playerTurn(player, enemy);
       if(isFleeSuccess) return;
-      enemyTurn();
+      enemyTurn(player,enemy);
       //Design CHoice: Player loses turn if cant run away. 
     }else{
-      enemyTurn();
-      playerTurn();
+      enemyTurn(player,enemy);
+      playerTurn(player,enemy);
     }
   }
   
@@ -72,14 +73,14 @@ public final class BattleSimulator{
       else return generated > dodgeRate;
   }
   
-  private void enemyTurn(){
+  private void enemyTurn(Player player, Enemy enemy){
       Ability abilityInPlay = enemy.nextMove(player);
       if(didLandHit(abilityInPlay, player.dodgeRate)){
         calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
       }
   }
   
-  private void playerTurn(){
+  private void playerTurn(Player player, Enemy enemy){
       Ability abilityInPlay = makeChoice(player);
       if(abilityInPlay == null){
         if(canRun(player, enemy)){

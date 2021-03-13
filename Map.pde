@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 150000; //At least 50 squares of operating room.
+  final int minArea = 300000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -32,7 +32,6 @@ public final class Map{
     }
     
     //Now generate Position of player and enemy.
-    generateEnemies();
     //generateCharacterStartingPosition(tree);
     generateItems();
   }
@@ -165,11 +164,34 @@ public final class Map{
     return room;
   }
   
-  private void generateEnemies(){
-    
+  public ArrayList<Enemy> generateEnemies(int level){
+    ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    //Dependent on level. 
+    BinaryNode treePtr = tree;
+    while(treePtr.right!=null) treePtr = treePtr.right; //reach same room as the enemies.
+    for(int i = 0; i < level; i++){
+      int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
+      int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
+      enemies.add(new Enemy(new PVector(posX, posY)));
+    }
+    return enemies;
   }
   
-  private void generateItems(){
+  private ArrayList<Item> generateItems(){
+    ArrayList<Item> items = new ArrayList<>();
+    BinaryNode treePtr = tree;
+    placeItems(items, treePtr);
+   
+    return items;
+  }
+  
+  private void placeItems(ArrayList<Item> items, BinaryNode treePtr){
+    if(treePtr.left == null && treePtr.right == null){
+      //Reached a room. 
+      return;
+    }
+    if(treePtr.left!=null) placeItems(items, treePtr.left);
+    if(treePtr.right!=null) placeItems(items, treePtr.right);
   }
   
   private void generateCharacterStartingPosition(BinaryNode tree){
@@ -200,5 +222,7 @@ public final class Map{
     }
 
   }
+  
+  
   
 }

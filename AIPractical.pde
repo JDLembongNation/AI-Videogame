@@ -9,7 +9,10 @@ PVector end;
 boolean[] keys = {false, false, false, false, false};
 ArrayList<Ability> abilityList;
 GroundNode[][] currentMap;
-Enemy enemy;
+ArrayList<Item> items;
+ArrayList<Enemy> enemies;
+int currentEnemy;
+int level;
 Map map;
 Player player;
 InventoryScreen inventory;
@@ -17,10 +20,11 @@ void setup() {
   size(1000, 1000);
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
+  level = 1;
   map.generateNewCave();
+  enemies = map.generateEnemies(level);
   player = new Player(100,100,0);
-  enemy = new Enemy(new PVector(50,50));
-  images = new PImage[8];
+  images = new PImage[15];
   readInContent();
 }
 
@@ -51,8 +55,7 @@ void battleGUI(){
   if(keyPressed){
     if(key == 'c'){
       inBattle=false;
-      player.position = player.startingPosition.copy();
-      System.out.println("Starting position x and y" + player.startingPosition.x + "  " + player.startingPosition.y);
+      player.position = player.startingPosition.copy();    
     }
   }
 }
@@ -85,24 +88,36 @@ void drawCharacters(){
   int newxe = (int)(player.position.x + 10 * cos(player.orientation));
   int newye = (int)(player.position.y + 10 * sin(player.orientation));
   fill(0);
-  ellipse(newxe, newye, 10, 10);  
+  ellipse(newxe, newye, 10, 10);
 
-  //ENEMY
-  fill(20,180,20);
-  ellipse(enemy.position.x, enemy.position.y, 30,30);
-  int enemyX = (int)(enemy.position.x + 10 * cos(enemy.orientation));
-  int enemyY = (int)(enemy.position.y + 10 * sin(enemy.orientation));
-  fill(0);
-  ellipse(enemyX, enemyY, 10, 10);   
+  for(Enemy e : enemies){
+      fill(20,180,20);
+
+    ellipse(e.position.x, e.position.y, 30,30);
+    int enemyX = (int)(e.position.x + 10 * cos(e.orientation));
+    int enemyY = (int)(e.position.y + 10 * sin(e.orientation));
+    fill(0);
+    ellipse(enemyX, enemyY, 10, 10);   
+  }
 }
 
 void collisionCheck(){
-  if(player.position.mag() - enemy.position.mag() < 20){
+  for(int i = 0; i < enemies.size(); i++){
+    PVector currentPos = player.position.copy();
+    currentPos.sub(enemies.get(i).position);
+    if(currentPos.mag() < 20){
     System.out.println("Initiate Battle!");
     inBattle = true;
+    currentEnemy = i;
+    break;
+    }
   }
-  if(abs(player.position.mag() - end.mag()) < 20) { //EXTREMELY DODGY FIX SOON PLEASE.
+  PVector currentPos = player.position.copy();
+  currentPos.sub(end);
+  if(currentPos.mag() < 20) { //EXTREMELY DODGY FIX SOON PLEASE.
     map.generateNewCave();
+    level++;
+    enemies = map.generateEnemies(level);
     drawMap();
     player.position = player.startingPosition.copy();
   }
@@ -195,13 +210,20 @@ void keyReleased()
 
 void readInContent(){
   images[0] = loadImage("./Content/Inventory.png");
-  images[1] = loadImage("./Content/dirk.png");
-  images[2] = loadImage("./Content/health-potion.png");
-  images[3] = loadImage("./Content/spells.png");
-  images[4] = loadImage("./Content/armor.png");
-  images[5] = loadImage("./Content/mana.png");
-  images[6] = loadImage("./Content/bow.png");
-  images[7] = loadImage("./Content/spear.png");
+  images[1] = loadImage("./Content/inventory-icons/dirk.png");
+  images[2] = loadImage("./Content/inventory-icons/health-potion.png");
+  images[3] = loadImage("./Content/inventory-icons/spells.png");
+  images[4] = loadImage("./Content/inventory-icons/armor.png");
+  images[5] = loadImage("./Content/inventory-icons/mana.png");
+  images[6] = loadImage("./Content/inventory-icons/bow.png");
+  images[7] = loadImage("./Content/inventory-icons/spear.png");
+  images[8] = loadImage("./Content/cave-icons/dirk.png");
+  images[9] = loadImage("./Content/cave-icons/health-potion.png");
+  images[10] = loadImage("./Content/cave-icons/spells.png");
+  images[11] = loadImage("./Content/cave-icons/armor.png");
+  images[12] = loadImage("./Content/cave-icons/mana.png");
+  images[13] = loadImage("./Content/cave-icons/bow.png");
+  images[14] = loadImage("./Content/cave-icons/spear.png");
 
   inventory = new InventoryScreen(images[0]);
   JSONObject data = loadJSONObject("./Content/content.json");
