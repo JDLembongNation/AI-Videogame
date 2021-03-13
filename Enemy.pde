@@ -9,6 +9,9 @@ public final class Enemy{
   PVector position;
   PVector initialPosition;
   float orientation;
+   int rangeWidth;
+   int rangeHeight;
+  PVector rangePoint;
   public Enemy(PVector initialPosition){
     this.initialPosition = initialPosition;
     this.position = initialPosition;
@@ -25,4 +28,9 @@ public final class Enemy{
   public Ability nextMove(Player player){
     return new Ability();
   }
+  
+
+
+
+
 }
