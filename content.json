@@ -1,0 +1,64 @@
+{
+    "Abiliies":[
+        {
+           "name": "Slash",
+           "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
+           "damage": 50,
+           "accuracy": 95,
+           "isPhysical": true,
+           "neverMiss":false,
+           "isFlee":false,
+           "levelObtained": 1
+        },
+        {
+            "name": "Slash",
+            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
+            "damage": 50,
+            "accuracy": 95,
+            "isPhysical": true,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": 1
+         },
+         {
+            "name": "Slash",
+            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
+            "damage": 50,
+            "accuracy": 95,
+            "isPhysical": true,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": 1
+         },
+         {
+            "name": "Slash",
+            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
+            "damage": 50,
+            "accuracy": 95,
+            "isPhysical": true,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": 1
+         }
+    ],
+    "Items":[
+        {
+            "isStatChanger":false,
+            "isConsumable":true,
+            "isTreasure":false,
+            "name":"Health Potion",
+            "decription":"A mystical potion that rejuvenates your health points.",
+            "value":50
+        }
+
+    ],
+    "Weapons":[
+        {
+            "name": "Dirk",
+            "description": "A common knife used for dungeon exploration. It looks heavily used.",
+            "isPhysical":true,
+            "damage":50,
+            "recoil":0
+        }
+    ]
+}

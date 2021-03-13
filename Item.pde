@@ -1,7 +1,7 @@
 public final class Item{
   private boolean isConsumable;
   private boolean isTreasure;
-  private boolean isPhysical; //If the item is a weapon, is it a phyiscal or a magical item?
+  private boolean isStatChanger;
   private String name;
   private String description;
   private int value;
