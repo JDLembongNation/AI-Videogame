@@ -7,6 +7,7 @@ PImage[] images;
 boolean inBattle = false;
 PVector end;
 boolean[] keys = {false, false, false, false, false};
+ArrayList<Ability> abilityList;
 GroundNode[][] currentMap;
 Enemy enemy;
 Map map;
@@ -14,22 +15,24 @@ Player player;
 InventoryScreen inventory;
 void setup() {
   size(1000, 1000);
+  abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
   map.generateNewCave();
   player = new Player(100,100,0);
   enemy = new Enemy(new PVector(50,50));
-  images = new PImage[1];
-  images[0] = loadImage("./Content/Inventory.png");
-  inventory = new InventoryScreen(images[0]);
+  images = new PImage[8];
+  readInContent();
 }
 
 void draw() {
-  if(keys[4]) inventory.showInventory();
-  else{
-    if(inBattle) battleGUI();
-    else caveGUI();
+  if(inBattle){
+    battleGUI();
+  }else{ 
+    caveGUI();
+    if(keys[4]) inventory.showInventory();
   }
 }
+
 
 void caveGUI(){
    background(255);
@@ -189,3 +192,25 @@ void keyReleased()
   if(key=='a')
     keys[3]=false;
 } 
+
+void readInContent(){
+  images[0] = loadImage("./Content/Inventory.png");
+  images[1] = loadImage("./Content/dirk.png");
+  images[2] = loadImage("./Content/health-potion.png");
+  images[3] = loadImage("./Content/spells.png");
+  images[4] = loadImage("./Content/armor.png");
+  images[5] = loadImage("./Content/mana.png");
+  images[6] = loadImage("./Content/bow.png");
+  images[7] = loadImage("./Content/spear.png");
+
+  inventory = new InventoryScreen(images[0]);
+  JSONObject data = loadJSONObject("./Content/content.json");
+  JSONArray abilityData = data.getJSONArray("Abilities");
+  for(int i = 0; i < abilityData.size(); i++){
+    JSONObject ab = abilityData.getJSONObject(i);
+    abilityList.add(new Ability(ab.getString("name"), ab.getString("description"), 
+    ab.getFloat("damage"), ab.getBoolean("isPhysical"), ab.getFloat("accuracy"), ab.getBoolean("neverMiss"),
+    ab.getBoolean("isFlee"), ab.getInt("levelObtained")));
+  }
+  
+}

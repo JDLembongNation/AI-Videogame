@@ -14,7 +14,7 @@ public final class Ability{
     isPhysical = true;
 
   }
-  public Ability(String name, String description, float damage, boolean isPhysical){
+  public Ability(String name, String description, float damage, boolean isPhysical, float accuracy, boolean neverMiss, boolean isFlee, int levelObtained){
     this.name = name;
     this.description = description;
     this.damage = damage;

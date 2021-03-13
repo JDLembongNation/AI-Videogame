@@ -138,10 +138,10 @@ public final class Map{
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
       int chosenPath = (int) random(lowerBoundY, upperBoundY-3);
-      System.out.println("Drawing Horizontal Path from y = " + chosenPath);
+      //System.out.println("Drawing Horizontal Path from y = " + chosenPath);
       for(int j = 0; j < 3;j++){
       for(int i =leftEdge; i < leftEdge+toFill; i++){
-        System.out.println("On position x = " + chosenPath + " y = " + i);
+        //System.out.println("On position x = " + chosenPath + " y = " + i);
         room[i][chosenPath+j] = true;
       }
       }
@@ -152,15 +152,15 @@ public final class Map{
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
       int chosenPath = (int) random(lowerBoundX, upperBoundX-3);
-      System.out.println("Drawing Vertical Path from x = " + chosenPath);
-      System.out.println("Starting Point is leftY = " + factoredLeftY + "; LeftHeight = " + factoredLeftHeight  + "; rightY = " + factoredRightY); //LEFT HEIGHT IS TOO BIG BY FACTOR 1. 
+      //System.out.println("Drawing Vertical Path from x = " + chosenPath);
+      //System.out.println("Starting Point is leftY = " + factoredLeftY + "; LeftHeight = " + factoredLeftHeight  + "; rightY = " + factoredRightY); //LEFT HEIGHT IS TOO BIG BY FACTOR 1. 
       for(int j = 0; j < 3; j++){
       for(int i =leftEdge; i < leftEdge+toFill; i++){
         room[chosenPath+j][i] = true;
-        System.out.println("On position x = " + chosenPath + " y = " + i);
+        //System.out.println("On position x = " + chosenPath + " y = " + i);
       }
       }
-      System.out.println("\n \n \n");
+      //System.out.println("\n \n \n");
     }
     return room;
   }
