@@ -13,6 +13,9 @@ public final class Player {
   PVector position;
   PVector velocity;
   float orientation;
+  int level;
+  int exp;
+  int expNeeded;
   PVector startingPosition;
   
   public Player(int x, int y, float orientation) {
@@ -20,7 +23,9 @@ public final class Player {
     this.position = new PVector(x,y);
     this.orientation = orientation;
     velocity = new PVector(0,0);
-  
+    this.level = 1;
+    this.exp = 0;
+    this.expNeeded = 10;
 }
   
   public void integrate(float force, float targetOrientation){
@@ -36,4 +41,17 @@ public final class Player {
     }
     position.add(velocity);
   }
+  
+  public void addExp(){
+    if(exp > expNeeded){
+      level++;
+      expNeeded += level * 10;
+      attackPower++;
+      spellPower++;
+      dodgeRate++;
+      speed++;
+    }
+    
+  }
+  
 }
