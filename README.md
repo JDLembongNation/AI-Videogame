@@ -3,7 +3,7 @@ CS4303 Repository; theres a small chance that the disk may corrupt itself. No ha
 
 ## CURRENTLY A WORK IN PROGRESS
 
-##Requirements
+## Requirements
 ### To develop the game: 
 This game uses the Java Processing Library. 
 
