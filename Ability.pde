@@ -1,10 +1,10 @@
 public final class Ability{
   private String name;
   private String description;
-  private float damage;
+  private float damage; //if isFlee, then flee chance is calcualted 
   private boolean isPhysical;
   private boolean neverMiss;
-  private int type; //Can be taken out if there is no time to implement this.
+  private boolean isFlee;
   public Ability(){
     name = "peysar";
     description = "Some pey";

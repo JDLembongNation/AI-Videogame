@@ -132,7 +132,7 @@ void collisionCheck(){
       }
     }
         if(i+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
-      if(!(currentMap[i+1][j].isWalkable)){
+      if(!(currentMap[i+1][j].isWalkable)){ 
         if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
       }
     }
