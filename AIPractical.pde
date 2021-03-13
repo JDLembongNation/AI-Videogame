@@ -145,6 +145,7 @@ void collisionCheck(){
   }else{
    positionY +=(20-positionY%20);
   } 
+  // == FOR WALLS == 
   int i = positionX/20;
   int j = positionY/20;
   if(i-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
@@ -168,6 +169,19 @@ void collisionCheck(){
         if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
       }
     }
+ // == FOR ITEMS ==
+ int remove = -1;
+ for(int w = 0; w < items.size(); w++){
+   PVector currPos = player.position.copy();
+   currPos.sub(items.get(w).position);
+   if(currPos.mag() < 15){
+     System.out.println("PEY");
+     inventory.addItem(items.get(w));    
+     remove = w;
+     break;
+   }
+ }
+ if(remove != -1) items.remove(remove);
 }
 
 void drawItems(){
