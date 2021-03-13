@@ -3,24 +3,32 @@ final int PLAY_HEIGHT = 1000;
 final int NODE_SIZE = 20;
 final String INTRO_TEXT = "Let the Battle Commence!";
 
+PImage[] images;
 boolean inBattle = false;
 PVector end;
-boolean[] keys = {false, false, false, false};
+boolean[] keys = {false, false, false, false, false};
 GroundNode[][] currentMap;
 Enemy enemy;
 Map map;
 Player player;
+InventoryScreen inventory;
 void setup() {
   size(1000, 1000);
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
   map.generateNewCave();
   player = new Player(100,100,0);
   enemy = new Enemy(new PVector(50,50));
+  images = new PImage[1];
+  images[0] = loadImage("./Content/Inventory.png");
+  inventory = new InventoryScreen(images[0]);
 }
 
 void draw() {
-  if(inBattle) battleGUI();
-  else caveGUI();
+  if(keys[4]) inventory.showInventory();
+  else{
+    if(inBattle) battleGUI();
+    else caveGUI();
+  }
 }
 
 void caveGUI(){
@@ -163,6 +171,11 @@ void keyPressed()
     keys[2]=true;
    if(key=='a')
     keys[3]=true;
+   if(key == 'i'){
+     keys[4] = !keys[4];   
+     delay(50);
+   }
+
 }
 
 void keyReleased()

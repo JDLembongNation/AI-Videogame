@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 250000; //At least 50 squares of operating room.
+  final int minArea = 150000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;

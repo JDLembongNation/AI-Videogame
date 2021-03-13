@@ -13,7 +13,6 @@ public final class Item{
   public Item(boolean isConsumable, boolean isTreasure, boolean isPhyiscal, String name, String description, int value){
     this.isConsumable = isConsumable;
     this.isTreasure = isTreasure;
-    this.isPhysical = isPhyiscal;
     this.name = name;
     this.description = description;
     this.value = value;
