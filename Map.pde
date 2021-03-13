@@ -20,11 +20,11 @@ public final class Map{
   private void generateNewCave(){
     //Using the BSP Partitioning System. 
     treeValue = 0;
-    tree = null; //Restart Tree;
-    BinaryNode ptr = tree;
+    tree = new BinaryNode(null, 1000, 1000,0,0);
     boolean[][] generateMap = new boolean[map.length][map[0].length]; //default is false
     resetTerrain();
-    generateMap = allocateSpaces(generateMap,  ptr);
+    generateMap = allocateSpaces(generateMap,  tree);
+    generateCharacterStartingPosition(tree);
     for(int i = 0; i < generateMap.length; i++){
       for(int j = 0; j < generateMap[0].length; j++){
         map[i][j].isWalkable = generateMap[i][j];
@@ -56,7 +56,6 @@ public final class Map{
   }
   
   private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode){
-    if(treeNode == null) treeNode = new BinaryNode(null, 1000, 1000,0,0); //create parent
     //CHECK SIZE APPROPRIATE
     //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
     if(treeNode.getTotalArea() < minArea){
@@ -86,9 +85,6 @@ public final class Map{
         treeNode.right = new BinaryNode(treeNode, treeNode.widthArea, (treeNode.heightArea+treeNode.y-split), treeNode.x, split);
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
-      }
-      if(treeNode.parent == null){
-        generateCharacterStartingPosition(treeNode);
       }
       if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
       return addCorridors(generatorMap, treeNode);
@@ -179,7 +175,6 @@ public final class Map{
   private void generateCharacterStartingPosition(BinaryNode tree){
     //go to bottom of tree focusing left and place spot randomly rnadomly. 
     //go to bottom of tree focusing right and place spot randomly.a
-    System.out.println("PEY");
     BinaryNode treeptr = tree;
     while(treeptr.left!=null) treeptr = treeptr.left;
     BinaryNode startDimensions = treeptr;

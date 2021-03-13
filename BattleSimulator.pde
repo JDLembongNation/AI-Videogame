@@ -32,6 +32,7 @@ public final class BattleSimulator{
       //Keypressd toggle
       
     }
+    return new Ability();
   }
   //Can toggle if too small of a chance. 
   private boolean canRun(Player player, Enemy enemy){
@@ -39,6 +40,8 @@ public final class BattleSimulator{
     float enemyChance = random(0, enemy.speed);
     return (option > enemyChance);
   }
+  
+  
   
   private boolean didLandHit(Ability ability, float dodgeRate){
       float generated = random(0,1);
