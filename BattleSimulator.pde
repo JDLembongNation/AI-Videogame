@@ -2,7 +2,10 @@ final String PLAYER_TURN = "It's your turn!";
 public final class BattleSimulator {
   Ability abilityInPlay;
   private boolean isPlayerOneTurn;
+  int delay = 0;
+  boolean[] keys;
   boolean chosen;
+  boolean alreadyHit;
   boolean isFinished;
   boolean isFleeSuccess;
   boolean playerFaint;
@@ -25,8 +28,8 @@ public final class BattleSimulator {
 
   public BattleSimulator() { //Can have capacity for multi-enemy.
   }
-  
-  public void reset(){
+
+  public void reset() {
     isStart = false;
     chosen = false;
     isFinished = false;
@@ -35,31 +38,32 @@ public final class BattleSimulator {
     playerFaint = false;
     enemyFaint = false;
     abilityInPlay = null;
-     choice = "Choose an Action!";
+    choice = "Choose an Action!";
     optionA ="";
-     optionB = "";
-     optionC ="";
-     optionD = "";
-     optionE = "";
+    optionB = "";
+    optionC ="";
+    optionD = "";
+    optionE = "";
     BattleText1 = "";
-     BattleText2= "";
-     BattleText3="";
+    BattleText2= "";
+    BattleText3="";
   }
-  
+
   //Should have a press M to begin battle. 
-  public void run(Player player, Enemy enemy) {
+  public void run(Player player, Enemy enemy, boolean[] keys) {
+    this.keys = keys;
     background(0);
     fill(255);
-    if(keyPressed && key=='m')isStart = true;
-    if(isStart){
-      if(!isDone){
-      executeGameTurn(player, enemy);
-      }else{
+    if (keys[6])isStart = true;
+    if (isStart) {
+      if (!isDone) {
+        executeGameTurn(player, enemy);
+      } else {
         BattleText3 = "Press P to continue";
-        if(keyPressed && key=='p')isFinished = true;
+        if (keys[5])isFinished = true;
       }
-    }else{
-     optionA = "Press m to start battle.";
+    } else {
+      optionA = "Press m to start battle.";
     }
     textSize(30);
     text(choice, 250, 50);
@@ -71,39 +75,41 @@ public final class BattleSimulator {
     text(BattleText1, 250, 700);
     text(BattleText2, 250, 800);
     text(BattleText3, 250, 900);
-
   }
 
   public void executeGameTurn(Player player, Enemy enemy) {
     isPlayerOneTurn = player.speed > enemy.speed;
     if (isPlayerOneTurn) {
-      if (!chosen){
+      if (!chosen) {
         playerTurn(player);
-      }else{
-      if (isFleeSuccess) isFinished = true;
-      if (abilityInPlay!=null) {
-        //Ability has been chosen. 
-      if (didLandHit(abilityInPlay, enemy.dodgeRate)) {
-          BattleText1 = "The Ability Hit the Enemy!";
-          float dmg  = calculateDamage(player,enemy, abilityInPlay, isPlayerOneTurn);
-          BattleText2 = "" + dmg +" was dealt to the enemy!" ;
-        }else{
-          BattleText1 = "You missed!";
+      } else {
+        if (isFleeSuccess) isFinished = true;
+        if (abilityInPlay!=null && !alreadyHit) {
+          //Ability has been chosen. 
+          if (didLandHit(abilityInPlay, enemy.dodgeRate)) {
+            BattleText1 = "The Ability Hit the Enemy!";
+            float dmg  = calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
+            BattleText2 = "" + dmg +" was dealt to the enemy!" ;
+          } else {
+            BattleText1 = "You missed!";
+          }
+          alreadyHit = !alreadyHit;
+          delay = millis();
         }
-      }
-      didSomeoneDie(player,enemy);
-      if(enemyFaint){
-        BattleText1 = "The Enemy Fainted! ";
-        BattleText2 = "You WIN!";
-        isDone = true;
-        return;
-      }
-      isPlayerOneTurn = !isPlayerOneTurn;
-      enemyTurn(player,enemy);
-      isPlayerOneTurn = !isPlayerOneTurn;
-      didSomeoneDie(player,enemy);
-      if(playerFaint) return;
-      //Design CHoice: Player loses turn if cant run away.
+        didSomeoneDie(player, enemy);
+        if (enemyFaint) {
+          BattleText1 = "The Enemy Fainted! ";
+          BattleText2 = "You WIN!";
+          isDone = true;
+          return;
+        }
+        isPlayerOneTurn = !isPlayerOneTurn;
+        enemyTurn(player, enemy);
+        isPlayerOneTurn = !isPlayerOneTurn;
+        didSomeoneDie(player, enemy);
+        if (playerFaint) return;
+        alreadyHit = !alreadyHit;
+        //Design CHoice: Player loses turn if cant run away.
       }
     } else {
       enemyTurn(player, enemy);
@@ -115,73 +121,61 @@ public final class BattleSimulator {
     optionB = "B) " + player.abilities.get(1).name;
     optionC = "C) " + player.abilities.get(2).name;
     optionD = "D) Run!"; 
-    if (keyPressed) {
-      switch(key) {
-      case 'a': 
-        {
-          abilityInPlay = player.abilities.get(0);
-                chosen = true;
-          break;
-        }
-      case 'b':
-        {
-                chosen = true;
-
-          break;
-        }
-      case 'c':
-        {
+    if (keys[0]) {
+      abilityInPlay = player.abilities.get(0);
       chosen = true;
-
-          break;
-        }
-      case 'd':
-        {
+    }
+    if (keys[1]) {
       chosen = true;
-
-          isFleeSuccess = true;
-          break;
-        }
-      }
     }
-  }
-  
-  private void enemyTurn(Player player, Enemy enemy) {
-    BattleText1 = "Enemy Turn!";
-    Ability abilityInPlay = enemy.nextMove(player);
-    if (didLandHit(abilityInPlay, player.dodgeRate)) {
-      calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
+    if (keys[2]){
+      chosen = true;
     }
-  }
-
-  //Can toggle if too small of a chance. 
-  private boolean canRun(Player player, Enemy enemy) {
-    //float option = random(0,player.speed);
-    //float enemyChance = random(0, enemy.speed);
-    // return (option > enemyChance);
-    return true;
-  }
-  
-  private void didSomeoneDie(Player player, Enemy enemy){
-    if(player.health <= 0) playerFaint = true;
-    if(enemy.health <= 0) enemyFaint = true;
-  }
-
-  private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
-    if(isPlayerOneTurn){
-      enemy.health -= ability.damage;
-    }else{
-      player.health -= ability.damage;
-    }
-    return ability.damage;
+    if(keys[3]){
+      chosen = true;
+      isFleeSuccess = true;
     
   }
-
-  private boolean didLandHit(Ability ability, float dodgeRate) {
-    return true;
-    //float generated = random(0, 1);
-//if (ability.neverMiss) return true;
-    //else return generated > dodgeRate;
+}
+private void enemyTurn(Player player, Enemy enemy) {
+  BattleText1 = "Enemy Turn!";
+  Ability abilityInPlay = enemy.nextMove(player);
+  if (didLandHit(abilityInPlay, player.dodgeRate)) {
+    calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
   }
+}
 
+//Can toggle if too small of a chance. 
+private boolean canRun(Player player, Enemy enemy) {
+  //float option = random(0,player.speed);
+  //float enemyChance = random(0, enemy.speed);
+  // return (option > enemyChance);
+  return true;
+}
+
+private void didSomeoneDie(Player player, Enemy enemy) {
+  if (player.health <= 0) playerFaint = true;
+  if (enemy.health <= 0) enemyFaint = true;
+}
+
+private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
+  if (isPlayerOneTurn) {
+    System.out.println("CALLED");
+    enemy.health -= ability.damage;
+  } else {
+    player.health -= ability.damage;
+  }
+  return ability.damage;
+}
+
+private boolean didLandHit(Ability ability, float dodgeRate) {
+  return true;
+  //float generated = random(0, 1);
+  //if (ability.neverMiss) return true;
+  //else return generated > dodgeRate;
+}
+
+private boolean waitSecond(int x){
+  return(delay+(x*1000) < millis());
+}
 }

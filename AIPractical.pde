@@ -10,6 +10,7 @@ BattleSimulator bs;
 boolean inBattle = false;
 PVector end;
 boolean[] keys = {false, false, false, false, false};
+boolean[] battleKeys = {false,false,false,false,false,false,false};
 ArrayList<Ability> abilityList;
 GroundNode[][] currentMap;
 ArrayList<Item> itemDictionary; //Shows every kind of item available to use.
@@ -57,7 +58,7 @@ void caveGUI(){
 }
 
 void battleGUI(){
-  bs.run(player, enemies.get(currentEnemy));
+  bs.run(player, enemies.get(currentEnemy), battleKeys);
   //background(0);
   //fill(255);
   //textSize(30);
@@ -245,8 +246,9 @@ void keyPressed()
 {
   
   if(!inBattle){
-  if(key=='w')
+  if(key=='w'){
     keys[0]=true;
+  }
   if(key=='s')
     keys[1]=true;
    if(key=='d')
@@ -256,6 +258,35 @@ void keyPressed()
    if(key == 'i'){
      keys[4] = !keys[4];   
      delay(50);
+   }
+  }else{
+   if(key == 'a'){
+      System.out.println("PEYSAR");
+      battleKeys[0] = !battleKeys[0];
+   }
+   if(key == 'b'){
+      System.out.println("PEYSAR");
+      battleKeys[1] = !battleKeys[1];
+   }
+   if(key == 'c'){
+      System.out.println("PEYSAR");
+      battleKeys[2] = !battleKeys[2];
+   }
+   if(key == 'd'){
+      System.out.println("PEYSAR");
+      battleKeys[3] = !battleKeys[3];
+   }
+   if(key == 'e'){
+      System.out.println("PEYSAR");
+      battleKeys[4] = !battleKeys[4];
+   }
+   if(key == 'p'){
+      System.out.println("PEYSAR");
+      battleKeys[5] = !battleKeys[5];
+   }
+   if(key == 'm'){
+      System.out.println("PEYSAR");
+      battleKeys[6] = !battleKeys[6];
    }
   }
 

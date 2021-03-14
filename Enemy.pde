@@ -30,7 +30,7 @@ public final class Enemy {
     speed = 1;
     max_speed = 3;
     velocity = new PVector(0,0);
-    health = 10;
+    health = 100;
   }
   
   public void setAbilities(ArrayList<Ability> abilities){
