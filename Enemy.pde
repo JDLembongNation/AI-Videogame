@@ -18,9 +18,11 @@ public final class Enemy {
   int max_speed;
   private PVector linear;
   PVector rangePoint;
+  ArrayList<Ability> abilities;
   public Enemy(PVector initialPosition, PVector rangePoint, int rangeWidth, int rangeHeight) {
     this.initialPosition = initialPosition;
     this.position = initialPosition.copy();
+    this.dodgeRate = 0;
     this.rangePoint = rangePoint;
     this.rangeWidth = rangeWidth;
     this.rangeHeight = rangeHeight;
@@ -28,6 +30,11 @@ public final class Enemy {
     speed = 1;
     max_speed = 3;
     velocity = new PVector(0,0);
+    health = 10;
+  }
+  
+  public void setAbilities(ArrayList<Ability> abilities){
+    this.abilities = abilities;
   }
 
   public void integrate(PVector player) {
@@ -37,13 +44,11 @@ public final class Enemy {
     if (isChase) {
         chase(player);
       //Line Tracing Algorithm. How to avoid walls? once outside of wall territory then dont do anything. Return to normal position.
-    } else {
-      //Dont bother EG. BOSS OR SOMETHING.
     }
   }
   }
   public Ability nextMove(Player player) {
-    return new Ability();
+    return abilities.get(0);
   }
 
   private boolean isPlayerInRoom(PVector player) {
@@ -51,7 +56,7 @@ public final class Enemy {
   }
 
   //The finite state machine conducted by the enemy
-
+  //PLEASE CHANGE THE CODE.
   private void roam() {
     int direction = (int) random(0, 4);
     switch(direction) {
@@ -72,7 +77,6 @@ public final class Enemy {
       break;
     case 3: 
       for (int i = 0; i < random(0, 10); i++) {
-
         if (position.x > rangePoint.x + 35 && position.x < rangePoint.x + rangeWidth-20) position.x -=1;
       }
       break;

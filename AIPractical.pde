@@ -6,6 +6,7 @@ final int NO_ITEMS = 2;
 final int NO_WEAPONS = 5;
 
 PImage[] images;
+BattleSimulator bs;
 boolean inBattle = false;
 PVector end;
 boolean[] keys = {false, false, false, false, false};
@@ -31,6 +32,8 @@ void setup() {
   player = new Player(100,100,0);
   images = new PImage[15];
   readInContent();
+  bs = new BattleSimulator();
+    bs.reset();
 }
 
 void draw() {
@@ -54,15 +57,18 @@ void caveGUI(){
 }
 
 void battleGUI(){
-  background(0);
-  fill(255);
-  textSize(30);
-  text(INTRO_TEXT, 300, 300);
-  if(keyPressed){
-    if(key == 'c'){
-      inBattle=false;
-      player.position = player.startingPosition.copy();    
+  bs.run(player, enemies.get(currentEnemy));
+  //background(0);
+  //fill(255);
+  //textSize(30);
+  //text(INTRO_TEXT, 300, 300);
+  if(bs.isFinished){
+    if(bs.enemyFaint){
+      enemies.remove(currentEnemy);
+    }else{
+       player.position = player.startingPosition.copy();
     }
+    inBattle = false;
   }
 }
 
@@ -112,7 +118,6 @@ void collisionCheck(){
     PVector currentPos = player.position.copy();
     currentPos.sub(enemies.get(i).position);
     if(currentPos.mag() < 20){
-    System.out.println("Initiate Battle!");
     inBattle = true;
     currentEnemy = i;
     break;
@@ -146,6 +151,7 @@ void collisionCheck(){
   }else{
    positionY +=(20-positionY%20);
   } 
+  /* DEBUG. PLEASE REMOVE LATER
   // == FOR WALLS == 
   int i = positionX/20;
   int j = positionY/20;
@@ -170,6 +176,7 @@ void collisionCheck(){
         if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
       }
     }
+    */
  // == FOR ITEMS ==
  int remove = -1;
  for(int w = 0; w < items.size(); w++){
@@ -192,12 +199,12 @@ void drawItems(){
 }
 
 void move(){
-  if(keys[0] && keys[2]) player.integrate(2,0.02);
-  if(keys[0] && keys[3]) player.integrate(2,-0.02);
-  if(keys[1] && keys[2])player.integrate(-2,0.02);
-  if(keys[1] && keys[3])player.integrate(-2,-0.02);
-  if(keys[0]) player.integrate(2,0);
-  if(keys[1]) player.integrate(-2,0);
+  if(keys[0] && keys[2]) player.integrate(5,0.02);
+  if(keys[0] && keys[3]) player.integrate(5,-0.02);
+  if(keys[1] && keys[2])player.integrate(-5,0.02);
+  if(keys[1] && keys[3])player.integrate(-5,-0.02);
+  if(keys[0]) player.integrate(5,0);
+  if(keys[1]) player.integrate(-5,0);
   if(keys[2]) player.integrate(0,0.08);
   if(keys[3]) player.integrate(0,-0.08);
 
@@ -212,6 +219,8 @@ void enemyMove(){
 
 void keyPressed()
 {
+  
+  if(!inBattle){
   if(key=='w')
     keys[0]=true;
   if(key=='s')
@@ -224,11 +233,13 @@ void keyPressed()
      keys[4] = !keys[4];   
      delay(50);
    }
+  }
 
 }
 
 void keyReleased()
 {
+    if(!inBattle){
   if(key=='w')
     keys[0]=false;
   if(key=='s')
@@ -237,6 +248,7 @@ void keyReleased()
     keys[2]=false;
   if(key=='a')
     keys[3]=false;
+    }
 } 
 
 
@@ -284,6 +296,7 @@ void readInContent(){
     ab.getFloat("damage"), ab.getBoolean("isPhysical"), ab.getFloat("accuracy"), ab.getBoolean("neverMiss"),
     ab.getBoolean("isFlee"), ab.getInt("levelObtained")));
   }
+  player.addAbilities(abilityList);
   
   itemDictionary = new ArrayList<Item>();
   JSONArray itemData = data.getJSONArray("Items");
@@ -307,6 +320,9 @@ void readInContent(){
   }
     for(Weapon wp : weaponDictionary){
     inventory.addWeapon(wp);    
+  }
+  for(Enemy e:enemies){
+    e.setAbilities(abilityList);
   }
   
 

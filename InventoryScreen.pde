@@ -76,6 +76,7 @@ public final class InventoryScreen {
       for (int j = 0; j < imageSlots[0].length; j++) {
         if (imageSlots[i][j].isTaken) {
           if (isSlotHover(imageSlots[i][j])) {
+            textSize(12);
             fill(153, 153, 153, 190);
             rect(imageSlots[i][j].x, imageSlots[i][j].y - 50, 400, 50);
             fill(255);

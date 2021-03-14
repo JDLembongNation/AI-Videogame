@@ -26,6 +26,8 @@ public final class Player {
     this.level = 1;
     this.exp = 0;
     this.expNeeded = 10;
+    this.speed = 40;
+    this.dodgeRate = 0.5;
 }
   
   public void integrate(float force, float targetOrientation){
@@ -54,6 +56,10 @@ public final class Player {
       speed++;
     }
     
+  }
+  
+  public void addAbilities(ArrayList<Ability> abilities ){
+    this.abilities = abilities;
   }
   
 }
