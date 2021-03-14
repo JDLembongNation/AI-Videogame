@@ -103,6 +103,14 @@
             "damage":50,
             "recoil":0,
             "iconName":"spells"
+        },
+        {
+            "name":"Paddle",
+            "description":"A heavy damage melee device that has a wide surface area \n to inflict maximum damage upon its unfortunate victims\n however, it will only have 0% if you are never given one",
+            "isPhysical": true,
+            "damage":1000,
+            "recoil":0,
+            "iconName":"paddle"
         }
     ]
 }

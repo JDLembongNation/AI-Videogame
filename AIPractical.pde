@@ -30,7 +30,7 @@ void setup() {
   map.generateNewCave();
   enemies = map.generateEnemies(level);
   player = new Player(100,100,0);
-  images = new PImage[15];
+  images = new PImage[17];
   readInContent();
   bs = new BattleSimulator();
   bs.reset();
@@ -50,7 +50,7 @@ void caveGUI(){
    background(255);
    drawMap();
    drawCharacters();
-   drawItems();
+   drawItemsWeapons();
    move();
    enemyMove();
    collisionCheck();
@@ -132,6 +132,7 @@ void collisionCheck(){
     level++;
     enemies = map.generateEnemies(level);
     items = map.generateItems(itemDictionary);
+    weapons = map.generateWeapons(weaponDictionary);
     drawMap();
     player.position = player.startingPosition.copy();
   }
@@ -192,11 +193,27 @@ void collisionCheck(){
    }
  }
  if(remove != -1) items.remove(remove);
+
+  // == FOR WEAPONS == 
+ remove = -1;
+  for(int w = 0; w < weapons.size(); w++){
+   PVector currPos = player.position.copy();
+   currPos.sub(weapons.get(w).position);
+   if(currPos.mag() < 15){
+     inventory.addWeapon(weapons.get(w));    
+     remove = w;
+     break;
+   }
+ }
+ if(remove != -1) weapons.remove(remove);
 }
 
-void drawItems(){
+void drawItemsWeapons(){
   for(Item it : items){
     image(it.caveView, it.position.x, it.position.y);
+  }
+  for(Weapon w: weapons){
+      image(w.caveView, w.position.x, w.position.y);
   }
 }
 
@@ -266,13 +283,15 @@ void readInContent(){
   images[5] = loadImage("./Content/inventory-icons/dirk.png"); //increases stat point in a certain category.
   images[6] = loadImage("./Content/inventory-icons/bow.png");
   images[7] = loadImage("./Content/inventory-icons/spear.png");
-  images[8] = loadImage("./Content/cave-icons/stat-potion.png");
-  images[9] = loadImage("./Content/cave-icons/health-potion.png");
-  images[10] = loadImage("./Content/cave-icons/spells.png");
-  images[11] = loadImage("./Content/cave-icons/armor.png");
-  images[12] = loadImage("./Content/cave-icons/dirk.png");
-  images[13] = loadImage("./Content/cave-icons/bow.png");
-  images[14] = loadImage("./Content/cave-icons/spear.png");
+  images[8] = loadImage("./Content/inventory-icons/paddle.png");
+  images[9] = loadImage("./Content/cave-icons/stat-potion.png");
+  images[10] = loadImage("./Content/cave-icons/health-potion.png");
+  images[11] = loadImage("./Content/cave-icons/spells.png");
+  images[12] = loadImage("./Content/cave-icons/armor.png");
+  images[13] = loadImage("./Content/cave-icons/dirk.png");
+  images[14] = loadImage("./Content/cave-icons/bow.png");
+  images[15] = loadImage("./Content/cave-icons/spear.png");
+  images[16] = loadImage("./Content/cave-icons/paddle.png");
   HashMap<String, Integer> imageInventoryRef = new HashMap<String,Integer>();
   imageInventoryRef.put("stat-potion",1);
   imageInventoryRef.put("health-potion",2);
@@ -281,14 +300,17 @@ void readInContent(){
   imageInventoryRef.put("dirk", 5);
   imageInventoryRef.put("bow", 6);
   imageInventoryRef.put("spear",7);
+    imageInventoryRef.put("paddle",8);
+
   HashMap<String, Integer> imageCaveRef = new HashMap<String,Integer>();
-  imageCaveRef.put("stat-potion",8);
-  imageCaveRef.put("health-potion",9);
-  imageCaveRef.put("spells",10);
-  imageCaveRef.put("armor",11);
-  imageCaveRef.put("dirk", 12);
-  imageCaveRef.put("bow", 13);
-  imageCaveRef.put("spear",14);
+  imageCaveRef.put("stat-potion",9);
+  imageCaveRef.put("health-potion",10);
+  imageCaveRef.put("spells",11);
+  imageCaveRef.put("armor",12);
+  imageCaveRef.put("dirk", 13);
+  imageCaveRef.put("bow", 14);
+  imageCaveRef.put("spear",15);
+    imageCaveRef.put("paddle",16);
   inventory = new InventoryScreen(images[0]);
   JSONObject data = loadJSONObject("./Content/content.json");
   JSONArray abilityData = data.getJSONArray("Abilities");
@@ -323,6 +345,7 @@ void readInContent(){
     for(Weapon wp : weaponDictionary){
     inventory.addWeapon(wp);    
   }
+  weapons = map.generateWeapons(weaponDictionary);
   for(Enemy e:enemies){
     e.setAbilities(abilityList);
   }

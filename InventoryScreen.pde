@@ -135,7 +135,6 @@ public final class InventoryScreen {
           if(isSlotHover(imageSlots[i][j])){
             destination = imageSlots[i][j];
             if(imageSlots[i][j].isTaken){
-              System.out.println("ORigin - Item?:  " + (isItemSlot(imageSlots[i][j])));
               //REplace Item
               if(isItemSlot(imageSlots[i][j])){
                 if(currentItem != null){

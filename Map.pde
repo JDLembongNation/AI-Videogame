@@ -1,8 +1,9 @@
 public final class Map{
+  int level;
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 450000; //At least 50 squares of operating room.
+  final int minArea = 200000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -18,6 +19,7 @@ public final class Map{
   public GroundNode[][] getMap(){return map;}
   
   private void generateNewCave(){
+    level++;
     //Using the BSP Partitioning System. 
     treeValue = 0;
     tree = new BinaryNode(null, 1000, 1000,0,0);
@@ -182,6 +184,34 @@ public final class Map{
     BinaryNode treePtr = tree;
     placeItems(items, treePtr, itemDictionary);
     return items;
+  }
+  
+  private ArrayList<Weapon> generateWeapons(ArrayList<Weapon> weaponDictionary){
+    //Some random algo. 
+    ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+    BinaryNode treePtr = tree;
+    if(level%5==0){
+      placeWeapons(weapons, treePtr, weaponDictionary);
+    }
+    return weapons;
+  }
+  
+  private void placeWeapons(ArrayList<Weapon> weapons, BinaryNode treePtr, ArrayList<Weapon> weaponDictionary){
+    if(treePtr.left == null && treePtr.right == null){
+      int chosenX = treePtr.x + (int) random(15,treePtr.widthArea-15);
+      int chosenY = treePtr.y + (int) random(15,treePtr.heightArea-15);
+      int chosenWeapon = (int) random(0, weaponDictionary.size());
+      Weapon wp = weaponDictionary.get(chosenWeapon);
+      wp.position = new PVector(chosenX, chosenY);
+      weapons.add(wp);
+      return;
+    }
+      int direction = (int) random(0,10);
+      if(direction%2==0){
+        placeWeapons(weapons, treePtr.left, weaponDictionary);
+      }else{
+        placeWeapons(weapons, treePtr.right, weaponDictionary);
+      }
   }
   
   private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary){
