@@ -101,7 +101,9 @@ public final class InventoryScreen {
   }
 
   void dragPressed() {
-    if(mousePressed == true){
+    if(mousePressed == true && !isGrabItem){
+      currentItem = null;
+      currentWeapon = null;
     for (int i=0; i < imageSlots.length; i++) {
       for (int j = 0; j < imageSlots[0].length; j++) {
         if (imageSlots[i][j].isTaken) {
@@ -110,15 +112,17 @@ public final class InventoryScreen {
             isGrabItem = true;
             if (isItemSlot(imageSlots[i][j])) {
               currentItem = imageSlots[i][j].item;
-              image(imageSlots[i][j].item.inventoryView, mouseX, mouseY);
             } else {
               currentWeapon = imageSlots[i][j].weapon;
-              image(imageSlots[i][j].weapon.inventoryView, mouseX, mouseY);
             }
           }
         }
       }
     }
+    }
+    if(isGrabItem){
+      if(isItemSlot(origin)) image(origin.item.inventoryView, mouseX, mouseY);
+      else image(origin.weapon.inventoryView, mouseX, mouseY);
     }
   }
   void dragReleased() {
@@ -130,17 +134,36 @@ public final class InventoryScreen {
           if(isSlotHover(imageSlots[i][j])){
             destination = imageSlots[i][j];
             if(imageSlots[i][j].isTaken){
+              System.out.println("ORigin - Item?:  " + (isItemSlot(imageSlots[i][j])));
               //REplace Item
               if(isItemSlot(imageSlots[i][j])){
-                Item temp = destination.item;
-                destination.item = currentItem;
-                origin.item = temp;
-                return;
+                if(currentItem != null){
+                  Item temp = destination.item;
+                  destination.item = currentItem;
+                  origin.item = temp;
+                  return;
+                }else{
+                  Item temp = destination.item;
+                  destination.item = null;
+                  destination.weapon = currentWeapon;
+                  origin.weapon = null;
+                  origin.item = temp;
+                  return;
+                }
               }else{
+                if(currentItem != null){
+                  Weapon temp = destination.weapon;
+                  destination.weapon = null;
+                  destination.item = currentItem;
+                  origin.weapon = temp;
+                  origin.item = null;
+                  return;
+                }else{
                 Weapon temp = destination.weapon;
                 destination.weapon = currentWeapon;
                 origin.weapon = temp;
                 return;
+                }
               }
             }else{
               //Place item
@@ -160,6 +183,10 @@ public final class InventoryScreen {
       }
       //Return to original position
     }
+     if(isItemSlot(origin)) origin.item = currentItem;
+      else origin.weapon = currentWeapon;
+      currentItem = null;
+      currentWeapon =null;
   }
 }
   }
