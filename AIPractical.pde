@@ -30,7 +30,7 @@ void setup() {
   map.generateNewCave();
   enemies = map.generateEnemies(level);
   player = new Player(100,100,0);
-  images = new PImage[17];
+  images = new PImage[19];
   readInContent();
   bs = new BattleSimulator();
   bs.reset();
@@ -292,6 +292,9 @@ void readInContent(){
   images[14] = loadImage("./Content/cave-icons/bow.png");
   images[15] = loadImage("./Content/cave-icons/spear.png");
   images[16] = loadImage("./Content/cave-icons/paddle.png");
+  images[17] = loadImage("./Content/inventory-icons/treasure.png");
+  images[18] = loadImage("./Content/cave-icons/treasure.png");
+
   HashMap<String, Integer> imageInventoryRef = new HashMap<String,Integer>();
   imageInventoryRef.put("stat-potion",1);
   imageInventoryRef.put("health-potion",2);
@@ -301,6 +304,7 @@ void readInContent(){
   imageInventoryRef.put("bow", 6);
   imageInventoryRef.put("spear",7);
     imageInventoryRef.put("paddle",8);
+  imageInventoryRef.put("treasure",17);
 
   HashMap<String, Integer> imageCaveRef = new HashMap<String,Integer>();
   imageCaveRef.put("stat-potion",9);
@@ -310,7 +314,8 @@ void readInContent(){
   imageCaveRef.put("dirk", 13);
   imageCaveRef.put("bow", 14);
   imageCaveRef.put("spear",15);
-    imageCaveRef.put("paddle",16);
+  imageCaveRef.put("paddle",16);
+  imageCaveRef.put("treasure",18);
   inventory = new InventoryScreen(images[0]);
   JSONObject data = loadJSONObject("./Content/content.json");
   JSONArray abilityData = data.getJSONArray("Abilities");

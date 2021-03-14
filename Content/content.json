@@ -67,7 +67,16 @@
             "name":"Armor",
             "description":"Incredible high precision crafting by Rick Sanchez himself.",
             "value":1,
-            "iconName":"stat-potion"
+            "iconName":"armor"
+        },
+        {
+            "isStatChanger":false,
+            "isConsumable":false,
+            "isTreasure":true,
+            "name":"Treasure",
+            "description":"Treasure stolen from Mr Krabs.",
+            "value":10,
+            "iconName":"treasure"
         }
         
     ],

@@ -196,6 +196,7 @@ public final class Map{
     return weapons;
   }
   
+  
   private void placeWeapons(ArrayList<Weapon> weapons, BinaryNode treePtr, ArrayList<Weapon> weaponDictionary){
     if(treePtr.left == null && treePtr.right == null){
       int chosenX = treePtr.x + (int) random(15,treePtr.widthArea-15);
