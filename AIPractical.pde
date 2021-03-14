@@ -33,7 +33,7 @@ void setup() {
   images = new PImage[15];
   readInContent();
   bs = new BattleSimulator();
-    bs.reset();
+  bs.reset();
 }
 
 void draw() {
@@ -64,8 +64,10 @@ void battleGUI(){
   //text(INTRO_TEXT, 300, 300);
   if(bs.isFinished){
     if(bs.enemyFaint){
+      bs.reset();
       enemies.remove(currentEnemy);
     }else{
+        bs.reset();
        player.position = player.startingPosition.copy();
     }
     inBattle = false;

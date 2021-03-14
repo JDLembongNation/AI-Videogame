@@ -1,7 +1,6 @@
 final String PLAYER_TURN = "It's your turn!";
 public final class BattleSimulator {
   Ability abilityInPlay;
-  boolean[] keys = {false, false, false, false};
   private boolean isPlayerOneTurn;
   boolean chosen;
   boolean isFinished;
@@ -9,6 +8,7 @@ public final class BattleSimulator {
   boolean playerFaint;
   boolean isDone;
   boolean enemyFaint;
+  boolean isStart;
   Player player;
   Enemy enemy;
   String choice = "Choose an Action!";
@@ -16,6 +16,7 @@ public final class BattleSimulator {
   String optionB = "";
   String optionC ="";
   String optionD = "";
+  String optionE = "";
   String BattleText1 = "";
   String BattleText2= "";
   String BattleText3="";
@@ -26,6 +27,7 @@ public final class BattleSimulator {
   }
   
   public void reset(){
+    isStart = false;
     chosen = false;
     isFinished = false;
     isDone = false;
@@ -33,16 +35,31 @@ public final class BattleSimulator {
     playerFaint = false;
     enemyFaint = false;
     abilityInPlay = null;
+     choice = "Choose an Action!";
+    optionA ="";
+     optionB = "";
+     optionC ="";
+     optionD = "";
+     optionE = "";
+    BattleText1 = "";
+     BattleText2= "";
+     BattleText3="";
   }
   
+  //Should have a press M to begin battle. 
   public void run(Player player, Enemy enemy) {
     background(0);
     fill(255);
-    if(!isDone){
-    executeGameTurn(player, enemy);
+    if(keyPressed && key=='m')isStart = true;
+    if(isStart){
+      if(!isDone){
+      executeGameTurn(player, enemy);
+      }else{
+        BattleText3 = "Press P to continue";
+        if(keyPressed && key=='p')isFinished = true;
+      }
     }else{
-      BattleText3 = "Press P to continue";
-      if(keyPressed && key=='p')isFinished = true;
+     optionA = "Press m to start battle.";
     }
     textSize(30);
     text(choice, 250, 50);
@@ -50,9 +67,10 @@ public final class BattleSimulator {
     text(optionB, 250, 250);
     text(optionC, 250, 350);
     text(optionD, 250, 450);
-    text(BattleText1, 250, 600);
-    text(BattleText2, 250, 700);
-    text(BattleText3, 250, 800);
+    text(optionE, 250, 550);
+    text(BattleText1, 250, 700);
+    text(BattleText2, 250, 800);
+    text(BattleText3, 250, 900);
 
   }
 
@@ -98,23 +116,29 @@ public final class BattleSimulator {
     optionC = "C) " + player.abilities.get(2).name;
     optionD = "D) Run!"; 
     if (keyPressed) {
-      chosen = true;
       switch(key) {
       case 'a': 
         {
           abilityInPlay = player.abilities.get(0);
+                chosen = true;
           break;
         }
       case 'b':
         {
+                chosen = true;
+
           break;
         }
       case 'c':
         {
+      chosen = true;
+
           break;
         }
       case 'd':
         {
+      chosen = true;
+
           isFleeSuccess = true;
           break;
         }
