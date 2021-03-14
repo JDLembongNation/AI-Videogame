@@ -3,7 +3,7 @@ public final class Item{
   private boolean isTreasure;
   private boolean isStatChanger;
   private String name;
-  private String description;
+   String description;
   private int value;
   PImage caveView; 
   PImage inventoryView;

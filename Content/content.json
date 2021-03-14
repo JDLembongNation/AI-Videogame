@@ -47,7 +47,7 @@
             "isConsumable":true,
             "isTreasure":false,
             "name":"Health Potion",
-            "decription":"A mystical potion that rejuvenates your health points.",
+            "description":"A mystical potion that rejuvenates your health points.",
             "value":50,
             "iconName":"health-potion"
         },
@@ -56,7 +56,7 @@
             "isConsumable":true,
             "isTreasure":false,
             "name":"Stat Potion",
-            "decription":"A mystical potion that adds a point to a random stat.",
+            "description":"A mystical potion that adds a point to a random stat.",
             "value":1,
             "iconName":"stat-potion"
         },
@@ -65,7 +65,7 @@
             "isConsumable":true,
             "isTreasure":false,
             "name":"Armor",
-            "decription":"Incredible high precision crafting by Rick Sanchez himself.",
+            "description":"Incredible high precision crafting by Rick Sanchez himself.",
             "value":1,
             "iconName":"stat-potion"
         }

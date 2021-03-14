@@ -16,8 +16,7 @@ public final class InventoryScreen{
        imageSlots[i][j].y = 505 + (j * 149);
       }
     }
-  }
-  
+  } 
   private class Slot{
     boolean isTaken;
     Item item;
@@ -25,8 +24,6 @@ public final class InventoryScreen{
     int x;
     int y;
   }
-  
-  
   
   public void showInventory(){
     image(backgroundImage,0,0);
@@ -38,7 +35,6 @@ public final class InventoryScreen{
         }
       }
     }
-    showDisplay();
   }
   
   public void addItem(Item item){
@@ -57,38 +53,25 @@ public final class InventoryScreen{
       for(int j = 0; j < imageSlots[0].length; j++){
          if(!imageSlots[i][j].isTaken){
            imageSlots[i][j].weapon = weapon;
-           imageSlots[i][j].isTaken = true;
-           return;
          }
       }
     }
   }
   
-  private void showDisplay(){
+  private void showDescription(){
     for(int i=0; i < imageSlots.length; i++){
       for(int j = 0; j < imageSlots[0].length; j++){
-         if(imageSlots[i][j].isTaken){
-           if(isSlotHover(imageSlots[i][j])){
-             fill(153,153,153,190);
-             rect(imageSlots[i][j].x, imageSlots[i][j].y - 50, 400,50);
-             fill(255);
-             if(isItemSlot(imageSlots[i][j])){
-               text(imageSlots[i][j].item.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
-             }else{
-               text(imageSlots[i][j].weapon.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
-             }
-           }
-         }
+        if(imageSlots[i][j].isTaken){
+          if(mouseX > imageSlots[i][j].x && mouseX < (imageSlots[i][j].x + WIDTH_SIZE_SLOT) && ){
+            
+          }
+        }
       }
     }
   }
   
-  public boolean isSlotHover(Slot slot){
-     return(mouseX > slot.x && mouseX < (slot.x + WIDTH_SIZE_SLOT) && mouseY > slot.y && mouseY < (slot.y + HEIGHT_SIZE_SLOT));
-  }
-  
-  public boolean isItemSlot(Slot slot){
-    return slot.item!=null;
+  private boolean inSlot(){
+    return (mouseX > imageSlots[i][j].x && mouseX < (imageSlots[i][j].x + WIDTH_SIZE_SLOT) && mouseY >imageSlots[i][j].x && mouseY < (imageSlots[i][j].x + WIDTH_SIZE_SLOT) );
   }
   
 }

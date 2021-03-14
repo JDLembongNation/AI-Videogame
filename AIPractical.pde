@@ -289,5 +289,12 @@ void readInContent(){
     wp.getFloat("recoil"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
   }
   items = map.generateItems(itemDictionary);
+  for(Item it : itemDictionary){
+    inventory.addItem(it);    
+  }
+    for(Weapon wp : weaponDictionary){
+    inventory.addWeapon(wp);    
+  }
   
+
 }
