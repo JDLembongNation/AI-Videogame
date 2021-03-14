@@ -1,97 +1,166 @@
 final int WIDTH_SIZE_SLOT = 113;
 final int HEIGHT_SIZE_SLOT = 113;
-public final class InventoryScreen{
+public final class InventoryScreen {
+  boolean isGrabItem = false;
+  Item currentItem;
+  Weapon currentWeapon;
+  Slot origin;
+  Slot destination;
   //ORigin https://www.deviantart.com/bizmasterstudios
   Slot[][] imageSlots;
   ArrayList<Item> items;
   ArrayList<Weapon> weapons;
   PImage backgroundImage;
-  public InventoryScreen(PImage backgroundImage){
+  public InventoryScreen(PImage backgroundImage) {
     imageSlots = new Slot[5][3]; //x, y Usually otherway round, but program this way to visualise easier.
     this.backgroundImage = backgroundImage;
-    for(int i=0; i < imageSlots.length; i++){
-      for(int j = 0; j < imageSlots[0].length; j++){
-       imageSlots[i][j] = new Slot();
-       imageSlots[i][j].x = (91+(i * 176));
-       imageSlots[i][j].y = 505 + (j * 149);
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        imageSlots[i][j] = new Slot();
+        imageSlots[i][j].x = (91+(i * 176));
+        imageSlots[i][j].y = 505 + (j * 149);
       }
     }
   }
-  
-  private class Slot{
+
+  private class Slot {
     boolean isTaken;
     Item item;
     Weapon weapon;
     int x;
     int y;
   }
-  
-  
-  
-  public void showInventory(){
-    image(backgroundImage,0,0);
-    for(int i=0; i < imageSlots.length; i++){
-      for(int j = 0; j < imageSlots[0].length; j++){
-        if(imageSlots[i][j].isTaken){
-          if(imageSlots[i][j].item!=null)image(imageSlots[i][j].item.inventoryView, imageSlots[i][j].x, imageSlots[i][j].y);
+
+
+
+  public void showInventory() {
+    image(backgroundImage, 0, 0);
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (imageSlots[i][j].isTaken) {
+          if (imageSlots[i][j].item!=null)image(imageSlots[i][j].item.inventoryView, imageSlots[i][j].x, imageSlots[i][j].y);
           else image(imageSlots[i][j].weapon.inventoryView, imageSlots[i][j].x, imageSlots[i][j].y);
         }
       }
     }
     showDisplay();
+    dragPressed();
+    dragReleased();
   }
-  
-  public void addItem(Item item){
-    for(int i=0; i < imageSlots.length; i++){
-      for(int j = 0; j < imageSlots[0].length; j++){
-         if(!imageSlots[i][j].isTaken){
-           imageSlots[i][j].isTaken = true;
-           imageSlots[i][j].item = item;
-           return;
-         }
-      }
-    }
-  }
-  public void addWeapon(Weapon weapon){
-     for(int i=0; i < imageSlots.length; i++){
-      for(int j = 0; j < imageSlots[0].length; j++){
-         if(!imageSlots[i][j].isTaken){
-           imageSlots[i][j].weapon = weapon;
-           imageSlots[i][j].isTaken = true;
-           return;
-         }
-      }
-    }
-  }
-  
-  private void showDisplay(){
-    for(int i=0; i < imageSlots.length; i++){
-      for(int j = 0; j < imageSlots[0].length; j++){
-         if(imageSlots[i][j].isTaken){
-           if(isSlotHover(imageSlots[i][j])){
-             fill(153,153,153,190);
-             rect(imageSlots[i][j].x, imageSlots[i][j].y - 50, 400,50);
-             fill(255);
-             if(isItemSlot(imageSlots[i][j])){
-               text(imageSlots[i][j].item.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
-               text("Value Changes" + imageSlots[i][j].item.value, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
-             }else{
-               text(imageSlots[i][j].weapon.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
-               text("Damage:" + imageSlots[i][j].weapon.damage, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
 
-             }
-           }
-         }
+  public void addItem(Item item) {
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (!imageSlots[i][j].isTaken) {
+          imageSlots[i][j].isTaken = true;
+          imageSlots[i][j].item = item;
+          return;
+        }
       }
     }
   }
-  
-  public boolean isSlotHover(Slot slot){
-     return(mouseX > slot.x && mouseX < (slot.x + WIDTH_SIZE_SLOT) && mouseY > slot.y && mouseY < (slot.y + HEIGHT_SIZE_SLOT));
+  public void addWeapon(Weapon weapon) {
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (!imageSlots[i][j].isTaken) {
+          imageSlots[i][j].weapon = weapon;
+          imageSlots[i][j].isTaken = true;
+          return;
+        }
+      }
+    }
   }
-  
-  public boolean isItemSlot(Slot slot){
+
+  private void showDisplay() {
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (imageSlots[i][j].isTaken) {
+          if (isSlotHover(imageSlots[i][j])) {
+            fill(153, 153, 153, 190);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y - 50, 400, 50);
+            fill(255);
+            if (isItemSlot(imageSlots[i][j])) {
+              text(imageSlots[i][j].item.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
+              text("Value Changes: " + imageSlots[i][j].item.value, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
+            } else {
+              text(imageSlots[i][j].weapon.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
+              text("Damage:" + imageSlots[i][j].weapon.damage, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public boolean isSlotHover(Slot slot) {
+    return(mouseX > slot.x && mouseX < (slot.x + WIDTH_SIZE_SLOT) && mouseY > slot.y && mouseY < (slot.y + HEIGHT_SIZE_SLOT));
+  }
+
+  public boolean isItemSlot(Slot slot) {
     return slot.item!=null;
   }
-  
+
+  void dragPressed() {
+    if(mousePressed == true){
+    for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (imageSlots[i][j].isTaken) {
+          if (isSlotHover(imageSlots[i][j])) {
+            origin = imageSlots[i][j];
+            isGrabItem = true;
+            if (isItemSlot(imageSlots[i][j])) {
+              currentItem = imageSlots[i][j].item;
+              image(imageSlots[i][j].item.inventoryView, mouseX, mouseY);
+            } else {
+              currentWeapon = imageSlots[i][j].weapon;
+              image(imageSlots[i][j].weapon.inventoryView, mouseX, mouseY);
+            }
+          }
+        }
+      }
+    }
+    }
+  }
+  void dragReleased() {
+    if(mousePressed==false){
+    if (isGrabItem) {
+      isGrabItem = false;
+      for (int i=0; i < imageSlots.length; i++) {
+        for (int j = 0; j < imageSlots[0].length; j++) {
+          if(isSlotHover(imageSlots[i][j])){
+            destination = imageSlots[i][j];
+            if(imageSlots[i][j].isTaken){
+              //REplace Item
+              if(isItemSlot(imageSlots[i][j])){
+                Item temp = destination.item;
+                destination.item = currentItem;
+                origin.item = temp;
+                return;
+              }else{
+                Weapon temp = destination.weapon;
+                destination.weapon = currentWeapon;
+                origin.weapon = temp;
+                return;
+              }
+            }else{
+              //Place item
+              destination.isTaken = true;
+              origin.isTaken = false;
+              if(isItemSlot(imageSlots[i][j])){
+                destination.item = currentItem;
+                origin.item = null;
+                return;
+              }else{
+                destination.weapon = currentWeapon;
+                origin.item = null;
+                return;
+            }
+          }
+        }
+      }
+      //Return to original position
+    }
+  }
+}
+  }
 }
