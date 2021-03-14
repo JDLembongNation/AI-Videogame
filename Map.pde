@@ -2,7 +2,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 300000; //At least 50 squares of operating room.
+  final int minArea = 450000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -172,7 +172,7 @@ public final class Map{
     for(int i = 0; i < level; i++){
       int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
       int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
-      enemies.add(new Enemy(new PVector(posX, posY)));
+      enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea));
     }
     return enemies;
   }

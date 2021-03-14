@@ -40,6 +40,8 @@ public final class Player {
       velocity.mult(MAX_SPEED);
     }
     position.add(velocity);
+    if(orientation > PI) orientation -=2*PI;
+    else if(orientation < -PI) orientation +=2*PI;
   }
   
   public void addExp(){

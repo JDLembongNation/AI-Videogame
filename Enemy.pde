@@ -1,36 +1,114 @@
-public final class Enemy{
-   int difficulty;
-   boolean isChase;
-   int health;
-   int attackPower;
-   int spellPower;
-   int speed;
-   int dodgeRate;
+final float ORIENTATION_INCREMENT = PI/16;
+public final class Enemy {
+  int difficulty;
+  boolean isChase = true;
+  int health;
+  int attackPower;
+  int spellPower;
+  int dodgeRate;
   PVector position;
+  PVector velocity;
   PVector initialPosition;
   float orientation;
-   int rangeWidth;
-   int rangeHeight;
+  float rotation;
+  int rangeWidth;
+  int rangeHeight;
+  int speed;
+  int expProvided;
+  int max_speed;
+  private PVector linear;
   PVector rangePoint;
-  public Enemy(PVector initialPosition){
+  public Enemy(PVector initialPosition, PVector rangePoint, int rangeWidth, int rangeHeight) {
     this.initialPosition = initialPosition;
-    this.position = initialPosition;
+    this.position = initialPosition.copy();
+    this.rangePoint = rangePoint;
+    this.rangeWidth = rangeWidth;
+    this.rangeHeight = rangeHeight;
     orientation = 0;
+    speed = 1;
+    max_speed = 3;
+    velocity = new PVector(0,0);
   }
-  
-  public void integrate(PVector player){
-    if(isChase){
-      //Line Tracing Algorithm. How to avoid walls? once outside of wall territory then dont do anything. Return to normal position.
+
+  public void integrate(PVector player) {
+    if (!isPlayerInRoom(player)) {
+      roam();
     }else{
-      //Dont bother
+    if (isChase) {
+        chase(player);
+      //Line Tracing Algorithm. How to avoid walls? once outside of wall territory then dont do anything. Return to normal position.
+    } else {
+      //Dont bother EG. BOSS OR SOMETHING.
     }
   }
-  public Ability nextMove(Player player){
+  }
+  public Ability nextMove(Player player) {
     return new Ability();
   }
-  
 
+  private boolean isPlayerInRoom(PVector player) {
+    return (player.x > rangePoint.x && player.x < (rangePoint.x + rangeWidth) && player.y > rangePoint.y && player.y < (rangePoint.y + rangeHeight));
+  }
 
+  //The finite state machine conducted by the enemy
 
+  private void roam() {
+    int direction = (int) random(0, 4);
+    switch(direction) {
+    case 0: 
+      for (int i = 0; i < random(0, 10); i++) {
+        if (position.y > rangePoint.y+35 && position.y < rangePoint.y + rangeHeight-20) position.y -=1;
+      }
+      break;
+    case 1: 
+      for (int i = 0; i < random(0, 10); i++) {
+        if (position.x > rangePoint.x + 35 && position.x < rangePoint.x + rangeWidth-20) position.x +=1;
+      }
+      break;
+    case 2: 
+      for (int i = 0; i < random(0, 10); i++) {
+        if (position.y > rangePoint.y+35 && position.y < rangePoint.y + rangeHeight-20) position.y +=1;
+      }
+      break;
+    case 3: 
+      for (int i = 0; i < random(0, 10); i++) {
 
+        if (position.x > rangePoint.x + 35 && position.x < rangePoint.x + rangeWidth-20) position.x -=1;
+      }
+      break;
+    }
+  }
+
+  private void chase(PVector player) {
+    PVector direction =  new PVector();
+    direction.x = player.x - position.x;
+    direction.y = player.y - position.y;
+    direction.normalize();
+    direction.mult(speed);
+    velocity.add(direction);
+    if(velocity.mag() > max_speed){
+      velocity.normalize();
+      velocity.mult(max_speed);
+    }
+    position.add(velocity);
+    //Add barriers here if necessary for edges. BUt should not be needed.
+    float targetOrientation = atan2(velocity.y, velocity.x);
+        // if it's less than me, then how much if up to PI less, decrease otherwise increase
+    if (targetOrientation < orientation) {
+      if (orientation - targetOrientation < PI) orientation -= ORIENTATION_INCREMENT ;
+      else orientation += ORIENTATION_INCREMENT ;
+    }
+    else {
+     if (targetOrientation - orientation < PI) orientation += ORIENTATION_INCREMENT ;
+     else orientation -= ORIENTATION_INCREMENT ; 
+    }
+    
+    // Keep in bounds
+    if (orientation > PI) orientation -= 2*PI ;
+    else if (orientation < -PI) orientation += 2*PI ; 
+      
+    }
+
+  private void returnToRoom() {
+  }  
 }

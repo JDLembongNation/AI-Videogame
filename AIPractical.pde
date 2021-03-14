@@ -49,6 +49,7 @@ void caveGUI(){
    drawCharacters();
    drawItems();
    move();
+   enemyMove();
    collisionCheck();
 }
 
@@ -201,6 +202,14 @@ void move(){
   if(keys[3]) player.integrate(0,-0.08);
 
 }
+
+void enemyMove(){
+  for(Enemy e : enemies){
+    e.integrate(player.position.copy());
+  }
+}
+
+
 void keyPressed()
 {
   if(key=='w')
@@ -229,6 +238,10 @@ void keyReleased()
   if(key=='a')
     keys[3]=false;
 } 
+
+
+
+
 
 void readInContent(){
   images[0] = loadImage("./Content/Inventory.png");
