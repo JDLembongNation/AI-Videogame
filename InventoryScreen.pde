@@ -74,8 +74,11 @@ public final class InventoryScreen{
              fill(255);
              if(isItemSlot(imageSlots[i][j])){
                text(imageSlots[i][j].item.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
+               text("Value Changes" + imageSlots[i][j].item.value, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
              }else{
                text(imageSlots[i][j].weapon.description, imageSlots[i][j].x + 5, imageSlots[i][j].y-25);
+               text("Damage:" + imageSlots[i][j].weapon.damage, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
+
              }
            }
          }
