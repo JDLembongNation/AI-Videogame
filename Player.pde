@@ -17,6 +17,7 @@ public final class Player {
   int exp;
   int expNeeded;
   PVector startingPosition;
+  int gold;
   
   public Player(int x, int y, float orientation) {
     this.startingPosition = new PVector(x,y);

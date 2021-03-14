@@ -185,14 +185,19 @@ void collisionCheck(){
  for(int w = 0; w < items.size(); w++){
    PVector currPos = player.position.copy();
    currPos.sub(items.get(w).position);
-   if(currPos.mag() < 15){
-     System.out.println("PEY");
-     inventory.addItem(items.get(w));    
-     remove = w;
-     break;
+   if(currPos.mag() < 30){
+     if(items.get(w).isTreasure){
+       player.gold += items.get(w).value;
+       System.out.println("TOTAL GOLD " + player.gold);
+       items.remove(w);
+       break;
+     }else{
+       inventory.addItem(items.get(w));  
+       items.remove(w);
+       break;
+     }
    }
  }
- if(remove != -1) items.remove(remove);
 
   // == FOR WEAPONS == 
  remove = -1;
@@ -271,9 +276,6 @@ void keyReleased()
 } 
 
 
-
-
-
 void readInContent(){
   images[0] = loadImage("./Content/Inventory.png");
   images[1] = loadImage("./Content/inventory-icons/stat-potion.png");
@@ -303,7 +305,7 @@ void readInContent(){
   imageInventoryRef.put("dirk", 5);
   imageInventoryRef.put("bow", 6);
   imageInventoryRef.put("spear",7);
-    imageInventoryRef.put("paddle",8);
+  imageInventoryRef.put("paddle",8);
   imageInventoryRef.put("treasure",17);
 
   HashMap<String, Integer> imageCaveRef = new HashMap<String,Integer>();
