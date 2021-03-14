@@ -11,14 +11,14 @@
            "levelObtained": 1
         },
         {
-            "name": "Slash",
-            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
+            "name": "Lunge",
+            "description": "Attack your foe lmao",
             "damage": 50,
             "accuracy": 95,
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 1
+            "levelObtained": 2
          },
          {
             "name": "Slash",
@@ -28,7 +28,7 @@
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 1
+            "levelObtained": 3
          },
          {
             "name": "Slash",
@@ -38,7 +38,7 @@
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 1
+            "levelObtained": 4
          }
     ],
     "Items":[
