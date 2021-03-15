@@ -66,7 +66,7 @@ public final class BattleSimulator {
         executeGameTurn(player, enemy);
       } else {
         BattleText3 = "Press P to continue";
-        if (keys[5]) isFinished = true;
+        if (keys[5] && waitSecond(1)) isFinished = true;
       }
     } else {
       optionA = "Press m to start battle.";
@@ -109,9 +109,9 @@ public final class BattleSimulator {
         didSomeoneDie(player, enemy);
         if (enemyFaint) {
           displayEnd();
-          return;
         }
       }
+      //UNDEFINED BEHAVIOUR HERE. TAKE A LOOK
     } else if (!isPlayerOneTurn && !enemyAlreadyHit) {
       if (!displayTime) {
         enemyTurn(player, enemy);
@@ -199,6 +199,7 @@ public final class BattleSimulator {
     BattleText1 = "The Enemy Fainted! ";
     BattleText2 = "You WIN!";
     isDone = true;
+    delay = millis();
   }
 
   private void resetText() {

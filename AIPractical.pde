@@ -59,11 +59,8 @@ void caveGUI() {
 
 void battleGUI() {
   bs.run(player, enemies.get(currentEnemy), battleKeys);
-  //background(0);
-  //fill(255);
-  //textSize(30);
-  //text(INTRO_TEXT, 300, 300);
   if (bs.isFinished) {
+    System.out.println("HERE");
     if (bs.enemyFaint) {
       bs.reset();
       enemies.remove(currentEnemy);
@@ -71,7 +68,8 @@ void battleGUI() {
       bs.reset();
       player.position = player.startingPosition.copy();
     }
-    System.out.println("HERE: " + bs.isFinished);
+    inBattle = false;
+    bs.isFinished = false;
   }
 }
 
