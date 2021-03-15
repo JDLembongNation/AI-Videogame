@@ -2,8 +2,9 @@ final String PLAYER_TURN = "It's your turn!";
 public final class BattleSimulator {
   Ability abilityInPlay;
   private boolean isPlayerOneTurn;
-  int delay = 0;
+  int delay = -1;
   boolean[] keys;
+  boolean displayTime;
   boolean chosen;
   boolean alreadyHit;
   boolean isFinished;
@@ -30,6 +31,7 @@ public final class BattleSimulator {
   }
 
   public void reset() {
+    displayTime = false;
     isStart = false;
     chosen = false;
     isFinished = false;
@@ -80,6 +82,8 @@ public final class BattleSimulator {
   public void executeGameTurn(Player player, Enemy enemy) {
     isPlayerOneTurn = player.speed > enemy.speed;
     if (isPlayerOneTurn) {
+      BattleText1 = "Your Turn!";
+      BattleText2 = "";
       if (!chosen) {
         playerTurn(player);
       } else {
@@ -98,22 +102,27 @@ public final class BattleSimulator {
         }
         didSomeoneDie(player, enemy);
         if (enemyFaint) {
-          BattleText1 = "The Enemy Fainted! ";
-          BattleText2 = "You WIN!";
-          isDone = true;
+          displayEnd();
           return;
         }
-        isPlayerOneTurn = !isPlayerOneTurn;
-        enemyTurn(player, enemy);
-        isPlayerOneTurn = !isPlayerOneTurn;
-        didSomeoneDie(player, enemy);
-        if (playerFaint) return;
-        alreadyHit = !alreadyHit;
+        System.out.println("FE");
+        if (waitSecond(3)) { //Delay for a few seconds to display ENemy Move
+          isPlayerOneTurn = !isPlayerOneTurn;
+          alreadyHit = !alreadyHit;
+          delay = millis();
+          chosen = false;
+        }
         //Design CHoice: Player loses turn if cant run away.
       }
     } else {
-      enemyTurn(player, enemy);
-      //playerTurn(player, enemy);
+      if (!displayTime) {
+        enemyTurn(player, enemy);
+        didSomeoneDie(player, enemy);
+        displayTime = true;
+        if (playerFaint) return;
+      } else {
+        if (waitSecond(3))isPlayerOneTurn = !isPlayerOneTurn;
+      }
     }
   }
   void playerTurn(Player player) {
@@ -128,54 +137,59 @@ public final class BattleSimulator {
     if (keys[1]) {
       chosen = true;
     }
-    if (keys[2]){
+    if (keys[2]) {
       chosen = true;
     }
-    if(keys[3]){
+    if (keys[3]) {
       chosen = true;
       isFleeSuccess = true;
-    
+    }
   }
-}
-private void enemyTurn(Player player, Enemy enemy) {
-  BattleText1 = "Enemy Turn!";
-  Ability abilityInPlay = enemy.nextMove(player);
-  if (didLandHit(abilityInPlay, player.dodgeRate)) {
-    calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
+  private void enemyTurn(Player player, Enemy enemy) {
+    BattleText1 = "Enemy Turn!";
+    Ability abilityInPlay = enemy.nextMove(player);
+    if (didLandHit(abilityInPlay, player.dodgeRate)) {
+      float dmg = calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
+      BattleText2 = dmg + " was dealt to you!";
+    }
   }
-}
 
-//Can toggle if too small of a chance. 
-private boolean canRun(Player player, Enemy enemy) {
-  //float option = random(0,player.speed);
-  //float enemyChance = random(0, enemy.speed);
-  // return (option > enemyChance);
-  return true;
-}
-
-private void didSomeoneDie(Player player, Enemy enemy) {
-  if (player.health <= 0) playerFaint = true;
-  if (enemy.health <= 0) enemyFaint = true;
-}
-
-private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
-  if (isPlayerOneTurn) {
-    System.out.println("CALLED");
-    enemy.health -= ability.damage;
-  } else {
-    player.health -= ability.damage;
+  //Can toggle if too small of a chance. 
+  private boolean canRun(Player player, Enemy enemy) {
+    //float option = random(0,player.speed);
+    //float enemyChance = random(0, enemy.speed);
+    // return (option > enemyChance);
+    return true;
   }
-  return ability.damage;
-}
 
-private boolean didLandHit(Ability ability, float dodgeRate) {
-  return true;
-  //float generated = random(0, 1);
-  //if (ability.neverMiss) return true;
-  //else return generated > dodgeRate;
-}
+  private void didSomeoneDie(Player player, Enemy enemy) {
+    if (player.health <= 0) playerFaint = true;
+    if (enemy.health <= 0) enemyFaint = true;
+  }
 
-private boolean waitSecond(int x){
-  return(delay+(x*1000) < millis());
-}
+  private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
+    if (isPlayerOneTurn) {
+      enemy.health -= ability.damage;
+    } else {
+      player.health -= ability.damage;
+    }
+    return ability.damage;
+  }
+
+  private boolean didLandHit(Ability ability, float dodgeRate) {
+    return true;
+    //float generated = random(0, 1);
+    //if (ability.neverMiss) return true;
+    //else return generated > dodgeRate;
+  }
+
+  private boolean waitSecond(int x) {
+    return(delay+(x*1000) < millis());
+  }
+
+  private void displayEnd() {
+    BattleText1 = "The Enemy Fainted! ";
+    BattleText2 = "You WIN!";
+    isDone = true;
+  }
 }

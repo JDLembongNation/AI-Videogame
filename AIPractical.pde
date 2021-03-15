@@ -261,7 +261,6 @@ void keyPressed()
    }
   }else{
    if(key == 'a'){
-      System.out.println("PEYSAR");
       battleKeys[0] = !battleKeys[0];
    }
    if(key == 'b'){
