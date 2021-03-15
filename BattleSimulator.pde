@@ -65,8 +65,9 @@ public final class BattleSimulator {
       if (!isDone) {
         executeGameTurn(player, enemy);
       } else {
-        BattleText3 = "Press P to continue";
-        if (keys[5] && waitSecond(1)) isFinished = true;
+        
+          BattleText3 = "Press P to continue";
+          if (keys[5] && waitSecond(1)) isFinished = true;
       }
     } else {
       optionA = "Press m to start battle.";

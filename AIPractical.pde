@@ -317,6 +317,7 @@ void keyReleased()
       battleKeys[4] = false;
     }
     if (key == 'p') {
+      System.out.println("SET TO FALSE");
       battleKeys[5] = false;
     }
     if (key == 'm') {
