@@ -3,7 +3,7 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 200000; //At least 50 squares of operating room.
+  final int minArea = 500000; //At least 50 squares of operating room.
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -171,7 +171,7 @@ public final class Map{
     //Dependent on level. 
     BinaryNode treePtr = tree;
     while(treePtr.right!=null) treePtr = treePtr.right; //reach same room as the enemies.
-    for(int i = 0; i < level+2; i++){
+    for(int i = 0; i < level; i++){
       int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
       int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
       enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea));
@@ -218,8 +218,8 @@ public final class Map{
   private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary){
     if(treePtr.left == null && treePtr.right == null){
       //Reached a room. 
-      int chosenX = treePtr.x + (int) random(15,treePtr.widthArea-15);
-      int chosenY = treePtr.y + (int) random(15,treePtr.heightArea-15);
+      int chosenX = treePtr.x + (int) random(30,treePtr.widthArea-30);
+      int chosenY = treePtr.y + (int) random(30,treePtr.heightArea-30);
       int chosenItem = (int) random(0, itemDictionary.size());
       Item it = itemDictionary.get(chosenItem);
       it.position = new PVector(chosenX, chosenY);

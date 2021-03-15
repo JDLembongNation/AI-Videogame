@@ -60,7 +60,9 @@ void caveGUI() {
 void battleGUI() {
   bs.run(player, enemies.get(currentEnemy), battleKeys);
   if (bs.isFinished) {
-    System.out.println("HERE");
+    for(int i = 0; i < battleKeys.length; i++){
+      battleKeys[i] = false; //ISSUE WITH THE KEYRELEASED. KEYRELEASED NOT BEING CALLED IN FUNCTION.
+    }
     if (bs.enemyFaint) {
       bs.reset();
       enemies.remove(currentEnemy);

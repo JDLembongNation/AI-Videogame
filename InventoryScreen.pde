@@ -1,6 +1,7 @@
 final int WIDTH_SIZE_SLOT = 113;
 final int HEIGHT_SIZE_SLOT = 113;
 public final class InventoryScreen {
+  int delay;
   boolean isGrabItem = false;
   Item currentItem;
   Weapon currentWeapon;
@@ -29,6 +30,7 @@ public final class InventoryScreen {
     Weapon weapon;
     int x;
     int y;
+    boolean optionActive;
   }
 
 
@@ -46,6 +48,8 @@ public final class InventoryScreen {
     showDisplay();
     dragPressed();
     dragReleased();
+    onClickSlot();
+    onCheckBox();
   }
 
   public void addItem(Item item) {
@@ -88,6 +92,13 @@ public final class InventoryScreen {
               text("Damage:" + imageSlots[i][j].weapon.damage, imageSlots[i][j].x + 5, imageSlots[i][j].y-10);
             }
           }
+          if (imageSlots[i][j].optionActive) {
+            fill(150, 190);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y-50, 400, 50);
+            fill(130, 210);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y-45, 400, 40);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y-45, 400, 40);
+          }
         }
       }
     }
@@ -101,93 +112,143 @@ public final class InventoryScreen {
     return slot.item!=null;
   }
 
+  void onClickSlot() {
+    if (mousePressed == true && mouseButton == RIGHT && processTime(1)) {
+      for (int i=0; i < imageSlots.length; i++) {
+        for (int j = 0; j < imageSlots[0].length; j++) {
+          if (isSlotHover(imageSlots[i][j]) && imageSlots[i][j].isTaken) {
+            imageSlots[i][j].optionActive = !imageSlots[i][j].optionActive;
+            delay = millis();
+          }
+        }
+      }
+    }
+  } 
+  
+  void onCheckBox(){
+    int removeX = -1;
+    int removeY = -1;
+    for (int i=0; i < imageSlots.length; i++) {
+        for (int j = 0; j < imageSlots[0].length; j++) {
+          if (imageSlots[i][j].optionActive) {
+            if(mousePressed == true && mouseButton == LEFT && processTime(1)){
+              if(mouseX > imageSlots[i][j].x && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT/2  && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5){
+                //USE.
+              }else if(mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5){
+                //DISCARD.
+                System.out.println("YE");
+                removeX = i;
+                removeY = j;
+              }
+            }
+          }
+        }
+      }
+      if(removeX != -1 && removeY!= -1){
+        imageSlots[removeX][removeY].isTaken = false;
+        imageSlots[removeX][removeY].item = null;
+        imageSlots[removeX][removeY].weapon = null;
+        imageSlots[removeX][removeY].optionActive = false;
+      }
+  }
+
+
+
+
   void dragPressed() {
-    if(mousePressed == true && !isGrabItem){
+    if (mousePressed == true && !isGrabItem && mouseButton == LEFT) {
       currentItem = null;
       currentWeapon = null;
-    for (int i=0; i < imageSlots.length; i++) {
-      for (int j = 0; j < imageSlots[0].length; j++) {
-        if (imageSlots[i][j].isTaken) {
-          if (isSlotHover(imageSlots[i][j])) {
-            origin = imageSlots[i][j];
-            isGrabItem = true;
-            if (isItemSlot(imageSlots[i][j])) {
-              currentItem = imageSlots[i][j].item;
-            } else {
-              currentWeapon = imageSlots[i][j].weapon;
+      for (int i=0; i < imageSlots.length; i++) {
+        for (int j = 0; j < imageSlots[0].length; j++) {
+          if (imageSlots[i][j].isTaken) {
+            if (isSlotHover(imageSlots[i][j])) {
+              origin = imageSlots[i][j];
+              isGrabItem = true;
+              if (isItemSlot(imageSlots[i][j])) {
+                currentItem = imageSlots[i][j].item;
+              } else {
+                currentWeapon = imageSlots[i][j].weapon;
+              }
             }
           }
         }
       }
     }
-    }
-    if(isGrabItem){
-      if(isItemSlot(origin)) image(origin.item.inventoryView, mouseX, mouseY);
+    if (isGrabItem) {
+      if (isItemSlot(origin)) image(origin.item.inventoryView, mouseX, mouseY);
       else image(origin.weapon.inventoryView, mouseX, mouseY);
     }
   }
+
+
+
   void dragReleased() {
-    if(mousePressed==false){
-    if (isGrabItem) {
-      isGrabItem = false;
-      for (int i=0; i < imageSlots.length; i++) {
-        for (int j = 0; j < imageSlots[0].length; j++) {
-          if(isSlotHover(imageSlots[i][j])){
-            destination = imageSlots[i][j];
-            if(imageSlots[i][j].isTaken){
-              //REplace Item
-              if(isItemSlot(imageSlots[i][j])){
-                if(currentItem != null){
-                  Item temp = destination.item;
-                  destination.item = currentItem;
-                  origin.item = temp;
-                  return;
-                }else{
-                  Item temp = destination.item;
-                  destination.item = null;
-                  destination.weapon = currentWeapon;
-                  origin.weapon = null;
-                  origin.item = temp;
-                  return;
+    if (mousePressed==false) {
+      if (isGrabItem) {
+        isGrabItem = false;
+        for (int i=0; i < imageSlots.length; i++) {
+          for (int j = 0; j < imageSlots[0].length; j++) {
+            if (isSlotHover(imageSlots[i][j])) {
+              destination = imageSlots[i][j];
+              if (imageSlots[i][j].isTaken) {
+                //REplace Item
+                if (isItemSlot(imageSlots[i][j])) {
+                  if (currentItem != null) {
+                    Item temp = destination.item;
+                    destination.item = currentItem;
+                    origin.item = temp;
+                    return;
+                  } else {
+                    Item temp = destination.item;
+                    destination.item = null;
+                    destination.weapon = currentWeapon;
+                    origin.weapon = null;
+                    origin.item = temp;
+                    return;
+                  }
+                } else {
+                  if (currentItem != null) {
+                    Weapon temp = destination.weapon;
+                    destination.weapon = null;
+                    destination.item = currentItem;
+                    origin.weapon = temp;
+                    origin.item = null;
+                    return;
+                  } else {
+                    Weapon temp = destination.weapon;
+                    destination.weapon = currentWeapon;
+                    origin.weapon = temp;
+                    return;
+                  }
                 }
-              }else{
-                if(currentItem != null){
-                  Weapon temp = destination.weapon;
-                  destination.weapon = null;
+              } else {
+                //Place item
+                destination.isTaken = true;
+                origin.isTaken = false;
+                if (isItemSlot(imageSlots[i][j])) {
                   destination.item = currentItem;
-                  origin.weapon = temp;
                   origin.item = null;
                   return;
-                }else{
-                Weapon temp = destination.weapon;
-                destination.weapon = currentWeapon;
-                origin.weapon = temp;
-                return;
+                } else {
+                  destination.weapon = currentWeapon;
+                  origin.item = null;
+                  return;
                 }
               }
-            }else{
-              //Place item
-              destination.isTaken = true;
-              origin.isTaken = false;
-              if(isItemSlot(imageSlots[i][j])){
-                destination.item = currentItem;
-                origin.item = null;
-                return;
-              }else{
-                destination.weapon = currentWeapon;
-                origin.item = null;
-                return;
             }
           }
+          //Return to original position
         }
+        if (isItemSlot(origin)) origin.item = currentItem;
+        else origin.weapon = currentWeapon;
+        currentItem = null;
+        currentWeapon =null;
       }
-      //Return to original position
     }
-     if(isItemSlot(origin)) origin.item = currentItem;
-      else origin.weapon = currentWeapon;
-      currentItem = null;
-      currentWeapon =null;
   }
-}
+  
+  boolean processTime(int x){
+    return delay+(x*100) < millis();
   }
 }
