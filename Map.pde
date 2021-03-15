@@ -171,7 +171,7 @@ public final class Map{
     //Dependent on level. 
     BinaryNode treePtr = tree;
     while(treePtr.right!=null) treePtr = treePtr.right; //reach same room as the enemies.
-    for(int i = 0; i < level; i++){
+    for(int i = 0; i < level+2; i++){
       int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
       int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
       enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea));
