@@ -29,58 +29,61 @@ public final class Enemy {
     orientation = 0;
     speed = 1;
     max_speed = 3;
-    velocity = new PVector(0,0);
+    velocity = new PVector(0, 0);
     maxHealth = 100;
     health = 100;
     expProvided = 5;
   }
-  
-  public void setAbilities(ArrayList<Ability> abilities){
+
+  public void setAbilities(ArrayList<Ability> abilities) {
     this.abilities = abilities;
   }
 
   public void integrate(PVector player) {
     if (!isPlayerInRoom(player)) {
       roam();
-    }else{
-    if (isChase) {
+    } else {
+      if (isChase) {
         chase(player);
-      //Line Tracing Algorithm. How to avoid walls? once outside of wall territory then dont do anything. Return to normal position.
-    }
-  }
-  }
-  public Ability nextMove(Player player) {
-    ArrayList<Ability> playerAbilities = player.abilities;
-    //Decision Tree. 
-    boolean lowHealth = (health/maxHealth < 0.3);
-    boolean isPlayerLowHealth = (player.health / player.)
-    if(lowHealth) {
-      return findBestAttackMove();
-      //Low Health
-    }else{
-      //High Health
-      if(random(0,1) < 0.4){
-        return findBestAttackMove();
-        //Attack
-      }else{
-         if(random(0,1) < 0.5){
-           return findBestStatChange(true);
-         }else{
-           return findBestStatChange(false);
-         }
+        //Line Tracing Algorithm. How to avoid walls? once outside of wall territory then dont do anything. Return to normal position.
       }
     }
-      //
   }
-  
-  private Ability findBestStatChange(boolean isSelf){
+  public Ability nextMove(Player player) {
+    //Decision Tree. 
+    boolean lowHealth = (health/maxHealth < 0.3);
+    boolean isPlayerLowHealth = (player.health / player.maxHealth < 0.3);
+    if (lowHealth) {
+      return findBestAttackMove();
+      //Low Health
+    } else {
+      if (isPlayerLowHealth) {
+        return findBestAttackMove();
+      } else {
+        //High Health
+        if (random(0, 1) < 0.4) {
+          return findBestAttackMove();
+          //Attack
+        } else {
+          if (random(0, 1) < 0.5) {
+            return findBestStatChange(true);
+          } else {
+            return findBestStatChange(false);
+          }
+        }
+      }
+    }
+    //
+  }
+
+  private Ability findBestStatChange(boolean isSelf) {
     return abilities.get(0);
   }
-  
-  private Ability findBestAttackMove(){
+
+  private Ability findBestAttackMove() {
     return abilities.get(0);
   }
-  
+
 
   private boolean isPlayerInRoom(PVector player) {
     return (player.x > rangePoint.x && player.x < (rangePoint.x + rangeWidth) && player.y > rangePoint.y && player.y < (rangePoint.y + rangeHeight));
@@ -121,29 +124,27 @@ public final class Enemy {
     direction.normalize();
     direction.mult(speed);
     velocity.add(direction);
-    if(velocity.mag() > max_speed){
+    if (velocity.mag() > max_speed) {
       velocity.normalize();
       velocity.mult(max_speed);
     }
     position.add(velocity);
     //Add barriers here if necessary for edges. BUt should not be needed.
     float targetOrientation = atan2(velocity.y, velocity.x);
-        // if it's less than me, then how much if up to PI less, decrease otherwise increase
+    // if it's less than me, then how much if up to PI less, decrease otherwise increase
     if (targetOrientation < orientation) {
       if (orientation - targetOrientation < PI) orientation -= ORIENTATION_INCREMENT ;
       else orientation += ORIENTATION_INCREMENT ;
-    }
-    else {
-     if (targetOrientation - orientation < PI) orientation += ORIENTATION_INCREMENT ;
-     else orientation -= ORIENTATION_INCREMENT ; 
-    }
-    
-    // Keep in bounds
-    if (orientation > PI) orientation -= 2*PI ;
-    else if (orientation < -PI) orientation += 2*PI ; 
-      
+    } else {
+      if (targetOrientation - orientation < PI) orientation += ORIENTATION_INCREMENT ;
+      else orientation -= ORIENTATION_INCREMENT ;
     }
 
+    // Keep in bounds
+    if (orientation > PI) orientation -= 2*PI ;
+    else if (orientation < -PI) orientation += 2*PI ;
+  }
+
   private void returnToRoom() {
-  }  
+  }
 }
