@@ -8,7 +8,9 @@
            "isPhysical": true,
            "neverMiss":false,
            "isFlee":false,
-           "levelObtained": 1
+           "levelObtained": 1,
+           "isSelf":false,
+           "isDamage":true
         },
         {
             "name": "Lunge",
@@ -18,7 +20,21 @@
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 2
+            "levelObtained": 2,
+            "isSelf":false,
+            "isDamage":true
+         },
+         {
+            "name": "Wheeze",
+            "description": "Enemies assume you have not been vaccinated. Reduce Enemy accuracy by 50",
+            "damage": 50,
+            "accuracy": 95,
+            "isPhysical": false,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": 3,
+            "isSelf":false,
+            "isDamage":true
          },
          {
             "name": "Slash",
@@ -28,17 +44,9 @@
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 3
-         },
-         {
-            "name": "Slash",
-            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
-            "damage": 50,
-            "accuracy": 95,
-            "isPhysical": true,
-            "neverMiss":false,
-            "isFlee":false,
-            "levelObtained": 4
+            "levelObtained": 4,
+            "isSelf":true,
+            "isDamage":false
          }
     ],
     "Items":[

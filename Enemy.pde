@@ -76,12 +76,28 @@ public final class Enemy {
     //
   }
 
-  private Ability findBestStatChange(boolean isSelf) {
-    return abilities.get(0);
+  private Ability findBestStatChange(boolean self) {
+    Ability current = null;
+    for (int i = 0; i < abilities.size(); i++) {
+      if(current == null && !abilities.get(i).isDamage && (abilities.get(i).isSelf == self)){
+        current = abilities.get(i);
+      }
+      if (!abilities.get(i).isDamage &&(abilities.get(i).isSelf == self) &&current!= null&&current.damage < abilities.get(i).damage) {
+        current = abilities.get(i);
+      }
+    }
+    return current;
   }
 
   private Ability findBestAttackMove() {
-    return abilities.get(0);
+    Ability current = null;
+    for (int i = 0; i < abilities.size(); i++) {
+      if(current == null && abilities.get(i).isDamage) current = abilities.get(i);
+      else if (abilities.get(i).isDamage && current!=null && current.damage < abilities.get(i).damage) {
+        current = abilities.get(i);
+      }
+    }
+    return current;
   }
 
 
