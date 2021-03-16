@@ -1,5 +1,5 @@
 public final class Item{
-  private boolean isConsumable;
+   boolean isConsumable;
   private boolean isTreasure;
   private boolean isStatChanger;
   private String name;

@@ -49,7 +49,7 @@ public final class InventoryScreen {
     dragPressed();
     dragReleased();
     onClickSlot();
-    onCheckBox();
+    onCheckBox(player);
     showStats(player);
   }
 
@@ -129,32 +129,49 @@ public final class InventoryScreen {
       }
     }
   } 
-  
-  void onCheckBox(){
+
+  void onCheckBox(Player player) {
     int removeX = -1;
     int removeY = -1;
     for (int i=0; i < imageSlots.length; i++) {
-        for (int j = 0; j < imageSlots[0].length; j++) {
-          if (imageSlots[i][j].optionActive) {
-            if(mousePressed == true && mouseButton == LEFT && processTime(1)){
-              if(mouseX > imageSlots[i][j].x && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT/2  && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5){
-                //USE.
-              }else if(mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5){
-                //DISCARD.
-                removeX = i;
-                removeY = j;
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (imageSlots[i][j].optionActive) {
+          if (mousePressed == true && mouseButton == LEFT && processTime(1)) {
+            if (mouseX > imageSlots[i][j].x && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT/2  && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5) {
+              if(isItemSlot(imageSlots[i][j])){
+                if(imageSlots[i][j].item.isConsumable){
+                  removeX= i;
+                  removeY = j;
+                  if(imageSlots[i][j].item.isStatChanger){
+                    //change stat.
+                  }else{
+                    //change health 
+                    player.health += imageSlots[i][j].item.value;
+                    if(player.health > player.maxHealth) player.health = player.maxHealth;
+                  }
+                }
+              }else{
+                //Is weapon. Just equip.
               }
+            } else if (mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5) {
+              //DISCARD.
+              removeX = i;
+              removeY = j;
             }
           }
         }
       }
-      if(removeX != -1 && removeY!= -1){
-        imageSlots[removeX][removeY].isTaken = false;
-        imageSlots[removeX][removeY].item = null;
-        imageSlots[removeX][removeY].weapon = null;
-        imageSlots[removeX][removeY].optionActive = false;
-      }
+    }
+    if (removeX != -1 && removeY!= -1) {
+      imageSlots[removeX][removeY].isTaken = false;
+      imageSlots[removeX][removeY].item = null;
+      imageSlots[removeX][removeY].weapon = null;
+      imageSlots[removeX][removeY].optionActive = false;
+    }
   }
+  
+  
+  
 
 
 
@@ -252,21 +269,18 @@ public final class InventoryScreen {
       }
     }
   }
-  
-  void showStats(Player player){
+
+  void showStats(Player player) {
     fill(0);
     textSize(20);
     text("Health: " + player.health + "/" + player.maxHealth, 300, 230);
-    
     text("Armor: " + player.armor, 300, 260);
-        text("Speed: " + player.speed, 300, 290);
-        text("Dodge Rate: " + player.dodgeRate, 300, 320);
-        text("Spell Power: " + player.spellPower, 300, 350);
-                text("Attack Power: " + player.attackPower, 300, 380);
-
-
+    text("Speed: " + player.speed, 300, 290);
+    text("Dodge Rate: " + player.dodgeRate, 300, 320);
+    text("Spell Power: " + player.spellPower, 300, 350);
+    text("Attack Power: " + player.attackPower, 300, 380);
   }
-  boolean processTime(int x){
+  boolean processTime(int x) {
     return delay+(x*100) < millis();
   }
 }
