@@ -195,10 +195,9 @@ public final class BattleSimulator {
   }
 
   private boolean didLandHit(Ability ability, float dodgeRate) {
-    return true;
-    //float generated = random(0, 1);
-    //if (ability.neverMiss) return true;
-    //else return generated > dodgeRate;
+    float generated = random(0, 1);
+    if (ability.neverMiss) return true;
+    else return generated > dodgeRate;
   }
 
   private boolean waitSecond(int x) {

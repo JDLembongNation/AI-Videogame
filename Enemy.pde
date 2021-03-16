@@ -5,7 +5,7 @@ public final class Enemy {
   int health;
   int attackPower;
   int spellPower;
-  int dodgeRate;
+  float dodgeRate;
   PVector position;
   PVector velocity;
   PVector initialPosition;
@@ -33,6 +33,7 @@ public final class Enemy {
     maxHealth = 100;
     health = 100;
     expProvided = 5;
+    dodgeRate=0.2;
   }
 
   public void setAbilities(ArrayList<Ability> abilities) {
