@@ -152,6 +152,8 @@ public final class InventoryScreen {
                 }
               }else{
                 //Is weapon. Just equip.
+                player.weapon = imageSlots[i][j].weapon;
+                //TODO: Have option to unequip as well. 
               }
             } else if (mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5) {
               //DISCARD.
@@ -279,6 +281,14 @@ public final class InventoryScreen {
     text("Dodge Rate: " + player.dodgeRate, 300, 320);
     text("Spell Power: " + player.spellPower, 300, 350);
     text("Attack Power: " + player.attackPower, 300, 380);
+    if(player.weapon == null){
+    text("No Item Equipped:" , 600, 260 );
+    }else{
+        text("Item Equipped: " + player.weapon.name , 550, 260 );
+
+    }
+   
+    
   }
   boolean processTime(int x) {
     return delay+(x*100) < millis();

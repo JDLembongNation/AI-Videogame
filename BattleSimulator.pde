@@ -167,10 +167,9 @@ public final class BattleSimulator {
 
   //Can toggle if too small of a chance. 
   private boolean canRun(Player player, Enemy enemy) {
-    //float option = random(0,player.speed);
-    //float enemyChance = random(0, enemy.speed);
-    // return (option > enemyChance);
-    return true;
+    float option = random(0,player.speed);
+    float enemyChance = random(0, enemy.speed);
+     return (option > enemyChance);
   }
 
   private void didSomeoneDie(Player player, Enemy enemy) {
@@ -179,12 +178,20 @@ public final class BattleSimulator {
   }
 
   private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
+    float damageDealt = 0;
     if (isPlayerOneTurn) {
-      enemy.health -= ability.damage;
+      if(player.weapon!=null){
+        damageDealt = ability.damage * (1+(player.weapon.damage/100));
+        
+      }else{
+        damageDealt = ability.damage;
+      }
+      enemy.health -= damageDealt;
     } else {
-      player.health -= ability.damage;
+      damageDealt = ability.damage;
+      player.health -= damageDealt;
     }
-    return ability.damage;
+    return damageDealt;
   }
 
   private boolean didLandHit(Ability ability, float dodgeRate) {

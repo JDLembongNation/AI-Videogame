@@ -4,6 +4,7 @@ final float MAX_SPEED = 10f;
 public final class Player {
    ArrayList<Item> inventory;
    ArrayList<Ability> abilities;
+   Weapon weapon;
    float health; 
    float armor;
    float maxHealth;
@@ -64,6 +65,9 @@ public final class Player {
   
   public void addAbilities(ArrayList<Ability> abilities ){
     this.abilities = abilities;
+  }
+  public void assignWeapon(Weapon weapon){
+    this.weapon = weapon;
   }
   
 }
