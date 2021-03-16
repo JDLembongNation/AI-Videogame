@@ -37,13 +37,13 @@
             "levelObtained": 3,
             "isSelf":false,
             "isDamage":true,
-            "isReduceDamage":false
+            "isDefense":false
          },
          {
             "name": "Build A door",
             "description": "Build a door from scratch to reduce incoming enemy attack damage",
-            "damage": 5,
-            "accuracy": 95,
+            "damage": 0.25,
+            "accuracy": 100,
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,

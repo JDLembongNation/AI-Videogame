@@ -10,6 +10,7 @@ public final class Player {
    float armor;
    float maxHealth;
    float attackPower; //ATK in Pokemon equivalent
+   float defense;
    float speed;
    float dodgeRate;
    float spellPower;  //Sp ATK in Pokemon equivalent.
@@ -34,6 +35,7 @@ public final class Player {
     this.dodgeRate = 0.5;
     this.maxHealth = 500;
     this.health = maxHealth;
+    this.defense = 1;
 }
   
   public void integrate(float force, float targetOrientation){

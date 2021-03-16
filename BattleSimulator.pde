@@ -200,9 +200,9 @@ public final class BattleSimulator {
     if (isPlayerOneTurn) {
       if(ability.isDamage){
       if(player.weapon!=null){
-        damageDealt = ability.damage * (1+(player.weapon.damage/100));
+        damageDealt = (ability.damage * (1+(player.weapon.damage/100)))/enemy.defense;
       }else{
-        damageDealt = ability.damage;
+        damageDealt = ability.damage / enemy.defense;
       }
       enemy.health -= damageDealt;
       }else{
@@ -210,21 +210,46 @@ public final class BattleSimulator {
       if(ability.isSelf){
         if(ability.isDefense){
           //Increase Defense
+           player.defense += ability.damage;
         }else{
-          //Increase Offense
+          //Increase Damage. Use Spells? Special Attack and Defense?
+          player.attackPower += ability.damage;
         }
       }else{
         if(ability.isDefense){
           //Decrease Enemy Defense
+          enemy.defense -= ability.damage;
+          if(enemy.defense < 0.25) enemy.defense = 0.25;
         }else{
           //Decrease Enemy Offense
+          enemy.attackPower -= ability.damage;
+          if(enemy.attackPower < 0.25) enemy.attackPower = 0.25;
           }
         }
         damageDealt = -1; //Identifier for not Attack Move.
       }
     }else {
-      damageDealt = ability.damage;
-      player.health -= damageDealt;
+      if(ability.isDamage){
+        damageDealt = ability.damage/player.defense;
+        player.health -= damageDealt;
+      }else{
+        //Stat Change
+        if(ability.isSelf){
+          if(ability.isDefense){
+            enemy.defense += ability.damage;
+          }else{
+            enemy.attackPower += ability.damage;
+          }
+        }else{
+          if(ability.isDefense){
+            player.defense -= ability.damage;
+            if(player.defense < 0.25) player.defense = 0.25;
+          }else{
+            player.attackPower -= ability.damage;
+            if(player.attackPower < 0.25) player.attackPower = 0.25;
+          }
+        }
+      }
     }
     return damageDealt;
   }

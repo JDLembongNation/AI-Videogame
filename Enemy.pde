@@ -3,13 +3,14 @@ public final class Enemy {
   int difficulty;
   boolean isChase = true;
   int health;
-  int attackPower;
-  int spellPower;
+  float attackPower;
+  float spellPower;
   float dodgeRate;
   PVector position;
   PVector velocity;
   PVector initialPosition;
   float orientation;
+  float defense;
   float rotation;
   int rangeWidth;
   int maxHealth;
@@ -34,6 +35,7 @@ public final class Enemy {
     health = 100;
     expProvided = 10;
     dodgeRate=0.2;
+    defense = 1;
   }
 
   public void setAbilities(ArrayList<Ability> abilities) {
