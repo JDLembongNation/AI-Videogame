@@ -54,27 +54,30 @@ public final class Enemy {
     //Decision Tree. 
     boolean lowHealth = (health/maxHealth < 0.3);
     boolean isPlayerLowHealth = (player.health / player.maxHealth < 0.3);
+    Ability ability;
     if (lowHealth) {
-      return findBestAttackMove();
-      //Low Health
+      ability = findBestAttackMove();
+  //Low Health
     } else {
       if (isPlayerLowHealth) {
-        return findBestAttackMove();
+      ability = findBestAttackMove();
       } else {
         //High Health
         if (random(0, 1) < 0.4) {
-          return findBestAttackMove();
+           ability = findBestAttackMove();
           //Attack
         } else {
           if (random(0, 1) < 0.5) {
-            return findBestStatChange(true);
+            ability= findBestStatChange(true);
           } else {
-            return findBestStatChange(false);
+            ability = findBestStatChange(false);
           }
         }
       }
     }
     //
+    if(ability == null) return abilities.get(0);
+    return ability;
   }
 
   private Ability findBestStatChange(boolean self) {

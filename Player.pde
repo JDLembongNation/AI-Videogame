@@ -4,6 +4,7 @@ final float MAX_SPEED = 10f;
 public final class Player {
    ArrayList<Item> inventory;
    ArrayList<Ability> abilities;
+   ArrayList<Ability> availableAbilities;
    Weapon weapon;
    float health; 
    float armor;
@@ -58,7 +59,7 @@ public final class Player {
       expNeeded += level * 10;
       attackPower++;
       spellPower++;
-      dodgeRate++;
+      dodgeRate+=0.1;
       speed++;
       return true;
     }

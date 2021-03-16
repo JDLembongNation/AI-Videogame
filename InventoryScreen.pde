@@ -281,11 +281,12 @@ public final class InventoryScreen {
     text("Dodge Rate: " + player.dodgeRate, 300, 320);
     text("Spell Power: " + player.spellPower, 300, 350);
     text("Attack Power: " + player.attackPower, 300, 380);
+    text("Level: " + player.level, 550, 290);
+    text("Exp: " + player.exp +"/"+player.expNeeded, 550, 320);
     if(player.weapon == null){
     text("No Item Equipped:" , 600, 260 );
     }else{
         text("Item Equipped: " + player.weapon.name , 550, 260 );
-
     }
    
     
