@@ -94,10 +94,14 @@ public final class InventoryScreen {
           }
           if (imageSlots[i][j].optionActive) {
             fill(150, 190);
-            rect(imageSlots[i][j].x, imageSlots[i][j].y-50, 400, 50);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y-50, 113, 50);
             fill(130, 210);
-            rect(imageSlots[i][j].x, imageSlots[i][j].y-45, 400, 40);
-            rect(imageSlots[i][j].x, imageSlots[i][j].y-45, 400, 40);
+            rect(imageSlots[i][j].x, imageSlots[i][j].y-45, 60, 40);
+            rect(imageSlots[i][j].x + 55, imageSlots[i][j].y-45, 60, 40);
+            fill(255);
+            textSize(15);
+            text("Equip", imageSlots[i][j].x + 5, imageSlots[i][j].y -35);
+            text("Drop", imageSlots[i][j].x + 55, imageSlots[i][j].y - 35);
           }
         }
       }
@@ -136,7 +140,6 @@ public final class InventoryScreen {
                 //USE.
               }else if(mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5){
                 //DISCARD.
-                System.out.println("YE");
                 removeX = i;
                 removeY = j;
               }
@@ -226,8 +229,9 @@ public final class InventoryScreen {
                 //Place item
                 destination.isTaken = true;
                 origin.isTaken = false;
-                if (isItemSlot(imageSlots[i][j])) {
+                if (isItemSlot(origin)) {
                   destination.item = currentItem;
+                  System.out.println(destination.item.name);
                   origin.item = null;
                   return;
                 } else {
