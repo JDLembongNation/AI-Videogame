@@ -51,15 +51,18 @@ public final class Player {
     else if(orientation < -PI) orientation +=2*PI;
   }
   
-  public void addExp(){
-    if(exp > expNeeded){
+  public boolean addExp(int newExp){
+    exp +=newExp;
+    if(exp >= expNeeded){
       level++;
       expNeeded += level * 10;
       attackPower++;
       spellPower++;
       dodgeRate++;
       speed++;
+      return true;
     }
+    return false;
     
   }
   

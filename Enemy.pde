@@ -32,7 +32,7 @@ public final class Enemy {
     velocity = new PVector(0, 0);
     maxHealth = 100;
     health = 100;
-    expProvided = 5;
+    expProvided = 10;
     dodgeRate=0.2;
   }
 

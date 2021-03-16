@@ -117,7 +117,7 @@ public final class BattleSimulator {
         }
         didSomeoneDie(player, enemy);
         if (enemyFaint) {
-          displayEnd();
+          displayEnd(player, enemy);
         }
       }
       //UNDEFINED BEHAVIOUR HERE. TAKE A LOOK
@@ -222,9 +222,11 @@ public final class BattleSimulator {
     return(delay+(x*1000) < millis());
   }
 
-  private void displayEnd() {
+  private void displayEnd(Player player, Enemy enemy) {
     BattleText1 = "The Enemy Fainted! ";
-    BattleText2 = "You WIN!";
+    BattleText2 = "You Gained " + enemy.expProvided + " exp points!";
+    boolean isLevelUp = player.addExp(enemy.expProvided);
+    if(isLevelUp) BattleText2 = "You leveled up to: " + player.level;
     isDone = true;
     delay = millis();
   }
