@@ -10,7 +10,8 @@
            "isFlee":false,
            "levelObtained": 1,
            "isSelf":false,
-           "isDamage":true
+           "isDamage":true,
+           "isReduceDamage":false
         },
         {
             "name": "Lunge",
@@ -22,7 +23,8 @@
             "isFlee":false,
             "levelObtained": 2,
             "isSelf":false,
-            "isDamage":true
+            "isDamage":true,
+            "isReduceDamage":false
          },
          {
             "name": "Wheeze",
@@ -34,19 +36,21 @@
             "isFlee":false,
             "levelObtained": 3,
             "isSelf":false,
-            "isDamage":true
+            "isDamage":true,
+            "isReduceDamage":false
          },
          {
-            "name": "Slash",
-            "description": "Attack your foe with a large slashing motion. Deals extra damage if weapon is equipped",
-            "damage": 50,
+            "name": "Build A door",
+            "description": "Build a door from scratch to reduce incoming enemy attack damage",
+            "damage": 5,
             "accuracy": 95,
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
             "levelObtained": 4,
             "isSelf":true,
-            "isDamage":false
+            "isDamage":false,
+            "isReduceDamage":true
          }
     ],
     "Items":[

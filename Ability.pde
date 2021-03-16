@@ -9,6 +9,7 @@ public final class Ability{
   private int levelObtained;
   boolean isSelf;
   boolean isDamage;
+  boolean isDefense;
   public Ability(){
     name = "peysar";
     description = "Some pey";
@@ -16,7 +17,8 @@ public final class Ability{
     isPhysical = true;
 
   }
-  public Ability(String name, String description, float damage, boolean isPhysical, float accuracy, boolean neverMiss, boolean isFlee, int levelObtained, boolean isSelf, boolean isDamage){
+  public Ability(String name, String description, float damage, boolean isPhysical, float accuracy, 
+  boolean neverMiss, boolean isFlee, int levelObtained, boolean isSelf, boolean isDamage, boolean isDefense){
     this.name = name;
     this.description = description;
     this.damage = damage;
@@ -27,5 +29,6 @@ public final class Ability{
     this.levelObtained = levelObtained;
     this.isSelf= isSelf;
     this.isDamage = isDamage;
+    this.isDefense = isDefense;
   }
 }

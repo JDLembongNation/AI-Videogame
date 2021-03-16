@@ -97,8 +97,8 @@ public final class BattleSimulator {
         if (abilityInPlay!=null) {
           //Ability has been chosen. 
           if (didLandHit(abilityInPlay, enemy.dodgeRate)) {
-            BattleText2 = "The Ability Hit the Enemy!";
             float dmg  = calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
+                        BattleText2 = "The Ability Hit the Enemy!";
             BattleText3 = "" + dmg +" was dealt to the enemy!" ;
           } else {
             BattleText1 = "You missed!";
@@ -198,14 +198,31 @@ public final class BattleSimulator {
   private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {
     float damageDealt = 0;
     if (isPlayerOneTurn) {
+      if(ability.isDamage){
       if(player.weapon!=null){
         damageDealt = ability.damage * (1+(player.weapon.damage/100));
-        
       }else{
         damageDealt = ability.damage;
       }
       enemy.health -= damageDealt;
-    } else {
+      }else{
+      //Is Stat Changer
+      if(ability.isSelf){
+        if(ability.isDefense){
+          //Increase Defense
+        }else{
+          //Increase Offense
+        }
+      }else{
+        if(ability.isDefense){
+          //Decrease Enemy Defense
+        }else{
+          //Decrease Enemy Offense
+          }
+        }
+        damageDealt = -1; //Identifier for not Attack Move.
+      }
+    }else {
       damageDealt = ability.damage;
       player.health -= damageDealt;
     }
