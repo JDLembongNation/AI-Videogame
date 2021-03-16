@@ -94,7 +94,6 @@ public final class BattleSimulator {
       if (!chosen) {
         playerTurn(player);
       } else {
-        if (isFleeSuccess) isFinished = true;
         if (abilityInPlay!=null) {
           //Ability has been chosen. 
           if (didLandHit(abilityInPlay, enemy.dodgeRate)) {
@@ -106,6 +105,15 @@ public final class BattleSimulator {
           }
           alreadyHit = !alreadyHit;
           delay = millis();
+        }else{
+          //Attempted to run. 
+          if(canRun(player, enemy)){
+            isFinished = true; //Directly finish.
+          }else{
+            BattleText1 = "Cant Escape!";
+            alreadyHit = !alreadyHit;
+            delay = millis();
+          }
         }
         didSomeoneDie(player, enemy);
         if (enemyFaint) {
@@ -114,7 +122,6 @@ public final class BattleSimulator {
       }
       //UNDEFINED BEHAVIOUR HERE. TAKE A LOOK
     } else if (!isPlayerOneTurn && !enemyAlreadyHit) {
-      if (!displayTime) {
         enemyTurn(player, enemy);
         didSomeoneDie(player, enemy);
         displayTime = true;
@@ -123,9 +130,9 @@ public final class BattleSimulator {
         if (playerFaint){
           displayPlayerEnd();
         }
-      }
     }
     if (waitSecond(3) && alreadyHit) { //Delay for a few seconds to display ENemy Move
+      abilityInPlay = null;
       isPlayerOneTurn = false;
       alreadyHit = false;
       delay = millis();
@@ -140,21 +147,29 @@ public final class BattleSimulator {
     optionA = "A) " + player.abilities.get(0).name;
     optionB = "B) " + player.abilities.get(1).name;
     optionC = "C) " + player.abilities.get(2).name;
-    optionD = "D) Run!"; 
+    optionD = "D) " + player.abilities.get(3).name;
+    optionE = "E) Run!"; 
     if (keys[0]) {
       abilityInPlay = player.abilities.get(0);
       chosen = true;
     }
     if (keys[1]) {
+      abilityInPlay = player.abilities.get(1);
       chosen = true;
     }
     if (keys[2]) {
+            abilityInPlay = player.abilities.get(2);
+
       chosen = true;
     }
     if (keys[3]) {
+            abilityInPlay = player.abilities.get(3);
       chosen = true;
-      isFleeSuccess = true;
     }
+    if(keys[4]){
+      //RUN.
+      chosen = true;
+    } 
   }
   private void enemyTurn(Player player, Enemy enemy) {
     BattleText1 = "Enemy Turn!";
@@ -162,6 +177,9 @@ public final class BattleSimulator {
     if (didLandHit(abilityInPlay, player.dodgeRate)) {
       float dmg = calculateDamage(player, enemy, abilityInPlay, isPlayerOneTurn);
       BattleText2 = dmg + " was dealt to you!";
+    }else{
+      BattleText2 = "The enemy missed their attack!";
+
     }
   }
 
@@ -169,7 +187,7 @@ public final class BattleSimulator {
   private boolean canRun(Player player, Enemy enemy) {
     float option = random(0,player.speed);
     float enemyChance = random(0, enemy.speed);
-     return (option > enemyChance);
+     return (option < enemyChance);
   }
 
   private void didSomeoneDie(Player player, Enemy enemy) {
