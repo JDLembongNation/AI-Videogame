@@ -30,6 +30,8 @@ public final class Player {
     this.expNeeded = 10;
     this.speed = 40;
     this.dodgeRate = 0.5;
+    this.maxHealth = 500;
+    this.health = maxHealth;
 }
   
   public void integrate(float force, float targetOrientation){

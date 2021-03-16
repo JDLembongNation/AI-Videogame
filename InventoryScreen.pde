@@ -35,7 +35,7 @@ public final class InventoryScreen {
 
 
 
-  public void showInventory() {
+  public void showInventory(Player player) {
     image(backgroundImage, 0, 0);
     for (int i=0; i < imageSlots.length; i++) {
       for (int j = 0; j < imageSlots[0].length; j++) {
@@ -50,6 +50,7 @@ public final class InventoryScreen {
     dragReleased();
     onClickSlot();
     onCheckBox();
+    showStats(player);
   }
 
   public void addItem(Item item) {
@@ -252,6 +253,19 @@ public final class InventoryScreen {
     }
   }
   
+  void showStats(Player player){
+    fill(0);
+    textSize(20);
+    text("Health: " + player.health + "/" + player.maxHealth, 300, 230);
+    
+    text("Armor: " + player.armor, 300, 260);
+        text("Speed: " + player.speed, 300, 290);
+        text("Dodge Rate: " + player.dodgeRate, 300, 320);
+        text("Spell Power: " + player.spellPower, 300, 350);
+                text("Attack Power: " + player.attackPower, 300, 380);
+
+
+  }
   boolean processTime(int x){
     return delay+(x*100) < millis();
   }

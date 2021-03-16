@@ -33,6 +33,8 @@ void setup() {
   player = new Player(100, 100, 0);
   images = new PImage[19];
   readInContent();
+
+
   bs = new BattleSimulator();
   bs.reset();
 }
@@ -42,7 +44,7 @@ void draw() {
     battleGUI();
   } else { 
     caveGUI();
-    if (keys[4]) inventory.showInventory();
+    if (keys[4]) inventory.showInventory(player);
   }
 }
 
