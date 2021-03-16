@@ -120,7 +120,9 @@ public final class BattleSimulator {
         displayTime = true;
         enemyAlreadyHit = true;
         delay = millis();
-        if (playerFaint) return;
+        if (playerFaint){
+          displayPlayerEnd();
+        }
       }
     }
     if (waitSecond(3) && alreadyHit) { //Delay for a few seconds to display ENemy Move
@@ -199,6 +201,13 @@ public final class BattleSimulator {
   private void displayEnd() {
     BattleText1 = "The Enemy Fainted! ";
     BattleText2 = "You WIN!";
+    isDone = true;
+    delay = millis();
+  }
+  
+  private void displayPlayerEnd(){
+    BattleText1 = "You Fainted!";
+    BattleText2 = "You LOSE!";
     isDone = true;
     delay = millis();
   }

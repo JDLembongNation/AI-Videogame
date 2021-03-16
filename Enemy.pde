@@ -12,11 +12,11 @@ public final class Enemy {
   float orientation;
   float rotation;
   int rangeWidth;
+  int maxHealth;
   int rangeHeight;
   int speed;
   int expProvided;
   int max_speed;
-  private PVector linear;
   PVector rangePoint;
   ArrayList<Ability> abilities;
   public Enemy(PVector initialPosition, PVector rangePoint, int rangeWidth, int rangeHeight) {
@@ -30,7 +30,9 @@ public final class Enemy {
     speed = 1;
     max_speed = 3;
     velocity = new PVector(0,0);
+    maxHealth = 100;
     health = 100;
+    expProvided = 5;
   }
   
   public void setAbilities(ArrayList<Ability> abilities){
@@ -48,8 +50,37 @@ public final class Enemy {
   }
   }
   public Ability nextMove(Player player) {
+    ArrayList<Ability> playerAbilities = player.abilities;
+    //Decision Tree. 
+    boolean lowHealth = (health/maxHealth < 0.3);
+    boolean isPlayerLowHealth = (player.health / player.)
+    if(lowHealth) {
+      return findBestAttackMove();
+      //Low Health
+    }else{
+      //High Health
+      if(random(0,1) < 0.4){
+        return findBestAttackMove();
+        //Attack
+      }else{
+         if(random(0,1) < 0.5){
+           return findBestStatChange(true);
+         }else{
+           return findBestStatChange(false);
+         }
+      }
+    }
+      //
+  }
+  
+  private Ability findBestStatChange(boolean isSelf){
     return abilities.get(0);
   }
+  
+  private Ability findBestAttackMove(){
+    return abilities.get(0);
+  }
+  
 
   private boolean isPlayerInRoom(PVector player) {
     return (player.x > rangePoint.x && player.x < (rangePoint.x + rangeWidth) && player.y > rangePoint.y && player.y < (rangePoint.y + rangeHeight));

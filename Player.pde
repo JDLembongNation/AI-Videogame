@@ -6,6 +6,7 @@ public final class Player {
    ArrayList<Ability> abilities;
    float health; 
    float armor;
+   float maxHealth;
    float attackPower; //ATK in Pokemon equivalent
    float speed;
    float dodgeRate;
