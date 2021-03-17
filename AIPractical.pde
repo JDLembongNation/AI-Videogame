@@ -94,6 +94,12 @@ void drawMap() {
         fill(180, 50, 190);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         end = new PVector(i*20, j*20);
+      }if(currentMap[i][j].debug){
+        fill(240, 24, 25);
+        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+      }if(currentMap[i][j].bigDebug){
+        fill(240, 240, 25);
+        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
       }
     }
   }
