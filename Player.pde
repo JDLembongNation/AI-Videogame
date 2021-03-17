@@ -31,7 +31,7 @@ public final class Player {
     this.level = 1;
     this.exp = 0;
     this.expNeeded = 10;
-    this.speed = 40;
+    this.speed = 3;
     this.dodgeRate = 0.5;
     this.maxHealth = 500;
     this.health = maxHealth;

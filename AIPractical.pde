@@ -31,7 +31,7 @@ void setup() {
   map.generateNewCave();
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
-  images = new PImage[19];
+  images = new PImage[22];
   readInContent();
 
 
@@ -168,7 +168,6 @@ void collisionCheck() {
   } else {
     positionY +=(20-positionY%20);
   } 
-  /* DEBUG. PLEASE REMOVE LATER
    // == FOR WALLS == 
    int i = positionX/20;
    int j = positionY/20;
@@ -193,7 +192,7 @@ void collisionCheck() {
    if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
    }
    }
-   */
+   
   // == FOR ITEMS ==
   int remove = -1;
   for (int w = 0; w < items.size(); w++) {
@@ -251,12 +250,12 @@ void drawItemsWeapons() {
 }
 
 void move() {
-  if (keys[0] && keys[2]) player.integrate(5, 0.02);
-  if (keys[0] && keys[3]) player.integrate(5, -0.02);
-  if (keys[1] && keys[2])player.integrate(-5, 0.02);
-  if (keys[1] && keys[3])player.integrate(-5, -0.02);
-  if (keys[0]) player.integrate(5, 0);
-  if (keys[1]) player.integrate(-5, 0);
+  if (keys[0] && keys[2]) player.integrate(1, 0.02);
+  if (keys[0] && keys[3]) player.integrate(1, -0.02);
+  if (keys[1] && keys[2])player.integrate(-1, 0.02);
+  if (keys[1] && keys[3])player.integrate(-1, -0.02);
+  if (keys[0]) player.integrate(2, 0);
+  if (keys[1]) player.integrate(-2, 0);
   if (keys[2]) player.integrate(0, 0.08);
   if (keys[3]) player.integrate(0, -0.08);
 }
@@ -368,6 +367,9 @@ void readInContent() {
   images[16] = loadImage("./Content/cave-icons/paddle.png");
   images[17] = loadImage("./Content/inventory-icons/treasure.png");
   images[18] = loadImage("./Content/cave-icons/treasure.png");
+  images[19] = loadImage("./Content/cave-icons/walkable.png");
+  images[20] = loadImage("./Content/cave-icons/wall-horizontal.png");
+  images[21] = loadImage("./Content/cave-icons/wall-vertical.png");
 
   HashMap<String, Integer> imageInventoryRef = new HashMap<String, Integer>();
   imageInventoryRef.put("stat-potion", 1);
