@@ -31,7 +31,7 @@ void setup() {
   map.generateNewCave();
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
-  images = new PImage[22];
+  images = new PImage[23];
   readInContent();
 
 
@@ -84,16 +84,17 @@ void drawMap() {
       if (!currentMap[i][j].isWalkable) {
         fill(20);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }
-      if (currentMap[i][j].isStartingPosition) {
+      }else if (currentMap[i][j].isStartingPosition) {
         fill(50, 50, 190);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         player.startingPosition = new PVector(i*20, j*20);
-      }
-      if (currentMap[i][j].isEndPosition) {
+      }else if (currentMap[i][j].isEndPosition) {
         fill(180, 50, 190);
-        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+        image(images[22], i*20, j*20);
+        //rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         end = new PVector(i*20, j*20);
+      }else{
+        image(images[19], i*20, j*20);
       }
       /*
       if(currentMap[i][j].debug){
@@ -370,6 +371,8 @@ void readInContent() {
   images[19] = loadImage("./Content/cave-icons/walkable.png");
   images[20] = loadImage("./Content/cave-icons/wall-horizontal.png");
   images[21] = loadImage("./Content/cave-icons/wall-vertical.png");
+    images[22] = loadImage("./Content/cave-icons/exit.png");
+
 
   HashMap<String, Integer> imageInventoryRef = new HashMap<String, Integer>();
   imageInventoryRef.put("stat-potion", 1);
