@@ -283,10 +283,11 @@ public final class InventoryScreen {
     text("Attack Power: " + player.attackPower, 300, 380);
     text("Level: " + player.level, 550, 290);
     text("Exp: " + player.exp +"/"+player.expNeeded, 550, 320);
+    text("Gold: " + player.gold, 550, 350);
     if(player.weapon == null){
-    text("No Item Equipped:" , 600, 260 );
+    text("No Item Equipped:" , 600, 260);
     }else{
-        text("Item Equipped: " + player.weapon.name , 550, 260 );
+        text("Item Equipped: " + player.weapon.name , 550, 260);
     }
    
     

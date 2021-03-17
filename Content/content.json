@@ -11,7 +11,7 @@
            "levelObtained": 1,
            "isSelf":false,
            "isDamage":true,
-           "isReduceDamage":false
+           "isDefense":false
         },
         {
             "name": "Lunge",
@@ -24,7 +24,7 @@
             "levelObtained": 2,
             "isSelf":false,
             "isDamage":true,
-            "isReduceDamage":false
+            "isDefense":false
          },
          {
             "name": "Wheeze",
@@ -50,7 +50,7 @@
             "levelObtained": 4,
             "isSelf":true,
             "isDamage":false,
-            "isReduceDamage":true
+            "isDefense":true
          }
     ],
     "Items":[
@@ -103,7 +103,7 @@
         },
         {
             "name": "Bow",
-            "description": "A bow used for long ranged attaks. Wait. There are no arrows.. Wait what?..",
+            "description": "A bow used for long ranged attaks. There are no arrows.. Wait what?..",
             "isPhysical":true,
             "damage":50,
             "recoil":0,
