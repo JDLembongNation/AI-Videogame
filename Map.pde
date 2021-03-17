@@ -3,7 +3,9 @@ public final class Map{
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 500000; //At least 50 squares of operating room.
+  final int minArea = 50000; //At least 50 squares of operating room.
+  int incisions= 0; //DEBUG 
+  int stitches = 0; //DEBUG
   
   public Map(int chosenWidth, int chosenHeight, int nodeSize){
     int allocatedWidth = chosenWidth/nodeSize;
@@ -32,7 +34,7 @@ public final class Map{
         map[i][j].isWalkable = generateMap[i][j];
       }
     }
-    
+    System.out.println("Incisions: " + incisions + " and stiches: " + stitches);
     //Now generate Position of player and enemy.
     //generateCharacterStartingPosition(tree);
     //generateItems();
@@ -43,6 +45,8 @@ public final class Map{
     int y; //not pvectors as no vector calculations are needed.
     int widthArea;
     int heightArea;
+    int widthDifference;
+    int heightDifference;
     BinaryNode parent;
     BinaryNode left;
     BinaryNode right;
@@ -61,11 +65,11 @@ public final class Map{
     //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
     if(treeNode.getTotalArea() < minArea){
       //Carve out area. Reassign values for x, y, widthArea, heightArea. For now, just make 5 pixels smaller. Keep same Pos.
-      treeNode.widthArea -=20;
-      treeNode.heightArea-=20;
+      reduceSize(treeNode);
       generatorMap = insertRoom(generatorMap, treeNode);
       return generatorMap;
     }else{
+      incisions++;
       int randomValue = (int) random(0,50);
       if(randomValue%2 == 0){ //Split Vertically
 
@@ -87,7 +91,9 @@ public final class Map{
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
       }
-      if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
+      if(treeNode.left!=null && treeNode.right!=null){
+        //Is a parent so Attach Corridors here on any length between the two children.
+        stitches++;
       return addCorridors(generatorMap, treeNode);
       }
        return generatorMap;
@@ -97,31 +103,43 @@ public final class Map{
   private boolean[][] insertRoom(boolean[][] room, BinaryNode node){
     int factoredX = (int) node.x/20;
     int factoredY = (int) node.y/20;
-    int factoredWidth = (int) node.widthArea/20;
-    int factoredHeight = (int) node.heightArea/20;
+    int factoredWidth = (int) (node.widthArea)/20;
+    int factoredHeight = (int) (node.heightArea)/20;
     for(int i = factoredX; i < factoredWidth+factoredX; i++){
       for(int j =factoredY; j < factoredHeight+factoredY; j++){
         room[i][j] = true;
+        map[i][j].debug = true;
       }
     }
     return room;
   }
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
   private boolean[][] addCorridors(boolean[][] room, BinaryNode node){
+        boolean anythingChanged = false;
+
+    boolean prevCutVertical; //Was the previous cut a vertical cut? 
+    boolean prevPrevCutVertical; //Was the prvious previous cut a vertical cut? 
     //Reduce scale IF there are children. 
     if(node.left.right!=null && node.left.left!=null) {
-      node.left.widthArea -=20;
-      node.left.heightArea -=20;
+      //need to find out type of cut between node.left nad node.right 
+      //also need to find oiut cut type of node.left.left and node.left.right
+      if((node.left.x/20) < (node.right.x/20)) prevCutVertical = true;
+      else prevCutVertical = false;
+      if(node.left.left.x/20 < node.left.right.x/20) prevPrevCutVertical = true;
+      else prevPrevCutVertical = false;
+      //find out difference. 
+      if(prevCutVertical ^ prevPrevCutVertical){ //Shiet. Im using XOR. DANG.
+        node.left.widthArea -= node.left.left.widthDifference;
+        node.left.heightArea -= node.left.left.heightDifference;
+      }else{
+        node.left.widthArea -= node.left.right.widthDifference;
+        node.left.heightArea -= node.left.right.heightDifference;
+      }
     }
-    if(node.right.right!=null && node.right.left!=null){
-      node.right.widthArea -=20;
-      node.right.heightArea -=20;
-    }
-    
     int factoredLeftX = (int) node.left.x/20;
     int factoredLeftY = (int) node.left.y/20;
-    int factoredLeftWidth = (int) node.left.widthArea/20;
-    int factoredLeftHeight = (int) node.left.heightArea/20;
+    int factoredLeftWidth = (int) node.left.widthArea/20 - 1; //rouding error
+    int factoredLeftHeight = (int) node.left.heightArea/20 - 1; //rounding error. Allow extra space.  
     int factoredRightX = (int) node.right.x/20;
     int factoredRightY = (int) node.right.y/20;
     int factoredRightWidth = (int) node.right.widthArea/20;
@@ -135,34 +153,43 @@ public final class Map{
       int leftEdge = factoredLeftX + factoredLeftWidth;
       //grab from any height. in range y to y+height
       int toFill = factoredRightX-leftEdge;
-      //pick random left to right. 
+      if(toFill == 0){ System.out.println("Left X: " + factoredLeftX + " WIDTH: " + factoredLeftWidth + " RIGHT X " + factoredRightX);
+                  System.out.println((toFill <= 0) + " HUH -> " + toFill);}
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
       int chosenPath = (int) random(lowerBoundY, upperBoundY-3);
       //System.out.println("Drawing Horizontal Path from y = " + chosenPath);
-      for(int j = 0; j < 3;j++){
-      for(int i =leftEdge; i < leftEdge+toFill; i++){
+      for(int j = factoredLeftY; j < factoredLeftY+3;j++){
+        for(int i =leftEdge; i < leftEdge+toFill; i++){
         //System.out.println("On position x = " + chosenPath + " y = " + i);
-        room[i][chosenPath+j] = true;
-      }
+         room[i][j] = true;
+         map[i][j].bigDebug = true;
+         anythingChanged = true;
+        }
       }
     }else{ //Horizontal Cut.
       int leftEdge = factoredLeftY + factoredLeftHeight;
       //grab from any width.in range x to x+width
-      int toFill = factoredRightY - leftEdge;
+      int toFill = factoredRightY - leftEdge; //Something up here. 
+        if(toFill == 0){ System.out.println("Left Y: " + factoredLeftY + " WIDTH: " + factoredLeftHeight + " RIGHT Y " + factoredRightY);
+                  System.out.println((toFill <= 0) + " HUH -> " + toFill);}
+
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
       int chosenPath = (int) random(lowerBoundX, upperBoundX-3);
       //System.out.println("Drawing Vertical Path from x = " + chosenPath);
       //System.out.println("Starting Point is leftY = " + factoredLeftY + "; LeftHeight = " + factoredLeftHeight  + "; rightY = " + factoredRightY); //LEFT HEIGHT IS TOO BIG BY FACTOR 1. 
-      for(int j = 0; j < 3; j++){
-      for(int i =leftEdge; i < leftEdge+toFill; i++){
-        room[chosenPath+j][i] = true;
+      for(int j = factoredLeftX; j < factoredLeftX+3; j++){
+        for(int i =leftEdge; i < leftEdge+toFill; i++){
+          room[j][i] = true;
+          map[j][i].bigDebug = true;
+          anythingChanged = true;
         //System.out.println("On position x = " + chosenPath + " y = " + i);
-      }
+        }
       }
       //System.out.println("\n \n \n");
     }
+    System.out.println(anythingChanged + " anything changed?");
     return room;
   }
   
@@ -256,7 +283,25 @@ public final class Map{
         map[i][j].isEndPosition = false;
       }
     }
-
+  }
+  
+  //Reduce size of room. for added variation,
+  private void reduceSize(BinaryNode node){
+    int selectedWidth = node.widthArea;
+    int selectedHeight = node.heightArea;
+    int factoredDownWidth;
+    int factoredDownHeight;
+    if(selectedWidth <= 60) factoredDownWidth = 20;
+    else factoredDownWidth = (int) random(20, selectedWidth-60);
+    factoredDownWidth -= factoredDownWidth%20;
+    
+    if(selectedHeight <= 60) factoredDownHeight = 20;
+    else factoredDownHeight = (int) random(20, selectedHeight-60); 
+    factoredDownHeight -= factoredDownHeight%20;
+    node.widthArea -= 20;
+    node.heightArea -= 20;
+    node.widthDifference= 20;
+    node.heightDifference = 20;
   }
   
   

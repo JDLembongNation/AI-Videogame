@@ -1,6 +1,8 @@
 public final class GroundNode{
   boolean isWalkable;
   int x; 
+  boolean debug;
+  boolean bigDebug;
   boolean isStartingPosition;
   boolean isEndPosition;
   int y;  //Class will be in charge of item placements, Entrace and Exit, and A Star Alogrithmic Findings.
