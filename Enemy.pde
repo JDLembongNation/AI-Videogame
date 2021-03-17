@@ -1,5 +1,7 @@
 final float ORIENTATION_INCREMENT = PI/16;
 public final class Enemy {
+  int direction;
+  boolean arrive;
   int difficulty;
   boolean isChase = true;
   int health;
@@ -29,13 +31,14 @@ public final class Enemy {
     this.rangeHeight = rangeHeight;
     orientation = 0;
     speed = 1;
-    max_speed = 3;
+    max_speed = 1;
     velocity = new PVector(0, 0);
     maxHealth = 100;
     health = 100;
     expProvided = 10;
     dodgeRate=0.2;
     defense = 1;
+    arrive = true;
   }
 
   public void setAbilities(ArrayList<Ability> abilities) {
@@ -59,14 +62,14 @@ public final class Enemy {
     Ability ability;
     if (lowHealth) {
       ability = findBestAttackMove();
-  //Low Health
+      //Low Health
     } else {
       if (isPlayerLowHealth) {
-      ability = findBestAttackMove();
+        ability = findBestAttackMove();
       } else {
         //High Health
         if (random(0, 1) < 0.4) {
-           ability = findBestAttackMove();
+          ability = findBestAttackMove();
           //Attack
         } else {
           if (random(0, 1) < 0.5) {
@@ -78,14 +81,14 @@ public final class Enemy {
       }
     }
     //
-    if(ability == null) return abilities.get(0);
+    if (ability == null) return abilities.get(0);
     return ability;
   }
 
   private Ability findBestStatChange(boolean self) {
     Ability current = null;
     for (int i = 0; i < abilities.size(); i++) {
-      if(current == null && !abilities.get(i).isDamage && (abilities.get(i).isSelf == self)){
+      if (current == null && !abilities.get(i).isDamage && (abilities.get(i).isSelf == self)) {
         current = abilities.get(i);
       }
       if (!abilities.get(i).isDamage &&(abilities.get(i).isSelf == self) &&current!= null&&current.damage < abilities.get(i).damage) {
@@ -98,7 +101,7 @@ public final class Enemy {
   private Ability findBestAttackMove() {
     Ability current = null;
     for (int i = 0; i < abilities.size(); i++) {
-      if(current == null && abilities.get(i).isDamage) current = abilities.get(i);
+      if (current == null && abilities.get(i).isDamage) current = abilities.get(i);
       else if (abilities.get(i).isDamage && current!=null && current.damage < abilities.get(i).damage) {
         current = abilities.get(i);
       }
@@ -114,29 +117,52 @@ public final class Enemy {
   //The finite state machine conducted by the enemy
   //PLEASE CHANGE THE CODE.
   private void roam() {
-    int direction = (int) random(0, 4);
+    if (arrive) {
+      direction = (int) random(0, 4);
+      arrive = false;
+    }
     switch(direction) {
-    case 0: 
-      for (int i = 0; i < random(0, 10); i++) {
-        if (position.y > rangePoint.y+35 && position.y < rangePoint.y + rangeHeight-20) position.y -=1;
-      }
+    case 0:  //TOP LEFT.
+    goToPosition(new PVector(rangePoint.x, rangePoint.y));
       break;
     case 1: 
-      for (int i = 0; i < random(0, 10); i++) {
-        if (position.x > rangePoint.x + 35 && position.x < rangePoint.x + rangeWidth-20) position.x +=1;
-      }
+    goToPosition(new PVector(rangePoint.x, rangePoint.y + rangeHeight));
       break;
     case 2: 
-      for (int i = 0; i < random(0, 10); i++) {
-        if (position.y > rangePoint.y+35 && position.y < rangePoint.y + rangeHeight-20) position.y +=1;
-      }
+    goToPosition(new PVector(rangePoint.x + rangeWidth, rangePoint.y));
       break;
     case 3: 
-      for (int i = 0; i < random(0, 10); i++) {
-        if (position.x > rangePoint.x + 35 && position.x < rangePoint.x + rangeWidth-20) position.x -=1;
-      }
+    goToPosition(new PVector(rangePoint.x + rangeWidth, rangePoint.y + rangeHeight));
       break;
     }
+  }
+
+
+  private void goToPosition(PVector targetPosition) {
+    targetPosition.sub(position);
+    float distance = targetPosition.mag();
+    if (distance < 1) {
+      arrive = true;
+    } else {
+      velocity = targetPosition.copy();
+      if (distance > max_speed) {
+        velocity.normalize();
+        velocity.mult(max_speed);
+      }
+      position.add(velocity);
+    }
+     float targetOrientation = atan2(velocity.y, velocity.x) ;
+    if (targetOrientation < orientation) {
+      if (orientation - targetOrientation < PI) orientation -= ORIENTATION_INCREMENT ;
+      else orientation += ORIENTATION_INCREMENT ;
+    } else {
+      if (targetOrientation - orientation < PI) orientation += ORIENTATION_INCREMENT ;
+      else orientation -= ORIENTATION_INCREMENT ;
+    }
+
+    // Keep in bounds
+    if (orientation > PI) orientation -= 2*PI ;
+    else if (orientation < -PI) orientation += 2*PI ;
   }
 
   private void chase(PVector player) {
