@@ -240,7 +240,7 @@ public final class Map {
     for (int i = 0; i < level; i++) {
       int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
       int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
-      enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea));
+      enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea,level) );
     }
     return enemies;
   }

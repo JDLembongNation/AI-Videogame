@@ -10,7 +10,6 @@ public final class Enemy {
   float dodgeRate;
   PVector position;
   PVector velocity;
-  PVector initialPosition;
   float orientation;
   float defense;
   float rotation;
@@ -19,24 +18,22 @@ public final class Enemy {
   int rangeHeight;
   int speed;
   int expProvided;
-  int max_speed;
+  float max_speed;
   PVector rangePoint;
   ArrayList<Ability> abilities;
-  public Enemy(PVector initialPosition, PVector rangePoint, int rangeWidth, int rangeHeight) {
-    this.initialPosition = initialPosition;
+  public Enemy(PVector initialPosition, PVector rangePoint, int rangeWidth, int rangeHeight, int difficulty) {
     this.position = initialPosition.copy();
-    this.dodgeRate = 0;
     this.rangePoint = rangePoint;
     this.rangeWidth = rangeWidth;
     this.rangeHeight = rangeHeight;
     orientation = 0;
     speed = 1;
-    max_speed = 1;
+    max_speed = 1+(0.2*difficulty);
     velocity = new PVector(0, 0);
-    maxHealth = 100;
-    health = 100;
-    expProvided = 10;
-    dodgeRate=0.2;
+    maxHealth = (100)+(50*difficulty);
+    health = maxHealth;
+    expProvided = 10+(5*difficulty);
+    this.dodgeRate=0.1+(0.01*difficulty);
     defense = 1;
     arrive = true;
   }
@@ -114,8 +111,6 @@ public final class Enemy {
     return (player.x > rangePoint.x && player.x < (rangePoint.x + rangeWidth) && player.y > rangePoint.y && player.y < (rangePoint.y + rangeHeight));
   }
 
-  //The finite state machine conducted by the enemy
-  //PLEASE CHANGE THE CODE.
   private void roam() {
     if (arrive) {
       direction = (int) random(0, 4);
@@ -193,6 +188,4 @@ public final class Enemy {
     else if (orientation < -PI) orientation += 2*PI ;
   }
 
-  private void returnToRoom() {
-  }
 }
