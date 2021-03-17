@@ -12,8 +12,9 @@ public final class Item{
   
   }
   
-  public Item(boolean isConsumable, boolean isTreasure, boolean isPhyiscal, String name, String description, int value, PImage caveView, PImage inventoryView){
+  public Item(boolean isConsumable, boolean isStatChanger, boolean isTreasure, boolean isPhyiscal, String name, String description, int value, PImage caveView, PImage inventoryView){
     this.isConsumable = isConsumable;
+    this.isStatChanger = isStatChanger;
     this.isTreasure = isTreasure;
     this.name = name;
     this.description = description;

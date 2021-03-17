@@ -410,7 +410,7 @@ void readInContent() {
   JSONArray itemData = data.getJSONArray("Items");
   for (int i = 0; i < itemData.size(); i++) {
     JSONObject it = itemData.getJSONObject(i);
-    itemDictionary.add(new Item(it.getBoolean("isConsumable"), it.getBoolean("isTreasure"), it.getBoolean("isTreasure"), 
+    itemDictionary.add(new Item(it.getBoolean("isConsumable"), it.getBoolean("isStatChanger"),it.getBoolean("isTreasure"), it.getBoolean("isTreasure"), 
       it.getString("name"), it.getString("description"), it.getInt("value"), images[imageCaveRef.get(it.getString("iconName"))], 
       images[imageInventoryRef.get(it.getString("iconName"))]));
   }

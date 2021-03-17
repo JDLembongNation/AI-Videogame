@@ -6,7 +6,7 @@ public final class Enemy {
   boolean isChase = true;
   int health;
   float attackPower;
-  float spellPower;
+  float specialAttack;
   float dodgeRate;
   PVector position;
   PVector velocity;
@@ -18,6 +18,7 @@ public final class Enemy {
   int rangeHeight;
   int speed;
   int expProvided;
+  float specialDefense;
   float max_speed;
   PVector rangePoint;
   ArrayList<Ability> abilities;
@@ -36,6 +37,8 @@ public final class Enemy {
     this.dodgeRate=0.1+(0.01*difficulty);
     defense = 1;
     arrive = true;
+    this.specialDefense = 1;
+    this.specialAttack = 1;
   }
 
   public void setAbilities(ArrayList<Ability> abilities) {

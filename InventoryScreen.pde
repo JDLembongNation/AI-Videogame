@@ -138,22 +138,56 @@ public final class InventoryScreen {
         if (imageSlots[i][j].optionActive) {
           if (mousePressed == true && mouseButton == LEFT && processTime(1)) {
             if (mouseX > imageSlots[i][j].x && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT/2  && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5) {
-              if(isItemSlot(imageSlots[i][j])){
-                if(imageSlots[i][j].item.isConsumable){
+              if (isItemSlot(imageSlots[i][j])) {
+                if (imageSlots[i][j].item.isConsumable) {
                   removeX= i;
                   removeY = j;
-                  if(imageSlots[i][j].item.isStatChanger){
+                  if (imageSlots[i][j].item.isStatChanger) {
+                    int randomStat = (int) random(0, 6);
+                    System.out.println(randomStat);
+                    switch(randomStat) {
+                    case 0: 
+                      {
+                        player.maxHealth++;
+                        break;
+                      }
+                    case 1: 
+                      {
+                        player.attackPower++;
+                        break;
+                      }
+                    case 2: 
+                      {
+                        player.defense++;
+                        break;
+                      }
+                    case 3: 
+                      {
+                        player.specialAttack++;
+                        break;
+                      }
+                    case 4: 
+                      {
+                        player.specialDefense++;
+                        break;
+                      }
+                    case 6: 
+                      {
+                        player.speed++;
+                        break;
+                      }
+                    }
                     //change stat.
-                  }else{
+                  } else {
                     //change health 
                     player.health += imageSlots[i][j].item.value;
-                    if(player.health > player.maxHealth) player.health = player.maxHealth;
+                    if (player.health > player.maxHealth) player.health = player.maxHealth;
                   }
                 }
-              }else{
+              } else {
                 //Is weapon. Just equip.
                 player.weapon = imageSlots[i][j].weapon;
-                //TODO: Have option to unequip as well. 
+                //TODO: Have option to unequip as well.
               }
             } else if (mouseX > (imageSlots[i][j].x + (WIDTH_SIZE_SLOT/2) + 1) + 1 && mouseX < imageSlots[i][j].x + WIDTH_SIZE_SLOT && mouseY > imageSlots[i][j].y-45 && mouseY < imageSlots[i][j].y-5) {
               //DISCARD.
@@ -171,9 +205,9 @@ public final class InventoryScreen {
       imageSlots[removeX][removeY].optionActive = false;
     }
   }
-  
-  
-  
+
+
+
 
 
 
@@ -279,18 +313,20 @@ public final class InventoryScreen {
     text("Armor: " + player.armor, 300, 260);
     text("Speed: " + player.speed, 300, 290);
     text("Dodge Rate: " + player.dodgeRate, 300, 320);
-    text("Spell Power: " + player.spellPower, 300, 350);
+    text("Sp.Attack: " + player.specialAttack, 300, 350);
     text("Attack Power: " + player.attackPower, 300, 380);
-    text("Level: " + player.level, 550, 290);
-    text("Exp: " + player.exp +"/"+player.expNeeded, 550, 320);
-    text("Gold: " + player.gold, 550, 350);
-    if(player.weapon == null){
-    text("No Item Equipped:" , 600, 260);
-    }else{
-        text("Item Equipped: " + player.weapon.name , 550, 260);
+    text("Level: " + player.level, 550, 260);
+    text("Exp: " + player.exp +"/"+player.expNeeded, 550, 290);
+    text("Gold: " + player.gold, 550, 320);
+    text("Defense: " + player.defense, 550, 350);
+
+    text("Sp.Defense: " + player.specialDefense, 550, 380);
+
+    if (player.weapon == null) {
+      text("No Item Equipped:", 600, 230);
+    } else {
+      text("Item Equipped: " + player.weapon.name, 550, 230);
     }
-   
-    
   }
   boolean processTime(int x) {
     return delay+(x*100) < millis();

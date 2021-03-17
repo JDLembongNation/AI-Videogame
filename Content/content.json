@@ -64,7 +64,7 @@
             "iconName":"health-potion"
         },
         {
-            "isStatChanger":false,
+            "isStatChanger":true,
             "isConsumable":true,
             "isTreasure":false,
             "name":"Stat Potion",
