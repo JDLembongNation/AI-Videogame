@@ -35,6 +35,8 @@ void setup() {
   readInContent();
   bs = new BattleSimulator();
   bs.reset();
+  drawMap();
+  player.position = player.startingPosition.copy();
 }
 
 void draw() {
@@ -60,7 +62,7 @@ void caveGUI() {
 void battleGUI() {
   bs.run(player, enemies.get(currentEnemy), battleKeys);
   if (bs.isFinished) {
-    for(int i = 0; i < battleKeys.length; i++){
+    for (int i = 0; i < battleKeys.length; i++) {
       battleKeys[i] = false; //ISSUE WITH THE KEYRELEASED. KEYRELEASED NOT BEING CALLED IN FUNCTION.
     }
     if (bs.enemyFaint) {
@@ -72,7 +74,7 @@ void battleGUI() {
     }
     inBattle = false;
     bs.isFinished = false;
-    for(int i = 0; i < keys.length; i++){
+    for (int i = 0; i < keys.length; i++) {
       keys[i] = false; //Prevent any unwanted movement.
     }
   }
@@ -85,35 +87,35 @@ void drawMap() {
       if (!currentMap[i][j].isWalkable) {
         fill(40);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }else if (currentMap[i][j].isStartingPosition) {
+      } else if (currentMap[i][j].isStartingPosition) {
         fill(50, 50, 190);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         player.startingPosition = new PVector(i*40, j*40);
-      }else if (currentMap[i][j].isEndPosition) {
+      } else if (currentMap[i][j].isEndPosition) {
         fill(180, 50, 190);
         image(images[22], i*40, j*40);
         //rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         end = new PVector(i*40, j*40);
-      }else{
+      } else {
         image(images[19], i*40, j*40);
       }
       /*
       if(currentMap[i][j].debug){
-        fill(240, 24, 25);
-        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }if(currentMap[i][j].bigDebug){
-        fill(240, 240, 25);
-        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }
-      if(currentMap[i][j].posChild){
-        fill(25, 240, 240);
-        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }
-            if(currentMap[i][j].posParent){
-        fill(240, 25, 240);
-        rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-      }
-      */
+       fill(240, 24, 25);
+       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+       }if(currentMap[i][j].bigDebug){
+       fill(240, 240, 25);
+       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+       }
+       if(currentMap[i][j].posChild){
+       fill(25, 240, 240);
+       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+       }
+       if(currentMap[i][j].posParent){
+       fill(240, 25, 240);
+       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
+       }
+       */
     }
   }
 }
@@ -160,41 +162,34 @@ void collisionCheck() {
   // == FOR WALL ==
   int positionX = (int) player.position.x;
   int positionY = (int) player.position.y;
-  if (positionX%40 < 10) { 
-    positionX -= positionX%40;
-  } else {
-    positionX += (40-positionX%40);
+   positionX -=positionX%40;
+   positionY -= positionY%40;
+  // == FOR WALLS == 
+  int i = positionX/40;
+  int j = positionY/40;
+  if (i-1 >=0) {
+    if (!(currentMap[i-1][j].isWalkable)) {
+      if (player.position.x < ((i-1)*40) + 55) player.position.x =  ((i-1)*40) + 55;
+    }
   }
-  if (positionY%40 < 10) { 
-    positionY -=positionY%40;
-  } else {
-    positionY +=(40-positionY%40);
-  } 
-   // == FOR WALLS == 
-   int i = positionX/40;
-   int j = positionY/40;
-   if(i-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
-   if(!(currentMap[i-2][j].isWalkable)){
-   if(player.position.x < ((i-2)*40) + 35) player.position.x =((i-2)*40) + 35;
-   }
-   }
-   if(j-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
-   if(!(currentMap[i][j-2].isWalkable)){
-   if(player.position.y < ((j-2)*40) + 35) player.position.y = ((j-2)*40) + 35;
-   }
-   }
-   
-   if(j+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
-   if(!(currentMap[i][j+1].isWalkable)){
-   if(player.position.y > ((j+1)*40) -15) player.position.y = ((j+1)*40) -15;
-   }
-   }
-   if(i+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
-   if(!(currentMap[i+1][j].isWalkable)){ 
-   if(player.position.x > ((i+1)*40) - 15) player.position.x = ((i+1)*40) - 15;
-   }
-   }
-   
+  if (j-1 >=0) {
+    if (!(currentMap[i][j-1].isWalkable)) {
+      if (player.position.y < ((j-1)*40) + 55) player.position.y =  ((j-1)*40) + 55;
+    }
+  }
+  if (j+1 < 25) {
+    if (!(currentMap[i][j+1].isWalkable)) {
+      if (player.position.y > ((j+1)*40)-15) player.position.y =  ((j+1)*40)-15;
+    }
+  }
+  if (i+1 < 25) {
+
+    if (!(currentMap[i+1][j].isWalkable)) {
+      if (player.position.x > ((i+1)*40)-15) player.position.x =  ((i+1)*40)-15;
+    }
+  }
+  
+
   // == FOR ITEMS ==
   int remove = -1;
   for (int w = 0; w < items.size(); w++) {
@@ -409,7 +404,7 @@ void readInContent() {
   JSONArray itemData = data.getJSONArray("Items");
   for (int i = 0; i < itemData.size(); i++) {
     JSONObject it = itemData.getJSONObject(i);
-    itemDictionary.add(new Item(it.getBoolean("isConsumable"), it.getBoolean("isStatChanger"),it.getBoolean("isTreasure"), it.getBoolean("isTreasure"), 
+    itemDictionary.add(new Item(it.getBoolean("isConsumable"), it.getBoolean("isStatChanger"), it.getBoolean("isTreasure"), it.getBoolean("isTreasure"), 
       it.getString("name"), it.getString("description"), it.getInt("value"), images[imageCaveRef.get(it.getString("iconName"))], 
       images[imageInventoryRef.get(it.getString("iconName"))]));
   }
