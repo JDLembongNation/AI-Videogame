@@ -194,32 +194,40 @@ public final class BattleSimulator {
   }
 
   void playerTurn(Player player) {
-    optionA = "A) " + player.abilities.get(0).name;
-    optionB = "B) " + player.abilities.get(1).name;
-    optionC = "C) " + player.abilities.get(2).name;
-    optionD = "D) " + player.abilities.get(3).name;
+    if (player.availableAbilities.size() > 0) {
+      optionA = "A) " + player.abilities.get(0).name;
+      optionADesc = player.abilities.get(0).description;
+    }
+    if (player.availableAbilities.size() > 1) {
+      optionB = "B) " + player.abilities.get(1).name;
+      optionBDesc = player.abilities.get(1).description;
+    }
+    if (player.availableAbilities.size() > 2) {
+      optionC = "C) " + player.abilities.get(2).name;
+      optionCDesc =  player.abilities.get(2).description;
+    }
+    if (player.availableAbilities.size() > 3) {
+      optionD = "D) " + player.abilities.get(3).name;
+      optionDDesc = player.abilities.get(3).description;
+    }
     optionE = "E) Run!"; 
-    optionADesc = player.abilities.get(0).description;
-    optionBDesc = player.abilities.get(1).description;
-    optionCDesc =  player.abilities.get(2).description;
-    optionDDesc = player.abilities.get(3).description;
     optionEDesc = "Run like hell..."; 
 
-    if (keys[0]) {
-      abilityInPlay = player.abilities.get(0);
+    if (keys[0] && player.availableAbilities.size() > 0) {
+      abilityInPlay = player.availableAbilities.get(0);
       chosen = true;
     }
-    if (keys[1]) {
-      abilityInPlay = player.abilities.get(1);
+    if (keys[1] && (player.availableAbilities.size() > 1)) {
+      abilityInPlay = player.availableAbilities.get(1);
       chosen = true;
     }
-    if (keys[2]) {
-      abilityInPlay = player.abilities.get(2);
+    if (keys[2] && player.availableAbilities.size() > 2) {
+      abilityInPlay = player.availableAbilities.get(2);
 
       chosen = true;
     }
-    if (keys[3]) {
-      abilityInPlay = player.abilities.get(3);
+    if (keys[3] && player.availableAbilities.size() > 3) {
+      abilityInPlay = player.availableAbilities.get(3);
       chosen = true;
     }
     if (keys[4]) {
@@ -336,19 +344,18 @@ public final class BattleSimulator {
     }
     return damageDealt;
   }
-  
-  private void doDamage(Player player, Enemy enemy, float damage, boolean isPlayerOneTurn){
-    if(isPlayerOneTurn){
+
+  private void doDamage(Player player, Enemy enemy, float damage, boolean isPlayerOneTurn) {
+    if (isPlayerOneTurn) {
       //reduce enemy health.
       damage -= enemy.armor;
       enemy.armor = enemy.armor <= 0 ? 0 : enemy.armor;
       enemy.health -= damage;
-    }else{
+    } else {
       damage -= player.armor; 
       player.armor = player.armor <= 0 ? 0 : player.armor;
       player.health -= damage;
     }
-    
   }
 
   private boolean didLandHit(Ability ability, float dodgeRate) {

@@ -1,5 +1,6 @@
 final float MAX_SPEED = 10f;
-
+final int MAX_MOVES  = 4;
+final int MAX_PHYSICAL_MOVES = 3;
 
 public final class Player {
    ArrayList<Item> inventory;
@@ -25,6 +26,7 @@ public final class Player {
   int gold;
   
   public Player(int x, int y, float orientation) {
+    availableAbilities= new ArrayList<Ability>();
     this.startingPosition = new PVector(x,y);
     this.position = new PVector(x,y);
     this.orientation = orientation;
@@ -66,6 +68,17 @@ public final class Player {
       specialAttack++;
       dodgeRate+=0.01;
       speed++;
+      //MOVE FROM OLD TO NEW MOVES. 
+      for(int i = 0; i < abilities.size(); i++){
+        if(abilities.get(i).levelObtained == level){ //Add to new arsena
+          if(availableAbilities.size() == MAX_MOVES){
+            availableAbilities.remove(0);
+            availableAbilities.add(abilities.get(i));
+          }else{
+            availableAbilities.add(abilities.get(i));
+          }
+        }
+      }
       return true;
     }
     return false;
@@ -74,7 +87,15 @@ public final class Player {
   
   public void addAbilities(ArrayList<Ability> abilities ){
     this.abilities = abilities;
+    for(Ability a : abilities){
+      if(a.levelObtained == level){
+        availableAbilities.add(a);
+      }
+    }
   }
+  
+  
+  
   public void assignWeapon(Weapon weapon){
     this.weapon = weapon;
   }
