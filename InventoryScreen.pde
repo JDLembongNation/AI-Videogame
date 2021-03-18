@@ -180,8 +180,12 @@ public final class InventoryScreen {
                     //change stat.
                   } else {
                     //change health 
+                    if(!imageSlots[i][j].item.name.equals("Armor")){
                     player.health += imageSlots[i][j].item.value;
                     if (player.health > player.maxHealth) player.health = player.maxHealth;
+                    }else{
+                      player.armor += imageSlots[i][j].item.value;
+                    }
                   }
                 }
               } else {
