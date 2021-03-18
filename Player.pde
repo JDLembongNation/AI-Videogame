@@ -64,7 +64,7 @@ public final class Player {
       expNeeded += level * 10;
       attackPower++;
       specialAttack++;
-      dodgeRate+=0.1;
+      dodgeRate+=0.01;
       speed++;
       return true;
     }

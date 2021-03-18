@@ -275,12 +275,14 @@ public final class BattleSimulator {
     float damageDealt = 0;
     if (isPlayerOneTurn) {
       if (ability.isDamage) {
-        if (player.weapon!=null) {
-          damageDealt = (ability.damage * (1+(player.weapon.damage/100)))/enemy.defense;
+        if (!ability.isPhysical) { //Spell Move
+          damageDealt = (ability.damage * (1+(player.specialAttack*0.1))) / enemy.specialDefense;
+        } else if (player.weapon!=null) {
+          damageDealt = (ability.damage * (1+(player.specialAttack*0.1)+(player.weapon.damage/100)))/enemy.defense;
         } else {
-          damageDealt = ability.damage / enemy.defense;
+          damageDealt = (ability.damage * (1+(player.attackPower*0.1))) / enemy.defense;
         }
-        enemy.health -= damageDealt;
+        doDamage(player, enemy, damageDealt, isPlayerOneTurn);
       } else {
         //Is Stat Changer
         if (ability.isSelf) {
@@ -306,8 +308,12 @@ public final class BattleSimulator {
       }
     } else {
       if (ability.isDamage) {
-        damageDealt = ability.damage/player.defense;
-        player.health -= damageDealt;
+        if (!ability.isPhysical) {
+          damageDealt = (ability.damage*(1+(enemy.specialAttack*0.1)))/player.specialDefense;
+        } else {
+          damageDealt = (ability.damage*(1+(enemy.attackPower*0.1)))/player.defense;
+        }
+        doDamage(player, enemy, damageDealt, isPlayerOneTurn);
       } else {
         //Stat Change
         if (ability.isSelf) {
@@ -329,6 +335,20 @@ public final class BattleSimulator {
       }
     }
     return damageDealt;
+  }
+  
+  private void doDamage(Player player, Enemy enemy, float damage, boolean isPlayerOneTurn){
+    if(isPlayerOneTurn){
+      //reduce enemy health.
+      damage -= enemy.armor;
+      enemy.armor = enemy.armor <= 0 ? 0 : enemy.armor;
+      enemy.health -= damage;
+    }else{
+      damage -= player.armor; 
+      player.armor = player.armor <= 0 ? 0 : player.armor;
+      player.health -= damage;
+    }
+    
   }
 
   private boolean didLandHit(Ability ability, float dodgeRate) {

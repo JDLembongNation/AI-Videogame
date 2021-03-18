@@ -33,8 +33,6 @@ void setup() {
   player = new Player(100, 100, 0);
   images = new PImage[23];
   readInContent();
-
-
   bs = new BattleSimulator();
   bs.reset();
 }
@@ -341,7 +339,6 @@ void keyReleased()
       battleKeys[4] = false;
     }
     if (key == 'p') {
-      System.out.println("SET TO FALSE");
       battleKeys[5] = false;
     }
     if (key == 'm') {
@@ -374,8 +371,7 @@ void readInContent() {
   images[19] = loadImage("./Content/cave-icons/walkable.png");
   images[20] = loadImage("./Content/cave-icons/wall-horizontal.png");
   images[21] = loadImage("./Content/cave-icons/wall-vertical.png");
-    images[22] = loadImage("./Content/cave-icons/exit.png");
-
+  images[22] = loadImage("./Content/cave-icons/exit.png");
 
   HashMap<String, Integer> imageInventoryRef = new HashMap<String, Integer>();
   imageInventoryRef.put("stat-potion", 1);

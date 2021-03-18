@@ -4,7 +4,8 @@ public final class Enemy {
   boolean arrive;
   int difficulty;
   boolean isChase = true;
-  int health;
+  float health;
+  float armor;
   float attackPower;
   float specialAttack;
   float dodgeRate;
