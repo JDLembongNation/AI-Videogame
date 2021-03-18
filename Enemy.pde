@@ -1,5 +1,6 @@
 final float ORIENTATION_INCREMENT = PI/16;
 public final class Enemy {
+  int max_speed_chase;
   int direction;
   boolean arrive;
   int difficulty;
@@ -31,6 +32,7 @@ public final class Enemy {
     orientation = 0;
     speed = 1;
     max_speed = 1+(0.2*difficulty);
+    max_speed_chase = 3;
     velocity = new PVector(0, 0);
     maxHealth = (100)+(50*difficulty);
     health = maxHealth;
@@ -112,6 +114,7 @@ public final class Enemy {
 
 
   private boolean isPlayerInRoom(PVector player) {
+    
     return (player.x > rangePoint.x && player.x < (rangePoint.x + rangeWidth) && player.y > rangePoint.y && player.y < (rangePoint.y + rangeHeight));
   }
 
@@ -171,9 +174,9 @@ public final class Enemy {
     direction.normalize();
     direction.mult(speed);
     velocity.add(direction);
-    if (velocity.mag() > max_speed) {
+    if (velocity.mag() > max_speed_chase) {
       velocity.normalize();
-      velocity.mult(max_speed);
+      velocity.mult(max_speed_chase);
     }
     position.add(velocity);
     //Add barriers here if necessary for edges. BUt should not be needed.
