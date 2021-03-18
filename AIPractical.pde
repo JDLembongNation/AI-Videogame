@@ -1,6 +1,6 @@
 final int PLAY_WIDTH = 1000;
 final int PLAY_HEIGHT = 1000;
-final int NODE_SIZE = 20;
+final int NODE_SIZE = 40;
 final String INTRO_TEXT = "Let the Battle Commence!";
 final int NO_ITEMS = 2;
 final int NO_WEAPONS = 5;
@@ -83,19 +83,19 @@ void drawMap() {
   for (int i = 0; i < currentMap.length; i++) {
     for (int j = 0; j < currentMap[i].length; j++) {
       if (!currentMap[i][j].isWalkable) {
-        fill(20);
+        fill(40);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
       }else if (currentMap[i][j].isStartingPosition) {
         fill(50, 50, 190);
         rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-        player.startingPosition = new PVector(i*20, j*20);
+        player.startingPosition = new PVector(i*40, j*40);
       }else if (currentMap[i][j].isEndPosition) {
         fill(180, 50, 190);
-        image(images[22], i*20, j*20);
+        image(images[22], i*40, j*40);
         //rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-        end = new PVector(i*20, j*20);
+        end = new PVector(i*40, j*40);
       }else{
-        image(images[19], i*20, j*20);
+        image(images[19], i*40, j*40);
       }
       /*
       if(currentMap[i][j].debug){
@@ -119,7 +119,7 @@ void drawMap() {
 }
 
 void drawCharacters() {
-  fill(180, 20, 20);
+  fill(180, 40, 40);
   ellipse(player.position.x, player.position.y, 30, 30);
   int newxe = (int)(player.position.x + 10 * cos(player.orientation));
   int newye = (int)(player.position.y + 10 * sin(player.orientation));
@@ -127,7 +127,7 @@ void drawCharacters() {
   ellipse(newxe, newye, 10, 10);
 
   for (Enemy e : enemies) {
-    fill(20, 180, 20);
+    fill(40, 180, 40);
 
     ellipse(e.position.x, e.position.y, 30, 30);
     int enemyX = (int)(e.position.x + 10 * cos(e.orientation));
@@ -141,7 +141,7 @@ void collisionCheck() {
   for (int i = 0; i < enemies.size(); i++) {
     PVector currentPos = player.position.copy();
     currentPos.sub(enemies.get(i).position);
-    if (currentPos.mag() < 20) {
+    if (currentPos.mag() < 40) {
       inBattle = true;
       currentEnemy = i;
       break;
@@ -149,7 +149,7 @@ void collisionCheck() {
   }
   PVector currentPos = player.position.copy();
   currentPos.sub(end);
-  if (currentPos.mag() < 20) { //EXTREMELY DODGY FIX SOON PLEASE.
+  if (currentPos.mag() < 40) { //EXTREMELY DODGY FIX SOON PLEASE.
     resetMap();
   }
   // == FOR EDGE OF SCREEN == 
@@ -160,38 +160,38 @@ void collisionCheck() {
   // == FOR WALL ==
   int positionX = (int) player.position.x;
   int positionY = (int) player.position.y;
-  if (positionX%20 < 10) { 
-    positionX -= positionX%20;
+  if (positionX%40 < 10) { 
+    positionX -= positionX%40;
   } else {
-    positionX += (20-positionX%20);
+    positionX += (40-positionX%40);
   }
-  if (positionY%20 < 10) { 
-    positionY -=positionY%20;
+  if (positionY%40 < 10) { 
+    positionY -=positionY%40;
   } else {
-    positionY +=(20-positionY%20);
+    positionY +=(40-positionY%40);
   } 
    // == FOR WALLS == 
-   int i = positionX/20;
-   int j = positionY/20;
+   int i = positionX/40;
+   int j = positionY/40;
    if(i-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
    if(!(currentMap[i-2][j].isWalkable)){
-   if(player.position.x < ((i-2)*20) + 35) player.position.x =((i-2)*20) + 35;
+   if(player.position.x < ((i-2)*40) + 35) player.position.x =((i-2)*40) + 35;
    }
    }
    if(j-2 >= 0){ //If this condition is not satisfied, then the wall boundary will take care of it.
    if(!(currentMap[i][j-2].isWalkable)){
-   if(player.position.y < ((j-2)*20) + 35) player.position.y = ((j-2)*20) + 35;
+   if(player.position.y < ((j-2)*40) + 35) player.position.y = ((j-2)*40) + 35;
    }
    }
    
    if(j+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
    if(!(currentMap[i][j+1].isWalkable)){
-   if(player.position.y > ((j+1)*20) -15) player.position.y = ((j+1)*20) -15;
+   if(player.position.y > ((j+1)*40) -15) player.position.y = ((j+1)*40) -15;
    }
    }
    if(i+1 < 49){ //If this condition is not satisfied, then the wall boundary will take care of it.
    if(!(currentMap[i+1][j].isWalkable)){ 
-   if(player.position.x > ((i+1)*20) - 15) player.position.x = ((i+1)*20) - 15;
+   if(player.position.x > ((i+1)*40) - 15) player.position.x = ((i+1)*40) - 15;
    }
    }
    
