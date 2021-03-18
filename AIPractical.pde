@@ -74,6 +74,9 @@ void battleGUI() {
     }
     inBattle = false;
     bs.isFinished = false;
+    for(int i = 0; i < keys.length; i++){
+      keys[i] = false; //Prevent any unwanted movement.
+    }
   }
 }
 

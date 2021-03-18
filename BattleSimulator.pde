@@ -19,10 +19,19 @@ public final class BattleSimulator {
   Enemy enemy;
   String choice = "Choose an Action!";
   String optionA ="";
+  String optionADesc = "";
   String optionB = "";
+  String optionBDesc = "";
+
   String optionC ="";
+  String optionCDesc = "";
+
   String optionD = "";
+  String optionDDesc = "";
+
   String optionE = "";
+  String optionEDesc = "";
+
   String BattleText1 = "";
   String BattleText2= "";
   String BattleText3="";
@@ -50,6 +59,11 @@ public final class BattleSimulator {
     optionC ="";
     optionD = "";
     optionE = "";
+    optionADesc ="";
+    optionBDesc = "";
+    optionCDesc ="";
+    optionDDesc = "";
+    optionEDesc = "";
     BattleText1 = "";
     BattleText2= "";
     BattleText3="";
@@ -78,12 +92,27 @@ public final class BattleSimulator {
     text(choice, 250, 50);
     text(optionA, 250, 150);
     text(optionB, 250, 250);
-    text(optionC, 250, 350);
-    text(optionD, 250, 450);
-    text(optionE, 250, 550);
+
+    text(optionC, 250, 350);    
+
+    text(optionD, 250, 450);    
+
+    text(optionE, 250, 550);    
+
     text(BattleText1, 250, 700);
     text(BattleText2, 250, 800);
     text(BattleText3, 250, 900);
+    textSize(15);
+
+    text(optionADesc, 250, 180);
+
+    text(optionBDesc, 250, 280);
+
+    text(optionCDesc, 250, 380);
+
+    text(optionDDesc, 250, 480);
+
+    text(optionEDesc, 250, 580);
   }
 
   public void executeGameTurn(Player player, Enemy enemy) {
@@ -170,6 +199,12 @@ public final class BattleSimulator {
     optionC = "C) " + player.abilities.get(2).name;
     optionD = "D) " + player.abilities.get(3).name;
     optionE = "E) Run!"; 
+    optionADesc = player.abilities.get(0).description;
+    optionBDesc = player.abilities.get(1).description;
+    optionCDesc =  player.abilities.get(2).description;
+    optionDDesc = player.abilities.get(3).description;
+    optionEDesc = "Run like hell..."; 
+
     if (keys[0]) {
       abilityInPlay = player.abilities.get(0);
       chosen = true;
