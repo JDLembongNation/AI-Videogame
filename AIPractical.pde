@@ -18,36 +18,59 @@ ArrayList<Item> items; //shows the items available on the map.
 ArrayList<Weapon> weaponDictionary;
 ArrayList<Weapon> weapons;
 ArrayList<Enemy> enemies;
+Minim minim;
+AudioPlayer[] audioPlayer;
 int currentEnemy;
 int level;
+  StartScreen sc;
 Map map;
 Player player;
+boolean isStartScreen;
 InventoryScreen inventory;
 void setup() {
   size(1000, 1000);
+    minim = new Minim(this);
+
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
   level = 1;
   map.generateNewCave();
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
-  images = new PImage[23];
+  images = new PImage[27];
+    audioPlayer = new AudioPlayer[2];
+  isStartScreen = true;
   readInContent();
   bs = new BattleSimulator();
   bs.reset();
   drawMap();
   player.position = player.startingPosition.copy();
+  
+  sc = new StartScreen(audioPlayer[0],images[23],images[24], images[25], images[26]);
 }
 
 void draw() {
+  if(isStartScreen)
+  {
+    sc.generateStartScreen();
+  }else{
   if (inBattle) {
     battleGUI();
   } else { 
     caveGUI();
     if (keys[4]) inventory.showInventory(player);
   }
+  }
 }
 
+void mousePressed(){
+  if(isStartScreen && sc.pressButton()){
+    System.out.println("PEY");
+    isStartScreen = false;
+  }else{
+    
+  }
+}
 
 void caveGUI() {
   background(255);
@@ -367,6 +390,15 @@ void readInContent() {
   images[20] = loadImage("./Content/cave-icons/wall-horizontal.png");
   images[21] = loadImage("./Content/cave-icons/wall-vertical.png");
   images[22] = loadImage("./Content/cave-icons/exit.png");
+  images[23] = loadImage("./Content/title-screen.png");
+  images[24] = loadImage("./Content/start-button.png");
+  images[25] = loadImage("./Content/controls-button.png");
+  images[26] = loadImage("./Content/back-button.png");
+  
+  audioPlayer[0] =  minim.loadFile("./Data/Intro-Track.m4a");
+    audioPlayer[1] =  minim.loadFile("./Data/in-game.m4a");
+
+  
 
   HashMap<String, Integer> imageInventoryRef = new HashMap<String, Integer>();
   imageInventoryRef.put("stat-potion", 1);
