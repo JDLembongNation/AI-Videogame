@@ -11,7 +11,8 @@
            "levelObtained": 1,
            "isSelf":false,
            "isDamage":true,
-           "isDefense":false
+           "isDefense":false,
+           "ref": 0
         },
         {
             "name": "Lunge",
@@ -24,20 +25,8 @@
             "levelObtained": 2,
             "isSelf":false,
             "isDamage":true,
-            "isDefense":false
-         },
-         {
-            "name": "Wheeze",
-            "description": "Enemies assume you have not been vaccinated. Reduce Enemy accuracy by 50",
-            "damage": 50,
-            "accuracy": 95,
-            "isPhysical": false,
-            "neverMiss":false,
-            "isFlee":false,
-            "levelObtained": 3,
-            "isSelf":false,
-            "isDamage":true,
-            "isDefense":false
+            "isDefense":false,
+            "ref": 0
          },
          {
             "name": "Build A door",
@@ -47,11 +36,71 @@
             "isPhysical": true,
             "neverMiss":false,
             "isFlee":false,
-            "levelObtained": 4,
+            "levelObtained": 3,
             "isSelf":true,
             "isDamage":false,
-            "isDefense":true
+            "isDefense":true,
+            "ref": 0
+         },
+         {
+            "name": "Fireball",
+            "description": "You somehow conjure up a fireball from your palms and fire it.",
+            "damage": 50,
+            "accuracy": 95,
+            "isPhysical": false,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": -1,
+            "isSelf":false,
+            "isDamage":true,
+            "isDefense":false,
+            "ref": 1
+         },
+         {
+            "name": "Hyper Accurate Laser Beam",
+            "description": "A high precision laser beam fires from your fingers. Neva miss.",
+            "damage": 20,
+            "accuracy": 95,
+            "isPhysical": false,
+            "neverMiss":true,
+            "isFlee":false,
+            "levelObtained": -1,
+            "isSelf":false,
+            "isDamage":true,
+            "isDefense":false,
+            "ref": 1
+         },
+         {
+            "name": "Not so accurate laser beam",
+            "description": "Supa powerful beam, but I nerf accuracy just cause I can.",
+            "damage": 2000,
+            "accuracy": 25,
+            "isPhysical": false,
+            "neverMiss":false,
+            "isFlee":false,
+            "levelObtained": -1,
+            "isSelf":false,
+            "isDamage":true,
+            "isDefense":false,
+            "ref": 1
+         },
+         {
+            "name": "Really run like hell",
+            "description": "I can guarentee this aint no spell, but you will outrun everyone.",
+            "damage": 0,
+            "accuracy": 100,
+            "isPhysical": false,
+            "neverMiss":false,
+            "isFlee":true,
+            "levelObtained": -1,
+            "isSelf":false,
+            "isDamage":false,
+            "isDefense":false,
+            "ref": 1
          }
+
+
+
 
     ],
     "Items":[
@@ -99,7 +148,7 @@
             "description": "A common sword used for dungeon exploration. It looks heavily used.",
             "isPhysical":true,
             "damage":50,
-            "recoil":0,
+            "abilityRef":0,
             "iconName":"dirk"
         },
         {
@@ -107,7 +156,7 @@
             "description": "A bow used for long ranged attaks. There are no arrows.. Wait what?..",
             "isPhysical":true,
             "damage":50,
-            "recoil":0,
+            "abilityRef":0,
             "iconName":"bow"
         },
         {
@@ -115,7 +164,7 @@
             "description": "A Stick with a razor sharp edge. It's not that hard to make right?",
             "isPhysical":true,
             "damage":50,
-            "recoil":0,
+            "abilityRef":0,
             "iconName":"spear"
         },
         {
@@ -123,7 +172,7 @@
             "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
             "isPhysical":true,
             "damage":50,
-            "recoil":0,
+            "abilityRef":0,
             "iconName":"spells"
         },
         {
@@ -131,7 +180,7 @@
             "description":"A heavy damage melee device that has a wide surface area \n to inflict maximum damage upon its unfortunate victims\n however, it will only have 0% if you are never given one",
             "isPhysical": true,
             "damage":1000,
-            "recoil":0,
+            "abilityRef":0,
             "iconName":"paddle"
         }
     ]

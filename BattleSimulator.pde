@@ -131,6 +131,9 @@ public final class BattleSimulator {
               BattleText1 = "The Ability Hit the Enemy!";
               BattleText2 = "" + dmg +" was dealt to the enemy!" ;
             } else {
+              if(abilityInPlay.isFlee){
+                isFinished = true;
+              }
               if (abilityInPlay.isSelf) {
                 if (abilityInPlay.isDefense) {
                   BattleText1 = "Your defense has increased by " + abilityInPlay.damage;

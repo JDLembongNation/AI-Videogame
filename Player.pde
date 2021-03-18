@@ -71,9 +71,8 @@ public final class Player {
       //MOVE FROM OLD TO NEW MOVES. 
       for(int i = 0; i < abilities.size(); i++){
         if(abilities.get(i).levelObtained == level){ //Add to new arsena
-          if(availableAbilities.size() == MAX_MOVES){
-            availableAbilities.remove(0);
-            availableAbilities.add(abilities.get(i));
+          if(availableAbilities.size() == MAX_PHYSICAL_MOVES){ //RESERVE THE LAST MVOE FOR SPELLS.
+            availableAbilities.set(i%4,abilities.get(i));
           }else{
             availableAbilities.add(abilities.get(i));
           }

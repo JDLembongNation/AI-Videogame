@@ -419,7 +419,7 @@ void readInContent() {
   for (int i = 0; i < weaponData.size(); i++) {
     JSONObject wp = weaponData.getJSONObject(i);
     weaponDictionary.add(new Weapon(wp.getString("name"), wp.getString("description"), wp.getBoolean("isPhysical"), wp.getFloat("damage"), 
-      wp.getFloat("recoil"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
+      wp.getFloat("abilityRef"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
   }
   items = map.generateItems(itemDictionary);
   for (Item it : itemDictionary) {

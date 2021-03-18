@@ -189,6 +189,9 @@ public final class InventoryScreen {
                   }
                 }
               } else {
+                if(imageSlots[i][j].weapon.name.equals("Spellbook")){
+                  //Add the move onto the the last move.
+                }
                 //Is weapon. Just equip.
                 player.weapon = imageSlots[i][j].weapon;
                 //TODO: Have option to unequip as well.
