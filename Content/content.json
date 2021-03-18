@@ -68,7 +68,7 @@
             "isSelf":false,
             "isDamage":true,
             "isDefense":false,
-            "ref": 1
+            "ref": 2
          },
          {
             "name": "Not so accurate laser beam",
@@ -82,7 +82,7 @@
             "isSelf":false,
             "isDamage":true,
             "isDefense":false,
-            "ref": 1
+            "ref": 3
          },
          {
             "name": "Really run like hell",
@@ -96,7 +96,7 @@
             "isSelf":false,
             "isDamage":false,
             "isDefense":false,
-            "ref": 1
+            "ref": 4
          }
 
 
@@ -172,7 +172,31 @@
             "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
             "isPhysical":true,
             "damage":50,
-            "abilityRef":0,
+            "abilityRef":1,
+            "iconName":"spells"
+        },
+        {
+            "name": "Spellbook",
+            "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
+            "isPhysical":true,
+            "damage":50,
+            "abilityRef":2,
+            "iconName":"spells"
+        },
+        {
+            "name": "Spellbook",
+            "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
+            "isPhysical":true,
+            "damage":50,
+            "abilityRef":3,
+            "iconName":"spells"
+        },
+        {
+            "name": "Spellbook",
+            "description": "Oh my, thats a lot of pages, you sure you're going to read all that?",
+            "isPhysical":true,
+            "damage":50,
+            "abilityRef":4,
             "iconName":"spells"
         },
         {

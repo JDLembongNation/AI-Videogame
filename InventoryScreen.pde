@@ -190,6 +190,13 @@ public final class InventoryScreen {
                 }
               } else {
                 if(imageSlots[i][j].weapon.name.equals("Spellbook")){
+                  for(int q = 0; q < player.abilities.size(); q++){
+                    if(imageSlots[i][j].weapon.abilityRef == player.abilities.get(q).ref){
+                      player.availableAbilities.set(3, player.abilities.get(q));
+                      removeX = i;
+                      removeY = j;
+                    }
+                  }
                   //Add the move onto the the last move.
                 }
                 //Is weapon. Just equip.

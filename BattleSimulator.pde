@@ -197,39 +197,39 @@ public final class BattleSimulator {
   }
 
   void playerTurn(Player player) {
-    if (player.availableAbilities.size() > 0) {
+    if (player.availableAbilities.get(0) != null) {
       optionA = "A) " + player.abilities.get(0).name;
       optionADesc = player.abilities.get(0).description;
     }
-    if (player.availableAbilities.size() > 1) {
+    if (player.availableAbilities.get(1) != null) {
       optionB = "B) " + player.abilities.get(1).name;
       optionBDesc = player.abilities.get(1).description;
     }
-    if (player.availableAbilities.size() > 2) {
+    if (player.availableAbilities.get(2) != null ) {
       optionC = "C) " + player.abilities.get(2).name;
       optionCDesc =  player.abilities.get(2).description;
     }
-    if (player.availableAbilities.size() > 3) {
+    if (player.availableAbilities.get(3) != null) {
       optionD = "D) " + player.abilities.get(3).name;
       optionDDesc = player.abilities.get(3).description;
     }
     optionE = "E) Run!"; 
     optionEDesc = "Run like hell..."; 
 
-    if (keys[0] && player.availableAbilities.size() > 0) {
+    if (keys[0] && player.availableAbilities.get(0) != null) {
       abilityInPlay = player.availableAbilities.get(0);
       chosen = true;
     }
-    if (keys[1] && (player.availableAbilities.size() > 1)) {
+    if (keys[1] && (player.availableAbilities.get(1) != null)) {
       abilityInPlay = player.availableAbilities.get(1);
       chosen = true;
     }
-    if (keys[2] && player.availableAbilities.size() > 2) {
+    if (keys[2] && player.availableAbilities.get(2) != null) {
       abilityInPlay = player.availableAbilities.get(2);
 
       chosen = true;
     }
-    if (keys[3] && player.availableAbilities.size() > 3) {
+    if (keys[3] && player.availableAbilities.get(3) != null) {
       abilityInPlay = player.availableAbilities.get(3);
       chosen = true;
     }

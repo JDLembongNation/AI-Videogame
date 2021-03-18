@@ -27,6 +27,9 @@ public final class Player {
   
   public Player(int x, int y, float orientation) {
     availableAbilities= new ArrayList<Ability>();
+    for(int i = 0; i < MAX_MOVES; i++){
+      availableAbilities.add(null);
+    }
     this.startingPosition = new PVector(x,y);
     this.position = new PVector(x,y);
     this.orientation = orientation;
@@ -72,9 +75,7 @@ public final class Player {
       for(int i = 0; i < abilities.size(); i++){
         if(abilities.get(i).levelObtained == level){ //Add to new arsena
           if(availableAbilities.size() == MAX_PHYSICAL_MOVES){ //RESERVE THE LAST MVOE FOR SPELLS.
-            availableAbilities.set(i%4,abilities.get(i));
-          }else{
-            availableAbilities.add(abilities.get(i));
+            availableAbilities.set(i%3,abilities.get(i));
           }
         }
       }
@@ -86,9 +87,9 @@ public final class Player {
   
   public void addAbilities(ArrayList<Ability> abilities ){
     this.abilities = abilities;
-    for(Ability a : abilities){
-      if(a.levelObtained == level){
-        availableAbilities.add(a);
+    for(int i = 0; i < abilities.size(); i++){
+      if(abilities.get(i).levelObtained == level){
+        availableAbilities.set(i%3, abilities.get(i));
       }
     }
   }

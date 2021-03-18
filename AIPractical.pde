@@ -401,7 +401,7 @@ void readInContent() {
     JSONObject ab = abilityData.getJSONObject(i);
     abilityList.add(new Ability(ab.getString("name"), ab.getString("description"), 
       ab.getFloat("damage"), ab.getBoolean("isPhysical"), ab.getFloat("accuracy"), ab.getBoolean("neverMiss"), 
-      ab.getBoolean("isFlee"), ab.getInt("levelObtained"), ab.getBoolean("isSelf"), ab.getBoolean("isDamage"), ab.getBoolean("isDefense")));
+      ab.getBoolean("isFlee"), ab.getInt("levelObtained"), ab.getBoolean("isSelf"), ab.getBoolean("isDamage"), ab.getBoolean("isDefense"), ab.getInt("ref")));
   }
   player.addAbilities(abilityList);
 
