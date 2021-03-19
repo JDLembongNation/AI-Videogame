@@ -7,7 +7,8 @@ public final class Weapon{
   PImage caveView;
   PImage inventoryView;
   PVector position;
-  
+  public Weapon(){
+  }
   public Weapon(String name, String description, boolean isPhysical, float damage, float abilityRef, PImage caveView, PImage inventoryView){
     this.name = name;
     this.description = description;
@@ -17,4 +18,9 @@ public final class Weapon{
     this.caveView = caveView;
     this.inventoryView = inventoryView;
   }
+  public void copyWeapon(Weapon weapon){
+    this.name = weapon.name;
+    this.description = weapon.description;
+  }
+  
 } 

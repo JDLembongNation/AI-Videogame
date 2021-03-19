@@ -135,7 +135,6 @@ void drawMap() {
       } else if (currentMap[i][j].isEndPosition) {
         fill(180, 50, 190);
         image(images[22], i*40, j*40);
-        //rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
         end = new PVector(i*40, j*40);
       } else {
         image(images[19], i*40, j*40);
@@ -175,7 +174,7 @@ void collisionCheck() {
   }
   PVector currentPos = player.position.copy();
   currentPos.sub(end);
-  if (currentPos.mag() < 40) { //EXTREMELY DODGY FIX SOON PLEASE.
+  if (currentPos.mag() < 40) { 
     resetMap();
   }
   // == FOR EDGE OF SCREEN == 
@@ -222,12 +221,13 @@ void collisionCheck() {
     if (currPos.mag() < 30) {
       if (items.get(w).isTreasure) {
         player.gold += items.get(w).value;
-        System.out.println("TOTAL GOLD " + player.gold);
         items.remove(w);
         break;
       } else {
-        inventory.addItem(items.get(w));  
-        items.remove(w);
+        if(inventory.totalSlots < 15){
+          inventory.addItem(items.get(w));  
+          items.remove(w);
+        }
         break;
       }
     }
@@ -251,7 +251,7 @@ void resetMap() {
   level++;
   map.generateNewCave(level);
   enemies = map.generateEnemies(level);
-  items = map.generateItems(itemDictionary);
+  items = map.generateItems(itemDictionary,enemies);
   weapons = map.generateWeapons(weaponDictionary);
   for (Enemy e : enemies) {
     e.setAbilities(abilityList);
@@ -445,9 +445,12 @@ void readInContent() {
     weaponDictionary.add(new Weapon(wp.getString("name"), wp.getString("description"), wp.getBoolean("isPhysical"), wp.getFloat("damage"), 
       wp.getFloat("abilityRef"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
   }
-  items = map.generateItems(itemDictionary);
+  items = map.generateItems(itemDictionary, enemies);
   weapons = map.generateWeapons(weaponDictionary);
   for (Enemy e : enemies) {
     e.setAbilities(abilityList);
+  }
+  for(int i = 0; i < 15; i++){
+  inventory.addItem(items.get(0));
   }
 }

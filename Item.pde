@@ -22,6 +22,17 @@ public final class Item{
     this.caveView = caveView;
     this.inventoryView = inventoryView;
   } 
+  public void copyItem(Item item){
+    this.isConsumable = item.isConsumable;
+    this.isTreasure = item.isTreasure;
+  this.isStatChanger = item.isStatChanger;
+  this.name = item.name;
+   this.description = item.description;
+  this.value = item.value;
+  this.caveView = item.caveView; 
+  this.inventoryView = item.inventoryView;
+  this.position = item.position;
+  }
   
   
 }

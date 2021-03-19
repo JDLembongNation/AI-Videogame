@@ -7,12 +7,14 @@ public final class InventoryScreen {
   Weapon currentWeapon;
   Slot origin;
   Slot destination;
+  int totalSlots;
   //ORigin https://www.deviantart.com/bizmasterstudios
   Slot[][] imageSlots;
   ArrayList<Item> items;
   ArrayList<Weapon> weapons;
   PImage backgroundImage;
   public InventoryScreen(PImage backgroundImage) {
+    totalSlots = 0;
     imageSlots = new Slot[5][3]; //x, y Usually otherway round, but program this way to visualise easier.
     this.backgroundImage = backgroundImage;
     for (int i=0; i < imageSlots.length; i++) {
@@ -66,6 +68,7 @@ public final class InventoryScreen {
   
 
   public void addItem(Item item) {
+    totalSlots++;
     for (int i=0; i < imageSlots.length; i++) {
       for (int j = 0; j < imageSlots[0].length; j++) {
         if (!imageSlots[i][j].isTaken) {
@@ -77,6 +80,7 @@ public final class InventoryScreen {
     }
   }
   public void addWeapon(Weapon weapon) {
+    totalSlots++;
     for (int i=0; i < imageSlots.length; i++) {
       for (int j = 0; j < imageSlots[0].length; j++) {
         if (!imageSlots[i][j].isTaken) {
@@ -225,6 +229,7 @@ public final class InventoryScreen {
       }
     }
     if (removeX != -1 && removeY!= -1) {
+      totalSlots--;
       imageSlots[removeX][removeY].isTaken = false;
       imageSlots[removeX][removeY].item = null;
       imageSlots[removeX][removeY].weapon = null;

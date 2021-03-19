@@ -45,6 +45,8 @@ public final class StartScreen {
     controlString.append("Choose moves in your battle through your keyboard \n");
     controlString.append("Equip weapons to get stronger.\n");
     controlString.append("Spellbooks can be acquired, but only one spell can be learnt at anytime.\n");
+    controlString.append("View your stats and inventory by pressing the i key \n");
+    controlString.append("Your goal is to reach the hole in every map to descend further into the cave. \n");
     controlString.append("Descend as far as you possibly can.");
     return controlString.toString();
   }

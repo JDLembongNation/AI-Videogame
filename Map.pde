@@ -22,9 +22,9 @@ public final class Map {
   public GroundNode[][] getMap() {
     return map;
   }
-  
+
   private void generateNewCave(int level) {
-    
+
     //Using the BSP Partitioning System. 
     treeValue = 0;
     tree = new BinaryNode(null, 1000, 1000, 0, 0);
@@ -37,14 +37,8 @@ public final class Map {
         map[i][j].isWalkable = generateMap[i][j];
       }
     }
-    System.out.println("Incisions: " + incisions + " and stiches: " + stitches);
-    System.out.println("Total Rooms " + totalRooms);
-
-    //Now generate Position of player and enemy.
-    //generateCharacterStartingPosition(tree);
-    //generateItems();
   }
-private class BinaryNode{
+  private class BinaryNode {
     int x;
     int y; //not pvectors as no vector calculations are needed.
     int widthArea;
@@ -52,68 +46,69 @@ private class BinaryNode{
     BinaryNode parent;
     BinaryNode left;
     BinaryNode right;
-    public BinaryNode(BinaryNode parent, int widthArea, int heightArea, int x, int y){
+    public BinaryNode(BinaryNode parent, int widthArea, int heightArea, int x, int y) {
       this.parent = parent;
       this.widthArea = widthArea;
       this.heightArea = heightArea;
       this.x = x;
       this.y = y;
     }
-    public int getTotalArea(){return widthArea*heightArea;}
+    public int getTotalArea() {
+      return widthArea*heightArea;
+    }
   }
-  
-  private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode){
+
+  private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode) {
     //CHECK SIZE APPROPRIATE
     //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
-    if(treeNode.getTotalArea() < minArea){
+    if (treeNode.getTotalArea() < minArea) {
       //Carve out area. Reassign values for x, y, widthArea, heightArea. For now, just make 5 pixels smaller. Keep same Pos.
       treeNode.widthArea -=40;
       treeNode.heightArea-=40;
       generatorMap = insertRoom(generatorMap, treeNode);
       return generatorMap;
-    }else{
-      int randomValue = (int) random(0,10);
-      if(randomValue%2 == 0 && treeNode.widthArea >= 200){ //Split Vertically
+    } else {
+      int randomValue = (int) random(0, 10);
+      if (randomValue%2 == 0 && treeNode.widthArea >= 200) { //Split Vertically
 
-       int split = (int) random(treeNode.x+80, treeNode.x+treeNode.widthArea-80);
-       int remainder = split%40;
-       split-=remainder;
-       treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
-       allocateSpaces(generatorMap, treeNode.left);
-       treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
-       allocateSpaces(generatorMap, treeNode.right);
-       //50 --> 0,24 and 25,50
-      }else if(treeNode.heightArea>=200){
+        int split = (int) random(treeNode.x+80, treeNode.x+treeNode.widthArea-80);
+        int remainder = split%40;
+        split-=remainder;
+        treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
+        allocateSpaces(generatorMap, treeNode.left);
+        treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
+        allocateSpaces(generatorMap, treeNode.right);
+        //50 --> 0,24 and 25,50
+      } else if (treeNode.heightArea>=200) {
         int split = (int) random(treeNode.y+80, treeNode.y+treeNode.heightArea-80);
         int remainder = split%40;
         split-=remainder;
-        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y); 
+        treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y), treeNode.x, treeNode.y); 
         allocateSpaces(generatorMap, treeNode.left);
         treeNode.right = new BinaryNode(treeNode, treeNode.widthArea, (treeNode.heightArea+treeNode.y-split), treeNode.x, split);
         allocateSpaces(generatorMap, treeNode.right);
         //Split Horizontally
-        
-      }else{
+      } else {
         treeNode.widthArea -=40;
         treeNode.heightArea-=40;
         generatorMap = insertRoom(generatorMap, treeNode);
         return generatorMap;
       }
-      
-      if(treeNode.left!=null && treeNode.right!=null){ //Is a parent so Attach Corridors here on any length between the two children.
-      return addCorridors(generatorMap, treeNode);
+
+      if (treeNode.left!=null && treeNode.right!=null) { //Is a parent so Attach Corridors here on any length between the two children.
+        return addCorridors(generatorMap, treeNode);
       }
-       return generatorMap;
+      return generatorMap;
     }
   }
 
- private boolean[][] insertRoom(boolean[][] room, BinaryNode node){
+  private boolean[][] insertRoom(boolean[][] room, BinaryNode node) {
     int factoredX = (int) node.x/40;
     int factoredY = (int) node.y/40;
     int factoredWidth = (int) node.widthArea/40;
     int factoredHeight = (int) node.heightArea/40;
-    for(int i = factoredX; i < factoredWidth+factoredX; i++){
-      for(int j =factoredY; j < factoredHeight+factoredY; j++){
+    for (int i = factoredX; i < factoredWidth+factoredX; i++) {
+      for (int j =factoredY; j < factoredHeight+factoredY; j++) {
         room[i][j] = true;
       }
     }
@@ -121,17 +116,17 @@ private class BinaryNode{
   }
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
-  private boolean[][] addCorridors(boolean[][] room, BinaryNode node){
+  private boolean[][] addCorridors(boolean[][] room, BinaryNode node) {
     //Reduce scale IF there are children. 
-    if(node.left.right!=null && node.left.left!=null) {
+    if (node.left.right!=null && node.left.left!=null) {
       node.left.widthArea -=40;
       node.left.heightArea -=40;
     }
-    if(node.right.right!=null && node.right.left!=null){
+    if (node.right.right!=null && node.right.left!=null) {
       node.right.widthArea -=40;
       node.right.heightArea -=40;
     }
-    
+
     int factoredLeftX = (int) node.left.x/40;
     int factoredLeftY = (int) node.left.y/40;
     int factoredLeftWidth = (int) node.left.widthArea/40;
@@ -144,8 +139,8 @@ private class BinaryNode{
     int factoredRightHeightTotal = (factoredRightY+factoredRightHeight);
     int factoredLeftWidthTotal = (factoredLeftX + factoredLeftWidth);
     int factoredRightWidthTotal = (factoredRightX + factoredRightWidth);
-    
-    if(factoredLeftX < factoredRightX){ 
+
+    if (factoredLeftX < factoredRightX) { 
       int leftEdge = factoredLeftX + factoredLeftWidth;
       //grab from any height. in range y to y+height
       int toFill = factoredRightX-leftEdge;
@@ -153,20 +148,20 @@ private class BinaryNode{
       int lowerBoundY = (factoredLeftY < factoredRightY) ? factoredRightY : factoredLeftY;
       int upperBoundY = factoredLeftHeightTotal < factoredRightHeightTotal? factoredLeftHeightTotal : factoredRightHeightTotal;
       int chosenPath = (int) random(lowerBoundY, upperBoundY-3);
-      for(int j = 0; j < 3;j++){
-      for(int i =leftEdge; i < leftEdge+toFill; i++){
-        room[i][chosenPath+j] = true;
+      for (int j = 0; j < 3; j++) {
+        for (int i =leftEdge; i < leftEdge+toFill; i++) {
+          room[i][chosenPath+j] = true;
+        }
       }
-      }
-    }else{ //Horizontal Cut.
+    } else { //Horizontal Cut.
       int leftEdge = factoredLeftY + factoredLeftHeight;
       //grab from any width.in range x to x+width
       int toFill = factoredRightY - leftEdge;
       int lowerBoundX = (factoredLeftX < factoredRightX) ? factoredRightX : factoredLeftX;
       int upperBoundX = (factoredLeftWidthTotal < factoredRightWidthTotal) ? factoredLeftWidthTotal : factoredRightWidthTotal;
       int chosenPath = (int) random(lowerBoundX, upperBoundX-3);
-      for(int j = 0; j < 3; j++){
-        for(int i =leftEdge; i < leftEdge+toFill; i++){
+      for (int j = 0; j < 3; j++) {
+        for (int i =leftEdge; i < leftEdge+toFill; i++) {
           room[chosenPath+j][i] = true;
         }
       }
@@ -186,10 +181,10 @@ private class BinaryNode{
     return enemies;
   }
 
-  private ArrayList<Item> generateItems(ArrayList<Item> itemDictionary) {
+  private ArrayList<Item> generateItems(ArrayList<Item> itemDictionary, ArrayList<Enemy> enemies) {
     ArrayList<Item> items = new ArrayList<Item>();
     BinaryNode treePtr = tree;
-    placeItems(items, treePtr, itemDictionary);
+    placeItems(items, treePtr, itemDictionary, enemies);
     return items;
   }
 
@@ -209,10 +204,16 @@ private class BinaryNode{
       int chosenX = treePtr.x + (int) random(15, treePtr.widthArea-15);
       int chosenY = treePtr.y + (int) random(15, treePtr.heightArea-15);
       int chosenWeapon = (int) random(0, weaponDictionary.size());
-      Weapon wp = weaponDictionary.get(chosenWeapon);
+      int dropRate = (int) random(0,10);
+      if(dropRate < 3){ //Simple drop rate percentage. 
+      Weapon wp = new Weapon();
+      wp.copyWeapon(weaponDictionary.get(chosenWeapon));
       wp.position = new PVector(chosenX, chosenY);
       weapons.add(wp);
       return;
+      }else{
+        return;
+      }
     }
     int direction = (int) random(0, 10);
     if (direction%2==0) {
@@ -222,28 +223,35 @@ private class BinaryNode{
     }
   }
 
-  private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary) {
+  private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary, ArrayList<Enemy> enemies) {
     if (treePtr.left == null && treePtr.right == null) {
       //Reached a room. 
       int chosenX;
       int chosenY;
-         chosenX = treePtr.x + (int) random(0, treePtr.widthArea-40);
+      chosenX = treePtr.x + (int) random(0, treePtr.widthArea-40);
 
-         chosenY = treePtr.y + (int) random(0, treePtr.heightArea-40);
-
+      chosenY = treePtr.y + (int) random(0, treePtr.heightArea-40);
+      int dropRate = (int) random(0,10);
+      if(dropRate < 3){ //Simple drop rate percentage. 
       int chosenItem = (int) random(0, itemDictionary.size());
-      Item it = itemDictionary.get(chosenItem);
-      it.position = new PVector(chosenX, chosenY);
+      Item it = new Item();
+      it.copyItem(itemDictionary.get(chosenItem));
+      it.position = new PVector(chosenX, chosenY);      
       items.add(it);
+      if(it.name.equals("Treasure")){
+        enemies.add(new Enemy(new PVector(chosenX, chosenY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea, level));
+      }
       return;
+      }else{
+        return;
+      }
     }
-    if (treePtr.left!=null) placeItems(items, treePtr.left, itemDictionary);
-    if (treePtr.right!=null) placeItems(items, treePtr.right, itemDictionary);
+    if (treePtr.left!=null) placeItems(items, treePtr.left, itemDictionary, enemies);
+    if (treePtr.right!=null) placeItems(items, treePtr.right, itemDictionary, enemies);
   }
-
+  
+// == METHOD assigns the start and end position of the map. 
   private void generateCharacterStartingPosition(BinaryNode tree) {
-    //go to bottom of tree focusing left and place spot randomly rnadomly. 
-    //go to bottom of tree focusing right and place spot randomly.a
     BinaryNode treeptr = tree;
     while (treeptr.left!=null) treeptr = treeptr.left;
     BinaryNode startDimensions = treeptr;
