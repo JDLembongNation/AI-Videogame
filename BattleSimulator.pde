@@ -180,7 +180,7 @@ public final class BattleSimulator {
       enemyAlreadyHit = true;
       delay = millis();
       if (playerFaint) {
-        displayPlayerEnd();
+        displayPlayerEnd(player);
       }
     }
     if (waitSecond(3) && alreadyHit) { //Delay for a few seconds to display ENemy Move
@@ -362,7 +362,7 @@ public final class BattleSimulator {
   }
 
   private boolean didLandHit(Ability ability, float dodgeRate) {
-    float generated = random(0, 1);
+    float generated = random(0, ability.accuracy/100);
     if (ability.neverMiss) return true;
     else return generated > dodgeRate;
   }
@@ -380,9 +380,9 @@ public final class BattleSimulator {
     delay = millis();
   }
 
-  private void displayPlayerEnd() {
-    BattleText1 = "You Fainted!";
-    BattleText2 = "You LOSE!";
+  private void displayPlayerEnd(Player player) {
+    BattleText1 = "You FAINTED!";
+    BattleText2 = "Final Score: " + player.getScore();
     isDone = true;
     delay = millis();
   }

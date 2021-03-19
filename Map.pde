@@ -1,6 +1,6 @@
 public final class Map {
   int totalRooms = 0; //DEBUG
-  int level;
+
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
@@ -22,9 +22,9 @@ public final class Map {
   public GroundNode[][] getMap() {
     return map;
   }
-
-  private void generateNewCave() {
-    level++;
+  
+  private void generateNewCave(int level) {
+    
     //Using the BSP Partitioning System. 
     treeValue = 0;
     tree = new BinaryNode(null, 1000, 1000, 0, 0);

@@ -34,7 +34,7 @@ void setup() {
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
   level = 1;
-  map.generateNewCave();
+  map.generateNewCave(level);
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
   images = new PImage[27];
@@ -45,7 +45,6 @@ void setup() {
   bs.reset();
   drawMap();
   player.position = player.startingPosition.copy();
-
   sc = new StartScreen(audioPlayer[0], images[23], images[24], images[25], images[26]);
 }
 
@@ -94,16 +93,32 @@ void battleGUI() {
     if (bs.enemyFaint) {
       bs.reset();
       enemies.remove(currentEnemy);
+      inBattle = false;
+      bs.isFinished = false;
+      for (int i = 0; i < keys.length; i++) {
+        keys[i] = false; //Prevent any unwanted movement.
+      }
     } else {
+      //RESET THE GAME FROM BEGINNING
       bs.reset();
-      player.position = player.startingPosition.copy();
-    }
-    inBattle = false;
-    bs.isFinished = false;
-    for (int i = 0; i < keys.length; i++) {
-      keys[i] = false; //Prevent any unwanted movement.
+      inBattle = false;
+      bs.isFinished = false;
+      for (int i = 0; i < keys.length; i++) {
+        keys[i] = false; //Prevent any unwanted movement.
+      }
+      restartGame();
     }
   }
+}
+
+void restartGame() {
+  level = 0;
+  resetMap();
+  inventory.resetItems();
+  player.resetAttributes();
+  isStartScreen = true;
+  player.addAbilities(abilityList);
+  sc = new StartScreen(audioPlayer[0], images[23], images[24], images[25], images[26]);  
 }
 
 void drawMap() {
@@ -125,23 +140,6 @@ void drawMap() {
       } else {
         image(images[19], i*40, j*40);
       }
-      /*
-      if(currentMap[i][j].debug){
-       fill(240, 24, 25);
-       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-       }if(currentMap[i][j].bigDebug){
-       fill(240, 240, 25);
-       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-       }
-       if(currentMap[i][j].posChild){
-       fill(25, 240, 240);
-       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-       }
-       if(currentMap[i][j].posParent){
-       fill(240, 25, 240);
-       rect(currentMap[i][j].x, currentMap[i][j].y, NODE_SIZE, NODE_SIZE);
-       }
-       */
     }
   }
 }
@@ -250,8 +248,8 @@ void collisionCheck() {
 }
 
 void resetMap() {
-  map.generateNewCave();
   level++;
+  map.generateNewCave(level);
   enemies = map.generateEnemies(level);
   items = map.generateItems(itemDictionary);
   weapons = map.generateWeapons(weaponDictionary);
@@ -273,10 +271,6 @@ void drawItemsWeapons() {
 }
 
 void move() {
-//  if (keys[0] && keys[2]) player.integrate(1, 0.02);
- // if (keys[0] && keys[3]) player.integrate(1, -0.02);
- // if (keys[1] && keys[2])player.integrate(-1, 0.02);
-  //if (keys[1] && keys[3])player.integrate(-1, -0.02);
   if (keys[0]) player.integrate(2, 0);
   if (keys[1]) player.integrate(-2, 0);
   if (keys[2]) player.integrate(0, 0.08);
@@ -452,12 +446,6 @@ void readInContent() {
       wp.getFloat("abilityRef"), images[imageCaveRef.get(wp.getString("iconName"))], images[imageInventoryRef.get(wp.getString("iconName"))]));
   }
   items = map.generateItems(itemDictionary);
-  for (Item it : itemDictionary) {
-    inventory.addItem(it);
-  }
-  for (Weapon wp : weaponDictionary) {
-    inventory.addWeapon(wp);
-  }
   weapons = map.generateWeapons(weaponDictionary);
   for (Enemy e : enemies) {
     e.setAbilities(abilityList);

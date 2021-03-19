@@ -30,8 +30,9 @@ public final class Enemy {
     this.rangeWidth = rangeWidth;
     this.rangeHeight = rangeHeight;
     orientation = 0;
-    speed = 1;
-    max_speed = 1+(0.2*difficulty);
+    speed = 1+((int)(difficulty/5));
+    attackPower = 1+(difficulty);
+    max_speed = 2;
     max_speed_chase = 3;
     velocity = new PVector(0, 0);
     maxHealth = (100)+(50*difficulty);
@@ -40,8 +41,8 @@ public final class Enemy {
     this.dodgeRate=0.1+(0.01*difficulty);
     defense = 1;
     arrive = true;
-    this.specialDefense = 1;
-    this.specialAttack = 1;
+    this.specialDefense = 1+(difficulty);
+    this.specialAttack = 1+(difficulty);
   }
 
   public void setAbilities(ArrayList<Ability> abilities) {
@@ -91,12 +92,14 @@ public final class Enemy {
   private Ability findBestStatChange(boolean self) {
     Ability current = null;
     for (int i = 0; i < abilities.size(); i++) {
+      if(abilities.get(i).isPhysical){
       if (current == null && !abilities.get(i).isDamage && (abilities.get(i).isSelf == self)) {
         current = abilities.get(i);
       }
       if (!abilities.get(i).isDamage &&(abilities.get(i).isSelf == self) &&current!= null&&current.damage < abilities.get(i).damage) {
         current = abilities.get(i);
       }
+    }
     }
     return current;
   }

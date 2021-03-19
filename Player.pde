@@ -38,14 +38,29 @@ public final class Player {
     this.exp = 0;
     this.expNeeded = 10;
     this.speed = 3;
-    this.dodgeRate = 0.5;
-    this.maxHealth = 500;
+    this.dodgeRate = 0.1;
+    this.maxHealth = 200;
     this.health = maxHealth;
     this.defense = 1;
     this.specialAttack = 1;
     this.specialDefense =1;
 }
-  
+  public void resetAttributes(){
+    this.level = 1;
+    this.exp = 0;
+    this.expNeeded = 10;
+    this.speed = 3;
+    this.dodgeRate = 0.1;
+    this.maxHealth = 200;
+    this.health = maxHealth;
+    this.defense = 1;
+    this.specialAttack = 1;
+    this.specialDefense =1;  
+    availableAbilities= new ArrayList<Ability>();
+    for(int i = 0; i < MAX_MOVES; i++){
+      availableAbilities.add(null);
+    }   
+  }
   public void integrate(float force, float targetOrientation){
     //Adjust Orientation
     orientation += targetOrientation;
@@ -95,7 +110,9 @@ public final class Player {
   }
   
   
-  
+  public int getScore(){
+    return gold * exp;
+  }
   public void assignWeapon(Weapon weapon){
     this.weapon = weapon;
   }

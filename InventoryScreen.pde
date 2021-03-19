@@ -52,6 +52,18 @@ public final class InventoryScreen {
     onCheckBox(player);
     showStats(player);
   }
+  
+  public void resetItems(){
+       for (int i=0; i < imageSlots.length; i++) {
+      for (int j = 0; j < imageSlots[0].length; j++) {
+        if (imageSlots[i][j].isTaken) {
+          imageSlots[i][j].isTaken = false;
+          imageSlots[i][j].item = null;
+        }
+      }
+    }
+  }
+  
 
   public void addItem(Item item) {
     for (int i=0; i < imageSlots.length; i++) {
