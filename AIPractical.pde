@@ -273,10 +273,10 @@ void drawItemsWeapons() {
 }
 
 void move() {
-  if (keys[0] && keys[2]) player.integrate(1, 0.02);
-  if (keys[0] && keys[3]) player.integrate(1, -0.02);
-  if (keys[1] && keys[2])player.integrate(-1, 0.02);
-  if (keys[1] && keys[3])player.integrate(-1, -0.02);
+//  if (keys[0] && keys[2]) player.integrate(1, 0.02);
+ // if (keys[0] && keys[3]) player.integrate(1, -0.02);
+ // if (keys[1] && keys[2])player.integrate(-1, 0.02);
+  //if (keys[1] && keys[3])player.integrate(-1, -0.02);
   if (keys[0]) player.integrate(2, 0);
   if (keys[1]) player.integrate(-2, 0);
   if (keys[2]) player.integrate(0, 0.08);
