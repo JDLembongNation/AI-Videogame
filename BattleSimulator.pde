@@ -198,20 +198,20 @@ public final class BattleSimulator {
 
   void playerTurn(Player player) {
     if (player.availableAbilities.get(0) != null) {
-      optionA = "A) " + player.abilities.get(0).name;
-      optionADesc = player.abilities.get(0).description;
+      optionA = "A) " + player.availableAbilities.get(0).name;
+      optionADesc = player.availableAbilities.get(0).description;
     }
     if (player.availableAbilities.get(1) != null) {
-      optionB = "B) " + player.abilities.get(1).name;
-      optionBDesc = player.abilities.get(1).description;
+      optionB = "B) " + player.availableAbilities.get(1).name;
+      optionBDesc = player.availableAbilities.get(1).description;
     }
     if (player.availableAbilities.get(2) != null ) {
-      optionC = "C) " + player.abilities.get(2).name;
-      optionCDesc =  player.abilities.get(2).description;
+      optionC = "C) " + player.availableAbilities.get(2).name;
+      optionCDesc =  player.availableAbilities.get(2).description;
     }
     if (player.availableAbilities.get(3) != null) {
-      optionD = "D) " + player.abilities.get(3).name;
-      optionDDesc = player.abilities.get(3).description;
+      optionD = "D) " + player.availableAbilities.get(3).name;
+      optionDDesc = player.availableAbilities.get(3).description;
     }
     optionE = "E) Run!"; 
     optionEDesc = "Run like hell..."; 
