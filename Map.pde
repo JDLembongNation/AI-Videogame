@@ -73,9 +73,9 @@ private class BinaryNode{
       return generatorMap;
     }else{
       int randomValue = (int) random(0,10);
-      if(randomValue%2 == 0 && treeNode.x+treeNode.widthArea > 200){ //Split Vertically
+      if(randomValue%2 == 0 && treeNode.widthArea >= 200){ //Split Vertically
 
-       int split = (int) random(treeNode.x+81, treeNode.x+treeNode.widthArea-120);
+       int split = (int) random(treeNode.x+80, treeNode.x+treeNode.widthArea-80);
        int remainder = split%40;
        split-=remainder;
        treeNode.left = new BinaryNode(treeNode, ((split)-treeNode.x), treeNode.heightArea, treeNode.x, treeNode.y);
@@ -83,8 +83,8 @@ private class BinaryNode{
        treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
        allocateSpaces(generatorMap, treeNode.right);
        //50 --> 0,24 and 25,50
-      }else if(treeNode.y+treeNode.heightArea>200){
-        int split = (int) random(treeNode.y+81, treeNode.y+treeNode.heightArea-120);
+      }else if(treeNode.heightArea>=200){
+        int split = (int) random(treeNode.y+80, treeNode.y+treeNode.heightArea-80);
         int remainder = split%40;
         split-=remainder;
         treeNode.left = new BinaryNode(treeNode, treeNode.widthArea, (split-treeNode.y),treeNode.x, treeNode.y); 

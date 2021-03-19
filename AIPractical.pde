@@ -22,14 +22,14 @@ Minim minim;
 AudioPlayer[] audioPlayer;
 int currentEnemy;
 int level;
-  StartScreen sc;
+StartScreen sc;
 Map map;
 Player player;
 boolean isStartScreen;
 InventoryScreen inventory;
 void setup() {
   size(1000, 1000);
-    minim = new Minim(this);
+  minim = new Minim(this);
 
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
@@ -38,37 +38,40 @@ void setup() {
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
   images = new PImage[27];
-    audioPlayer = new AudioPlayer[2];
+  audioPlayer = new AudioPlayer[2];
   isStartScreen = true;
   readInContent();
   bs = new BattleSimulator();
   bs.reset();
   drawMap();
   player.position = player.startingPosition.copy();
-  
-  sc = new StartScreen(audioPlayer[0],images[23],images[24], images[25], images[26]);
+
+  sc = new StartScreen(audioPlayer[0], images[23], images[24], images[25], images[26]);
 }
 
 void draw() {
-  if(isStartScreen)
+  if (isStartScreen)
   {
     sc.generateStartScreen();
-  }else{
-  if (inBattle) {
-    battleGUI();
-  } else { 
-    caveGUI();
-    if (keys[4]) inventory.showInventory(player);
-  }
+  } else {
+    audioPlayer[1].play();
+    if (audioPlayer[1].position()>=audioPlayer[1].length()) {
+      audioPlayer[1].rewind();
+    }
+    if (inBattle) {
+      battleGUI();
+    } else { 
+      caveGUI();
+      if (keys[4]) inventory.showInventory(player);
+    }
   }
 }
 
-void mousePressed(){
-  if(isStartScreen && sc.pressButton()){
+void mousePressed() {
+  if (isStartScreen && sc.pressButton()) {
     System.out.println("PEY");
     isStartScreen = false;
-  }else{
-    
+  } else {
   }
 }
 
@@ -185,8 +188,8 @@ void collisionCheck() {
   // == FOR WALL ==
   int positionX = (int) player.position.x;
   int positionY = (int) player.position.y;
-   positionX -=positionX%40;
-   positionY -= positionY%40;
+  positionX -=positionX%40;
+  positionY -= positionY%40;
   // == FOR WALLS == 
   int i = positionX/40;
   int j = positionY/40;
@@ -211,7 +214,7 @@ void collisionCheck() {
       if (player.position.x > ((i+1)*40)-15) player.position.x =  ((i+1)*40)-15;
     }
   }
-  
+
 
   // == FOR ITEMS ==
   int remove = -1;
@@ -367,38 +370,38 @@ void keyReleased()
 
 
 void readInContent() {
-  images[0] = loadImage("./Content/Inventory.png");
-  images[1] = loadImage("./Content/inventory-icons/stat-potion.png");
-  images[2] = loadImage("./Content/inventory-icons/health-potion.png");
-  images[3] = loadImage("./Content/inventory-icons/spells.png");
-  images[4] = loadImage("./Content/inventory-icons/armor.png");
-  images[5] = loadImage("./Content/inventory-icons/dirk.png"); //increases stat point in a certain category.
-  images[6] = loadImage("./Content/inventory-icons/bow.png");
-  images[7] = loadImage("./Content/inventory-icons/spear.png");
-  images[8] = loadImage("./Content/inventory-icons/paddle.png");
-  images[9] = loadImage("./Content/cave-icons/stat-potion.png");
-  images[10] = loadImage("./Content/cave-icons/health-potion.png");
-  images[11] = loadImage("./Content/cave-icons/spells.png");
-  images[12] = loadImage("./Content/cave-icons/armor.png");
-  images[13] = loadImage("./Content/cave-icons/dirk.png");
-  images[14] = loadImage("./Content/cave-icons/bow.png");
-  images[15] = loadImage("./Content/cave-icons/spear.png");
-  images[16] = loadImage("./Content/cave-icons/paddle.png");
-  images[17] = loadImage("./Content/inventory-icons/treasure.png");
-  images[18] = loadImage("./Content/cave-icons/treasure.png");
-  images[19] = loadImage("./Content/cave-icons/walkable.png");
-  images[20] = loadImage("./Content/cave-icons/wall-horizontal.png");
-  images[21] = loadImage("./Content/cave-icons/wall-vertical.png");
-  images[22] = loadImage("./Content/cave-icons/exit.png");
-  images[23] = loadImage("./Content/title-screen.png");
-  images[24] = loadImage("./Content/start-button.png");
-  images[25] = loadImage("./Content/controls-button.png");
-  images[26] = loadImage("./Content/back-button.png");
-  
-  audioPlayer[0] =  minim.loadFile("./Data/Intro-Track.m4a");
-    audioPlayer[1] =  minim.loadFile("./Data/in-game.m4a");
+  images[0] = loadImage("./Data/Inventory.png");
+  images[1] = loadImage("./Data/inventory-icons/stat-potion.png");
+  images[2] = loadImage("./Data/inventory-icons/health-potion.png");
+  images[3] = loadImage("./Data/inventory-icons/spells.png");
+  images[4] = loadImage("./Data/inventory-icons/armor.png");
+  images[5] = loadImage("./Data/inventory-icons/dirk.png"); //increases stat point in a certain category.
+  images[6] = loadImage("./Data/inventory-icons/bow.png");
+  images[7] = loadImage("./Data/inventory-icons/spear.png");
+  images[8] = loadImage("./Data/inventory-icons/paddle.png");
+  images[9] = loadImage("./Data/cave-icons/stat-potion.png");
+  images[10] = loadImage("./Data/cave-icons/health-potion.png");
+  images[11] = loadImage("./Data/cave-icons/spells.png");
+  images[12] = loadImage("./Data/cave-icons/armor.png");
+  images[13] = loadImage("./Data/cave-icons/dirk.png");
+  images[14] = loadImage("./Data/cave-icons/bow.png");
+  images[15] = loadImage("./Data/cave-icons/spear.png");
+  images[16] = loadImage("./Data/cave-icons/paddle.png");
+  images[17] = loadImage("./Data/inventory-icons/treasure.png");
+  images[18] = loadImage("./Data/cave-icons/treasure.png");
+  images[19] = loadImage("./Data/cave-icons/walkable.png");
+  images[20] = loadImage("./Data/cave-icons/wall-horizontal.png");
+  images[21] = loadImage("./Data/cave-icons/wall-vertical.png");
+  images[22] = loadImage("./Data/cave-icons/exit.png");
+  images[23] = loadImage("./Data/title-screen.png");
+  images[24] = loadImage("./Data/start-button.png");
+  images[25] = loadImage("./Data/controls-button.png");
+  images[26] = loadImage("./Data/back-button.png");
 
-  
+  audioPlayer[0] =  minim.loadFile("./Data/Intro-Track.mp3");
+  audioPlayer[1] =  minim.loadFile("./Data/in-game.mp3");
+
+
 
   HashMap<String, Integer> imageInventoryRef = new HashMap<String, Integer>();
   imageInventoryRef.put("stat-potion", 1);
@@ -422,7 +425,7 @@ void readInContent() {
   imageCaveRef.put("paddle", 16);
   imageCaveRef.put("treasure", 18);
   inventory = new InventoryScreen(images[0]);
-  JSONObject data = loadJSONObject("./Content/content.json");
+  JSONObject data = loadJSONObject("./Data/content.json");
   JSONArray abilityData = data.getJSONArray("Abilities");
   for (int i = 0; i < abilityData.size(); i++) {
     JSONObject ab = abilityData.getJSONObject(i);
