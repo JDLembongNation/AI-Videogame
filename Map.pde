@@ -6,8 +6,6 @@ public final class Map {
   int treeValue;
   final int maxMinArea = 500000;
   int minArea = 500000; //At least 50 squares of operating room.
-  int incisions= 0; //DEBUG 
-  int stitches = 0; //DEBUG
 
   public Map(int chosenWidth, int chosenHeight, int nodeSize) {
     int allocatedWidth = chosenWidth/nodeSize;
@@ -175,12 +173,33 @@ public final class Map {
     //Dependent on level. 
     BinaryNode treePtr = tree;
     while (treePtr.right!=null) treePtr = treePtr.right; //reach same room as the enemies.
-    for (int i = 0; i < level; i++) {
+    for (int i = 0; i < level; i+=2) {
       int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
       int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
       enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea, level) );
+      
     }
+    treePtr = tree;
+    placeAdditionalEnemies(enemies, treePtr);
     return enemies;
+  }
+  
+  public void placeAdditionalEnemies(ArrayList<Enemy> enemies, BinaryNode treePtr){
+     if(treePtr.left == null && treePtr.right == null){
+      for (int i = 0; i < level; i++) {
+        int posX = treePtr.x + (int)random(15, treePtr.widthArea-15);
+        int posY = treePtr.y + (int)random(15, treePtr.heightArea-15);
+        float rate = random(0,10);
+      if(rate < 0.5){
+        enemies.add(new Enemy(new PVector(posX, posY), new PVector(treePtr.x, treePtr.y), treePtr.widthArea, treePtr.heightArea, level) );
+        }
+      }
+      return;
+     }else{
+       placeAdditionalEnemies(enemies, treePtr.left);
+       placeAdditionalEnemies(enemies, treePtr.right);
+     }
+     
   }
 
   private ArrayList<Item> generateItems(ArrayList<Item> itemDictionary, ArrayList<Enemy> enemies) {
@@ -207,8 +226,10 @@ public final class Map {
       int chosenY = treePtr.y + (int) random(15, treePtr.heightArea-15);
       int chosenWeapon = (int) random(0, weaponDictionary.size());
       int dropRate = (int) random(0,10);
-      if(dropRate < 3){ //Simple drop rate percentage. 
+      System.out.println("PEY");
+      if(dropRate < 8){ //Simple drop rate percentage. 
       Weapon wp = new Weapon();
+      
       wp.copyWeapon(weaponDictionary.get(chosenWeapon));
       wp.position = new PVector(chosenX, chosenY);
       weapons.add(wp);

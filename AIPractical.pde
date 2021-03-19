@@ -33,7 +33,7 @@ void setup() {
 
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
-  level = 20;
+  level = 1;
   map.generateNewCave(level);
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
@@ -98,8 +98,7 @@ void battleGUI() {
       for (int i = 0; i < keys.length; i++) {
         keys[i] = false; //Prevent any unwanted movement.
       }
-    } else {
-      //RESET THE GAME FROM BEGINNING
+    }else if(bs.playerFaint){
       bs.reset();
       inBattle = false;
       bs.isFinished = false;
@@ -107,6 +106,14 @@ void battleGUI() {
         keys[i] = false; //Prevent any unwanted movement.
       }
       restartGame();
+    }else{
+      bs.reset();
+      inBattle = false;
+      bs.isFinished = false;
+      for (int i = 0; i < keys.length; i++) {
+        keys[i] = false; //Prevent any unwanted movement.
+      }
+      player.position = player.startingPosition.copy();
     }
   }
 }

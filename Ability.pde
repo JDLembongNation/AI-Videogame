@@ -12,11 +12,6 @@ public final class Ability{
   boolean isDamage;
   boolean isDefense;
   public Ability(){
-    name = "peysar";
-    description = "Some pey";
-    damage = 0;
-    isPhysical = true;
-
   }
   public Ability(String name, String description, float damage, boolean isPhysical, float accuracy, 
   boolean neverMiss, boolean isFlee, int levelObtained, boolean isSelf, boolean isDamage, boolean isDefense, int ref){
