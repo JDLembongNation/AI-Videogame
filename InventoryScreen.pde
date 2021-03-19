@@ -8,7 +8,6 @@ public final class InventoryScreen {
   Slot origin;
   Slot destination;
   int totalSlots;
-  //ORigin https://www.deviantart.com/bizmasterstudios
   Slot[][] imageSlots;
   ArrayList<Item> items;
   ArrayList<Weapon> weapons;
@@ -241,6 +240,7 @@ public final class InventoryScreen {
 
 
 
+// == METHOD to grab the item once the user has hovered over it up.
 
   void dragPressed() {
     if (mousePressed == true && !isGrabItem && mouseButton == LEFT) {
@@ -269,7 +269,7 @@ public final class InventoryScreen {
   }
 
 
-
+// == METHOD to drop the item once the user has picked it up.
   void dragReleased() {
     if (mousePressed==false) {
       if (isGrabItem) {
@@ -335,6 +335,7 @@ public final class InventoryScreen {
     }
   }
 
+// == METHOD to show stats to the player
   void showStats(Player player) {
     fill(0);
     textSize(20);

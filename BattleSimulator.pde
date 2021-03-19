@@ -4,17 +4,18 @@ public final class BattleSimulator {
   private boolean isPlayerOneTurn;
   boolean isPlayerOneGoFirst;
   int delay = -1;
-  boolean[] keys;
-  boolean displayTime;
-  boolean chosen;
-  boolean alreadyHit;
-  boolean isFinished;
-  boolean isFleeSuccess;
-  boolean playerFaint;
-  boolean isDone;
-  boolean enemyFaint;
-  boolean isStart;
-  boolean enemyAlreadyHit;
+  boolean[] keys; //Keys pressed in the game
+  boolean displayTime; //The display time for the enemy moves
+  boolean chosen; //Has the move been chosen by the player
+  boolean alreadyHit; //has a move already been decided and has already been processed?
+  boolean isFinished; //Is the battle finished?
+  boolean isFleeSuccess; //Did the player successfully run away?
+  boolean playerFaint; //Did the player faint?
+  boolean isDone; //Is the turn taking over? Enemy or player must die for this boolean to trigger
+  boolean enemyFaint; //Did the enemy faint?
+  boolean isStart; //Did the player press the start button?
+  boolean enemyAlreadyHit; //Did the enemy already make their move?
+  
   Player player;
   Enemy enemy;
   String playerHealth = "";
@@ -42,7 +43,7 @@ public final class BattleSimulator {
 
   public BattleSimulator() { //Can have capacity for multi-enemy.
   }
-
+  //== METHOD restart Battle booleans
   public void reset() {
     alreadyHit = false;
     enemyAlreadyHit = false;
@@ -91,6 +92,7 @@ public final class BattleSimulator {
       isPlayerOneGoFirst = player.speed > enemy.speed;
       isPlayerOneTurn = isPlayerOneGoFirst;
     }
+    //== Setting UI in battle.
     textSize(20);
     text(playerHealth, 20, 50);
     text(enemyHealth, 20,150);
@@ -98,13 +100,9 @@ public final class BattleSimulator {
     text(choice, 250, 50);
     text(optionA, 250, 150);
     text(optionB, 250, 250);
-
     text(optionC, 250, 350);    
-
     text(optionD, 250, 450);    
-
     text(optionE, 250, 550);    
-
     text(BattleText1, 250, 700);
     text(BattleText2, 250, 800);
     text(BattleText3, 250, 900);
@@ -120,7 +118,7 @@ public final class BattleSimulator {
 
     text(optionEDesc, 250, 580);
   }
-
+  //== MAIN TURN TAKING METHOD
   public void executeGameTurn(Player player, Enemy enemy) {
          playerHealth = "Health: " + ((int)player.health);
       enemyHealth = "Enemy Health " + ((int)enemy.health);
@@ -180,7 +178,6 @@ public final class BattleSimulator {
           displayEnd(player, enemy);
         }
       }
-      //UNDEFINED BEHAVIOUR HERE. TAKE A LOOK
     } else if (!isPlayerOneTurn && !enemyAlreadyHit) {
       enemyTurn(player, enemy);
       didSomeoneDie(player, enemy);
@@ -204,6 +201,7 @@ public final class BattleSimulator {
     }
   }
 
+//== METHOD to display properly what moves the player can use.
   void playerTurn(Player player) {
     if (player.availableAbilities.get(0) != null) {
       optionA = "A) " + player.availableAbilities.get(0).name;
@@ -246,6 +244,7 @@ public final class BattleSimulator {
       chosen = true;
     }
   }
+  // == METHOD for computing enemy algorithm
   private void enemyTurn(Player player, Enemy enemy) {
     BattleText1 = "Enemy Turn!";
     Ability abilityInPlay = enemy.nextMove(player);
@@ -278,13 +277,13 @@ public final class BattleSimulator {
     }
   }
 
-  //Can toggle if too small of a chance. 
+  // == Method to determine if a player has successfully ran away
   private boolean canRun(Player player, Enemy enemy) {
     float option = random(0, player.speed);
     float enemyChance = random(0, enemy.speed);
     return (option < enemyChance);
   }
-
+  // == Method to determine if a either members of the battle died
   private void didSomeoneDie(Player player, Enemy enemy) {
              playerHealth = "Health: " + ((int)player.health);
       enemyHealth = "Enemy Health " + ((int)enemy.health);
@@ -362,6 +361,8 @@ public final class BattleSimulator {
     }
     return damageDealt;
   }
+  
+  // == Method to deal with armor influence in the game.
 
   private void doDamage(Player player, Enemy enemy, float damage, boolean isPlayerOneTurn) {
     if (isPlayerOneTurn) {
@@ -375,13 +376,14 @@ public final class BattleSimulator {
       player.health -= damage;
     }
   }
-
+  // == Method to determine if an ability had landed successfully
   private boolean didLandHit(Ability ability, float dodgeRate) {
     float generated = random(0, ability.accuracy/100);
     if (ability.neverMiss) return true;
     else return generated > dodgeRate;
   }
 
+  // == Method to delay the duration in the game so that player can see the text with some time
   private boolean waitSecond(int x) {
     return(delay+(x*1000) < millis());
   }

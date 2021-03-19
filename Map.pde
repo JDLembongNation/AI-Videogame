@@ -5,7 +5,7 @@ public final class Map {
   BinaryNode tree;
   int treeValue;
   final int maxMinArea = 500000;
-  int minArea = 500000; //At least 50 squares of operating room.
+  int minArea = 500000;
 
   public Map(int chosenWidth, int chosenHeight, int nodeSize) {
     int allocatedWidth = chosenWidth/nodeSize;
@@ -13,7 +13,7 @@ public final class Map {
     this.map = new GroundNode[allocatedWidth][allocatedHeight];
     for (int i = 0; i < allocatedWidth; i++) {
       for (int j = 0; j < allocatedHeight; j++) {
-        map[j][i] = new GroundNode((j*nodeSize), (i*nodeSize));
+        map[j][i] = new GroundNode((j*nodeSize), (i*nodeSize)); //Insert this way, so [x][y].
       }
     }
   }
@@ -22,6 +22,7 @@ public final class Map {
     return map;
   }
 
+ // == METHOD to generate a new cave.
   private void generateNewCave(int level) {
     minArea = maxMinArea-(level*30000);
     if(minArea < 100000) minArea = 100000;
@@ -57,12 +58,10 @@ public final class Map {
       return widthArea*heightArea;
     }
   }
-
+  
+  // == METHOD to implement recursive Binary Split Partitioning Algorithm of the map.
   private boolean[][] allocateSpaces(boolean[][] generatorMap, BinaryNode treeNode) {
-    //CHECK SIZE APPROPRIATE
-    //Start Attaching Corridors and Drawing out Map with the GeneratorMap.
     if (treeNode.getTotalArea() < minArea) {
-      //Carve out area. Reassign values for x, y, widthArea, heightArea. For now, just make 5 pixels smaller. Keep same Pos.
       treeNode.widthArea -=40;
       treeNode.heightArea-=40;
       generatorMap = insertRoom(generatorMap, treeNode);
@@ -78,7 +77,6 @@ public final class Map {
         allocateSpaces(generatorMap, treeNode.left);
         treeNode.right = new BinaryNode(treeNode, (treeNode.widthArea+treeNode.x-split), treeNode.heightArea, split, treeNode.y);
         allocateSpaces(generatorMap, treeNode.right);
-        //50 --> 0,24 and 25,50
       } else if (treeNode.heightArea>=200) {
         int split = (int) random(treeNode.y+80, treeNode.y+treeNode.heightArea-80);
         int remainder = split%40;
@@ -101,7 +99,8 @@ public final class Map {
       return generatorMap;
     }
   }
-
+  
+  // == METHOD to toggle the walkable boolean parameter.
   private boolean[][] insertRoom(boolean[][] room, BinaryNode node) {
     int factoredX = (int) node.x/40;
     int factoredY = (int) node.y/40;
@@ -114,8 +113,10 @@ public final class Map {
     }
     return room;
   }
+  
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
   //Right Node will either be always to the right or below the left node. ie. higher height, (cartesian grid)
+  // == METHOD to line up the rooms together. 
   private boolean[][] addCorridors(boolean[][] room, BinaryNode node) {
     //Reduce scale IF there are children. 
     if (node.left.right!=null && node.left.left!=null) {
@@ -168,6 +169,8 @@ public final class Map {
     }
     return room;
   }
+  
+  // == METHOD to place enemies where the exit of the map is.
   public ArrayList<Enemy> generateEnemies(int level) {
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     //Dependent on level. 
@@ -183,7 +186,7 @@ public final class Map {
     placeAdditionalEnemies(enemies, treePtr);
     return enemies;
   }
-  
+    // == METHOD to recursively descend down the binary tree and place enemies accordingly
   public void placeAdditionalEnemies(ArrayList<Enemy> enemies, BinaryNode treePtr){
      if(treePtr.left == null && treePtr.right == null){
       for (int i = 0; i < level; i++) {
@@ -219,6 +222,7 @@ public final class Map {
     return weapons;
   }
 
+  // == METHOD to recursively descend down the binary tree and place weapons accordingly
 
   private void placeWeapons(ArrayList<Weapon> weapons, BinaryNode treePtr, ArrayList<Weapon> weaponDictionary) {
     if (treePtr.left == null && treePtr.right == null) {
@@ -244,7 +248,7 @@ public final class Map {
       placeWeapons(weapons, treePtr.right, weaponDictionary);
     }
   }
-
+  // == METHOD to recursively descend down the binary tree and place items accordingly
   private void placeItems(ArrayList<Item> items, BinaryNode treePtr, ArrayList<Item> itemDictionary, ArrayList<Enemy> enemies) {
     if (treePtr.left == null && treePtr.right == null) {
       //Reached a room. 
@@ -289,6 +293,7 @@ public final class Map {
     map[chosenX][chosenY].isEndPosition = true;
   }
 
+  // == METHOD to reset start/end positions
   private void resetTerrain() {
     for (int i = 0; i < map.length; i++) {
       for (int j = 0; j < map[0].length; j++) {

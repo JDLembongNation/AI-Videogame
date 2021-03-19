@@ -1,6 +1,8 @@
 final int PLAY_WIDTH = 1000;
 final int PLAY_HEIGHT = 1000;
-final int NODE_SIZE = 40; //Size of each block in the game.
+final int NODE_SIZE = 40;
+final String INTRO_TEXT = "Let the Battle Commence!";
+final int NO_ITEMS = 2;
 
 PImage[] images;
 BattleSimulator bs;
@@ -12,9 +14,9 @@ ArrayList<Ability> abilityList;
 GroundNode[][] currentMap;
 ArrayList<Item> itemDictionary; //Shows every kind of item available to use.
 ArrayList<Item> items; //shows the items available on the map.
-ArrayList<Weapon> weaponDictionary; //Shows every kind of weapon available.
-ArrayList<Weapon> weapons; //Shows the items avaialble
-ArrayList<Enemy> enemies; //List of enemies on the map at the current point in time.
+ArrayList<Weapon> weaponDictionary;
+ArrayList<Weapon> weapons;
+ArrayList<Enemy> enemies;
 Minim minim;
 AudioPlayer[] audioPlayer;
 int currentEnemy;
@@ -65,11 +67,11 @@ void draw() {
 
 void mousePressed() {
   if (isStartScreen && sc.pressButton()) {
+    System.out.println("PEY");
     isStartScreen = false;
   } else {
   }
 }
-
 
 void caveGUI() {
   background(255);
@@ -114,7 +116,7 @@ void battleGUI() {
     }
   }
 }
-// == METHOD to restart game back to start screen.
+
 void restartGame() {
   level = 0;
   resetMap();
@@ -124,7 +126,6 @@ void restartGame() {
   player.addAbilities(abilityList);
   sc = new StartScreen(audioPlayer[0], images[23], images[24], images[25], images[26]);  
 }
-
 
 void drawMap() {
   currentMap = map.getMap();
@@ -166,8 +167,6 @@ void drawCharacters() {
     ellipse(enemyX, enemyY, 10, 10);
   }
 }
-
-// == METHOD: Collision detection for everything.
 
 void collisionCheck() {
   for (int i = 0; i < enemies.size(); i++) {
@@ -253,7 +252,6 @@ void collisionCheck() {
   }
   if (remove != -1) weapons.remove(remove);
 }
-// == METHOD will reset the level, will be called when the player restarts game or finishes one level.
 
 void resetMap() {
   level++;
@@ -268,7 +266,6 @@ void resetMap() {
   player.position = player.startingPosition.copy();
 }
 
-// == METHOD will insert the graphics for the items and weapons in the game.
 
 void drawItemsWeapons() {
   for (Item it : items) {
@@ -278,14 +275,14 @@ void drawItemsWeapons() {
     image(w.caveView, w.position.x, w.position.y);
   }
 }
-// == METHOD to let player move
+
 void move() {
   if (keys[0]) player.integrate(2, 0);
   if (keys[1]) player.integrate(-2, 0);
   if (keys[2]) player.integrate(0, 0.08);
   if (keys[3]) player.integrate(0, -0.08);
 }
-// == METHOD allowing enemies to move per call on draw()
+
 void enemyMove() {
   for (Enemy e : enemies) {
     e.integrate(player.position.copy());
@@ -371,7 +368,7 @@ void keyReleased()
   }
 } 
 
-// == METHOD TO LOAD IN CONTENT FROM JSON FILE 
+
 void readInContent() {
   images[0] = loadImage("./Data/Inventory.png");
   images[1] = loadImage("./Data/inventory-icons/stat-potion.png");
@@ -456,6 +453,10 @@ void readInContent() {
   }
   items = map.generateItems(itemDictionary, enemies);
   weapons = map.generateWeapons(weaponDictionary);
+  for(Weapon e: weaponDictionary){
+    System.out.println("ACHE");
+    inventory.addWeapon(e);  
+  }
   for (Enemy e : enemies) {
     e.setAbilities(abilityList);
   }
