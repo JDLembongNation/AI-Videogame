@@ -114,7 +114,6 @@ public final class Enemy {
       }
     }
     }
-    System.out.println(current.name);
     return current;
   }
 

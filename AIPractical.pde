@@ -68,7 +68,6 @@ void draw() {
 
 void mousePressed() {
   if (isStartScreen && sc.pressButton()) {
-    System.out.println("PEY");
     isStartScreen = false;
   } else {
   }

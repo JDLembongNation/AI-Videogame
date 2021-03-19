@@ -160,7 +160,6 @@ public final class InventoryScreen {
                   removeY = j;
                   if (imageSlots[i][j].item.isStatChanger) {
                     int randomStat = (int) random(0, 6);
-                    System.out.println(randomStat);
                     switch(randomStat) {
                     case 0: 
                       {
@@ -316,7 +315,6 @@ public final class InventoryScreen {
                 origin.isTaken = false;
                 if (isItemSlot(origin)) {
                   destination.item = currentItem;
-                  System.out.println(destination.item.name);
                   origin.item = null;
                   return;
                 } else {

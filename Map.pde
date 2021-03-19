@@ -226,7 +226,6 @@ public final class Map {
       int chosenY = treePtr.y + (int) random(15, treePtr.heightArea-15);
       int chosenWeapon = (int) random(0, weaponDictionary.size());
       int dropRate = (int) random(0,10);
-      System.out.println("PEY");
       if(dropRate < 8){ //Simple drop rate percentage. 
       Weapon wp = new Weapon();
       
