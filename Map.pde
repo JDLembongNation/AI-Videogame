@@ -4,7 +4,8 @@ public final class Map {
   GroundNode[][] map;
   BinaryNode tree;
   int treeValue;
-  final int minArea = 100000; //At least 50 squares of operating room.
+  final int maxMinArea = 500000;
+  int minArea = 500000; //At least 50 squares of operating room.
   int incisions= 0; //DEBUG 
   int stitches = 0; //DEBUG
 
@@ -24,7 +25,8 @@ public final class Map {
   }
 
   private void generateNewCave(int level) {
-
+    minArea = maxMinArea-(level*30000);
+    if(minArea < 100000) minArea = 100000;
     //Using the BSP Partitioning System. 
     treeValue = 0;
     tree = new BinaryNode(null, 1000, 1000, 0, 0);

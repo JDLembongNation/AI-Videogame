@@ -21,6 +21,12 @@ public final class Weapon{
   public void copyWeapon(Weapon weapon){
     this.name = weapon.name;
     this.description = weapon.description;
+    this.isPhysical = weapon.isPhysical;
+    this.damage = weapon.damage;
+    this.abilityRef = weapon.abilityRef;
+    this.caveView = weapon.caveView;
+    this.inventoryView = weapon.inventoryView;
+    this.position = weapon.position;
   }
   
 } 

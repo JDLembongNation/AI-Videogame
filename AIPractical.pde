@@ -33,7 +33,7 @@ void setup() {
 
   abilityList = new ArrayList<Ability>();
   map = new Map(PLAY_WIDTH, PLAY_HEIGHT, NODE_SIZE);
-  level = 1;
+  level = 20;
   map.generateNewCave(level);
   enemies = map.generateEnemies(level);
   player = new Player(100, 100, 0);
@@ -449,8 +449,5 @@ void readInContent() {
   weapons = map.generateWeapons(weaponDictionary);
   for (Enemy e : enemies) {
     e.setAbilities(abilityList);
-  }
-  for(int i = 0; i < 15; i++){
-  inventory.addItem(items.get(0));
   }
 }
