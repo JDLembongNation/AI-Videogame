@@ -107,11 +107,14 @@ public final class Enemy {
   private Ability findBestAttackMove() {
     Ability current = null;
     for (int i = 0; i < abilities.size(); i++) {
+      if(abilities.get(i).isPhysical){
       if (current == null && abilities.get(i).isDamage) current = abilities.get(i);
       else if (abilities.get(i).isDamage && current!=null && current.damage < abilities.get(i).damage) {
         current = abilities.get(i);
       }
     }
+    }
+    System.out.println(current.name);
     return current;
   }
 

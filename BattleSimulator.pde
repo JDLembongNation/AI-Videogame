@@ -17,6 +17,8 @@ public final class BattleSimulator {
   boolean enemyAlreadyHit;
   Player player;
   Enemy enemy;
+  String playerHealth = "";
+  String enemyHealth = "";
   String choice = "Choose an Action!";
   String optionA ="";
   String optionADesc = "";
@@ -67,6 +69,7 @@ public final class BattleSimulator {
     BattleText1 = "";
     BattleText2= "";
     BattleText3="";
+    
   }
 
   //Should have a press M to begin battle. 
@@ -88,6 +91,9 @@ public final class BattleSimulator {
       isPlayerOneGoFirst = player.speed > enemy.speed;
       isPlayerOneTurn = isPlayerOneGoFirst;
     }
+    textSize(20);
+    text(playerHealth, 20, 50);
+    text(enemyHealth, 20,150);
     textSize(30);
     text(choice, 250, 50);
     text(optionA, 250, 150);
@@ -116,6 +122,8 @@ public final class BattleSimulator {
   }
 
   public void executeGameTurn(Player player, Enemy enemy) {
+         playerHealth = "Health: " + ((int)player.health);
+      enemyHealth = "Enemy Health " + ((int)enemy.health);
     if (isPlayerOneTurn && !alreadyHit) {    
       resetText();
       BattleText1 = "Your Turn!";
@@ -278,8 +286,15 @@ public final class BattleSimulator {
   }
 
   private void didSomeoneDie(Player player, Enemy enemy) {
-    if (player.health <= 0) playerFaint = true;
-    if (enemy.health <= 0) enemyFaint = true;
+             playerHealth = "Health: " + ((int)player.health);
+      enemyHealth = "Enemy Health " + ((int)enemy.health);
+    if (player.health <= 0){
+      playerFaint = true;
+    playerHealth = "Health: 0";
+  }
+    if (enemy.health <= 0){ enemyFaint = true;
+    enemyHealth = "Enemy Health 0";
+  }
   }
 
   private float calculateDamage(Player player, Enemy enemy, Ability ability, boolean isPlayerOneTurn) {

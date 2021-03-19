@@ -3,6 +3,7 @@ final int MAX_MOVES  = 4;
 final int MAX_PHYSICAL_MOVES = 3;
 
 public final class Player {
+  int counter;
    ArrayList<Item> inventory;
    ArrayList<Ability> abilities;
    ArrayList<Ability> availableAbilities;
@@ -26,6 +27,7 @@ public final class Player {
   int gold;
   
   public Player(int x, int y, float orientation) {
+    this.counter = 0;
     availableAbilities= new ArrayList<Ability>();
     for(int i = 0; i < MAX_MOVES; i++){
       availableAbilities.add(null);
@@ -46,6 +48,7 @@ public final class Player {
     this.specialDefense =1;
 }
   public void resetAttributes(){
+    this.counter = 0;
     this.level = 1;
     this.exp = 0;
     this.expNeeded = 10;
@@ -86,12 +89,11 @@ public final class Player {
       specialAttack++;
       dodgeRate+=0.01;
       speed++;
-      //MOVE FROM OLD TO NEW MOVES. 
       for(int i = 0; i < abilities.size(); i++){
         if(abilities.get(i).levelObtained == level){ //Add to new arsena
-          if(availableAbilities.size() == MAX_PHYSICAL_MOVES){ //RESERVE THE LAST MVOE FOR SPELLS.
-            availableAbilities.set(i%3,abilities.get(i));
-          }
+            availableAbilities.set(counter%3,abilities.get(i));
+        counter++;
+          
         }
       }
       return true;
@@ -104,8 +106,10 @@ public final class Player {
     this.abilities = abilities;
     for(int i = 0; i < abilities.size(); i++){
       if(abilities.get(i).levelObtained == level){
-        availableAbilities.set(i%3, abilities.get(i));
-      }
+        availableAbilities.set(counter%3, abilities.get(i));
+        counter++;
+
+    }
     }
   }
   

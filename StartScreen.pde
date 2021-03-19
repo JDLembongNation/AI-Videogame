@@ -7,8 +7,6 @@ public final class StartScreen {
   PImage buttonBack;
   AudioPlayer player;
   boolean optionsChosen = false;
-  final int FADE = 2500;
-  boolean isVolumeOn = true;
 
   public StartScreen(AudioPlayer player, PImage titleImage, PImage buttonStart, PImage buttonControls, PImage buttonBack) {
     this.player = player;
